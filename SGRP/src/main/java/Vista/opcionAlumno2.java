@@ -13,6 +13,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
+    
+    
 }
 
 
@@ -70,16 +72,16 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addComponent(lblImportar)
-                        .addGap(18, 18, 18)
+                        .addGap(28, 28, 28)
                         .addComponent(lblAgregarAlumno)
-                        .addGap(18, 159, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblAtras)
                         .addGap(80, 80, 80)
                         .addComponent(lblCerrarSesion))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelAlumnosLayout.setVerticalGroup(
