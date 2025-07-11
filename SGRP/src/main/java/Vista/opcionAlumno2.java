@@ -2,6 +2,7 @@ package Vista;
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;
+import Modelo.DAO.AlumnoDAO;
 
 public class opcionAlumno2 extends javax.swing.JPanel {
 
@@ -12,10 +13,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
-<<<<<<< HEAD
-     
-=======
->>>>>>> 6335ea3c465befae2ab7571a70ac4f83bf01eac7
 }
 
 
@@ -29,8 +26,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblImportar = new javax.swing.JLabel();
         lblAgregarAlumno = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaAlumnos = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -54,20 +53,43 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"", null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Numero de control", "Nombre"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaAlumnos);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+
+        jButton1.setText("Editar");
+
+        jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelAlumnosLayout = new javax.swing.GroupLayout(panelAlumnos);
         panelAlumnos.setLayout(panelAlumnosLayout);
@@ -80,14 +102,18 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addComponent(lblImportar)
                         .addGap(28, 28, 28)
                         .addComponent(lblAgregarAlumno)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
                         .addComponent(lblAtras)
                         .addGap(80, 80, 80)
                         .addComponent(lblCerrarSesion))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelAlumnosLayout.setVerticalGroup(
@@ -99,10 +125,17 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                     .addComponent(lblAtras)
                     .addComponent(lblAgregarAlumno)
                     .addComponent(lblImportar))
-                .addGap(67, 67, 67)
-                .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAlumnosLayout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)))
+                    .addGroup(panelAlumnosLayout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
 
@@ -117,15 +150,25 @@ public class opcionAlumno2 extends javax.swing.JPanel {
        card.show(panelContainer, "Agregar alumno");
     }//GEN-LAST:event_lblAgregarAlumnoMouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        AlumnoDAO a = new AlumnoDAO();
+        int fs = tablaAlumnos.getSelectedRow();
+        String nControl = tablaAlumnos.getValueAt(0, fs).toString();
+        a.eliminarAlumno(nControl);
+        //actualizarTabla(tablaAlumnos);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAgregarAlumno;
     private javax.swing.JLabel lblAtras;
     private javax.swing.JLabel lblCerrarSesion;
     private javax.swing.JLabel lblImportar;
     private javax.swing.JPanel panelAlumnos;
+    private javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
 }

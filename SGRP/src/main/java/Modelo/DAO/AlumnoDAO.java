@@ -15,13 +15,13 @@ public class AlumnoDAO {
         
     }
     
-    public boolean eliminarAlumno(int id) {
-        String sql = "DELETE FROM alumno WHERE id = ?";
+    public boolean eliminarAlumno(String n_control) {
+        String sql = "DELETE FROM alumno WHERE n_control = ?";
         try (
             Connection conn = Conexion.obtenerConexion();
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
-            ps.setInt(1, id);
+            ps.setString(1, n_control);
             int filas = ps.executeUpdate();
             return filas > 0;
         } catch (SQLException e) {

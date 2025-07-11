@@ -1,12 +1,10 @@
 package Vista;
 
-<<<<<<< HEAD
-=======
 import java.awt.CardLayout;
 import javax.smartcardio.Card;
 import javax.swing.JPanel;
 
->>>>>>> 6335ea3c465befae2ab7571a70ac4f83bf01eac7
+
 public class AgregarAlumno extends javax.swing.JPanel {
 
     CardLayout card;
