@@ -13,8 +13,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
-    
-    
+     
 }
 
 

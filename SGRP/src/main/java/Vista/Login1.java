@@ -1,15 +1,9 @@
 package vista;
 
-
 import Controlador.AcomodarImagen;
 import controlador.LoginController;
 import java.awt.Color;
 
-
-/**
- *
- * @author emilio
- */
 public class Login1 extends javax.swing.JFrame {
     
     private final AcomodarImagen acomodarImagen = new AcomodarImagen();

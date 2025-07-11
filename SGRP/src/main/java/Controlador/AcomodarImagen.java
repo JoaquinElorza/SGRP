@@ -1,6 +1,5 @@
 package Controlador;
 
-
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,13 +10,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-/**
-/**
- *
- * @author emilio
- */
 public class AcomodarImagen {
-    public  void configurarPanelConImagen(String rutaImagen, JPanel panelDestino) {
+
+    public void configurarPanelConImagen(String rutaImagen, JPanel panelDestino) {
         // Cargar imagen como recurso
         URL ruta = getClass().getResource(rutaImagen);
         if (ruta == null) {
@@ -61,12 +56,4 @@ public class AcomodarImagen {
         panelDestino.revalidate();
         panelDestino.repaint();
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }
