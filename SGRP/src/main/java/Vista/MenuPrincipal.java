@@ -9,10 +9,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() {
         initComponents();
         card = (CardLayout) panelCambiante.getLayout();
-        panelCambiante.add(new opcionAlumno2(), "panelAlumnos");
+        
+        panelCambiante.add(panelPrincipal, "menuPrincipal");
+        panelCambiante.add(new opcionAlumno2(card, panelCambiante), "panelAlumnos");
     }
 
-    
     
 
     @SuppressWarnings("unchecked")
@@ -59,7 +60,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        card = (CardLayout)this.panelCambiante.getLayout();
         card.show(panelCambiante,"panelAlumnos");
     }//GEN-LAST:event_jLabel1MouseClicked
 

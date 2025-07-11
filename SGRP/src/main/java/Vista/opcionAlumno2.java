@@ -1,10 +1,19 @@
 package Vista;
 
+import java.awt.CardLayout;
+import javax.swing.JPanel;
+
 public class opcionAlumno2 extends javax.swing.JPanel {
 
-    public opcionAlumno2() {
-        initComponents();
-    }
+    CardLayout card;
+    private JPanel panelContainer;
+    
+    
+    public opcionAlumno2(CardLayout layout, javax.swing.JPanel container) {
+    this.card = layout;
+    this.panelContainer = container;
+    initComponents();
+}
 
 
     @SuppressWarnings("unchecked")
@@ -25,6 +34,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblCerrarSesion.setText("Cerrar sesión");
 
         lblAtras.setText("Atrás");
+        lblAtras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAtrasMouseClicked(evt);
+            }
+        });
 
         lblImportar.setText("Importar alumnos");
 
@@ -86,6 +100,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         add(panelAlumnos, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void lblAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAtrasMouseClicked
+        card.show(panelContainer, "menuPrincipal");
+    }//GEN-LAST:event_lblAtrasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
