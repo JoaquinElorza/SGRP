@@ -7,6 +7,14 @@ import Utilidades.Conexion;
 
 public class AlumnoDAO {
     
+    public void insertarAlumno() {
+        
+    }
+    
+    public void actualizarAlumno() {
+        
+    }
+    
     public boolean eliminarAlumno(int id) {
         String sql = "DELETE FROM alumno WHERE id = ?";
         try (
