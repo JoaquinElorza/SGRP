@@ -10,8 +10,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
         initComponents();
         card = (CardLayout) panelCambiante.getLayout();
         
-        panelCambiante.add(panelPrincipal, "menuPrincipal");
+        AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante);
+        
+        
+        
+        panelCambiante.add(panelPrincipal, "menu principal");
         panelCambiante.add(new opcionAlumno2(card, panelCambiante), "panelAlumnos");
+        panelCambiante.add(agregarAlumno, "Agregar alumno");
+        
+
+        
     }
 
     

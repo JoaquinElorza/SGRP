@@ -8,13 +8,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     CardLayout card;
     private JPanel panelContainer;
     
-    
     public opcionAlumno2(CardLayout layout, javax.swing.JPanel container) {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
-    
-    
 }
 
 
@@ -45,6 +42,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblImportar.setText("Importar alumnos");
 
         lblAgregarAlumno.setText("Agregar un alumno");
+        lblAgregarAlumno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregarAlumnoMouseClicked(evt);
+            }
+        });
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
@@ -106,6 +108,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private void lblAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAtrasMouseClicked
         card.show(panelContainer, "menuPrincipal");
     }//GEN-LAST:event_lblAtrasMouseClicked
+
+    private void lblAgregarAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarAlumnoMouseClicked
+       card.show(panelContainer, "Agregar alumno");
+    }//GEN-LAST:event_lblAgregarAlumnoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
