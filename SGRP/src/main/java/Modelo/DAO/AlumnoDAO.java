@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import Utilidades.Conexion; 
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.ResultSet;
+import Modelo.DAO.AlumnoCarg;
+
 
 public class AlumnoDAO {
     
@@ -29,4 +34,30 @@ public class AlumnoDAO {
             return false;
         }
     }
+    public List<AlumnoCarg> obtenerTodosLosAlumnos() {
+    List<AlumnoCarg> lista = new ArrayList<>();
+    String sql = "SELECT id, nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono FROM alumnos";
+
+    try (Connection conn = Conexx.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            AlumnoCarg alumno = new AlumnoCarg();
+            alumno.setId(rs.getInt("id"));
+            alumno.setNombre(rs.getString("nombre"));
+            alumno.setApellidoPaterno(rs.getString("apellido_paterno"));
+            alumno.setApellidoMaterno(rs.getString("apellido_materno"));
+            alumno.setNumeroControl(rs.getString("numero_control"));
+            alumno.setCorreoElectronico(rs.getString("correo_electronico"));
+            alumno.setNumeroTelefono(rs.getString("numero_telefono"));
+            lista.add(alumno);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return lista;
+} 
 }
