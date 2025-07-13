@@ -7,13 +7,48 @@ import Utilidades.Conexion;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
-import Modelo.DAO.AlumnoCarg;
+import javax.swing.JTable;
 
 
 public class AlumnoDAO {
+    public static String[] alumnito = new String[4]; 
     
     public void insertarAlumno() {
         
+    }
+    
+    public static String[] consultarAlumno(JTable tablaAlumnos) throws SQLException{
+       int Fila = tablaAlumnos.getSelectedRow();
+       String nControl = tablaAlumnos.getValueAt(Fila,0).toString();
+       
+       
+       Connection conn = Conexion.getConexion();
+        String sql = "SELECT telefono, nombre, ap_paterno, ap_materno, correo\n" +
+                     "FROM sgrp.alumno join sgrp.persona on alumno.fk_persona = persona.id_persona\n" +
+                     "where n_control= ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nControl);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String telefono = rs.getString("telefono");
+                String nombre = rs.getString("nombre");
+                String ap1 = rs.getString("ap_paterno");
+                String ap2 = rs.getString("ap_materno");
+                String correo = rs.getString("correo");
+                alumnito[0]=nControl;
+                alumnito[1]=(nombre + " " + ap1 + " " + ap2);
+                alumnito[2]=telefono;
+                alumnito[3]=correo;
+            } else {
+                System.out.println("No se encontró ningún alumno con ese número de control.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return alumnito;
     }
     
     public void actualizarAlumno() {
@@ -23,7 +58,7 @@ public class AlumnoDAO {
     public boolean eliminarAlumno(String n_control) {
         String sql = "DELETE FROM alumno WHERE n_control = ?";
         try (
-            Connection conn = Conexion.obtenerConexion();
+            Connection conn = Conexion.getConexion();
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
             ps.setString(1, n_control);

@@ -3,9 +3,12 @@ package Vista;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import Modelo.DAO.AlumnoDAO;
+import static Modelo.DAO.AlumnoDAO.consultarAlumno;
 import java.io.File;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 public class opcionAlumno2 extends javax.swing.JPanel {
 
@@ -51,11 +54,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblControl = new javax.swing.JLabel();
+        lblNombreAlumno = new javax.swing.JLabel();
+        lblTelefono = new javax.swing.JLabel();
+        lblCorreo = new javax.swing.JLabel();
+        lblProyecto = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -91,9 +94,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null}
+                {"22161052", null}
             },
             new String [] {
                 "Numero de  control", "Nombre"
@@ -102,16 +103,14 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        });
+        tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAlumnosMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tablaAlumnos);
@@ -127,15 +126,16 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 255, 51)));
 
-        jLabel1.setText("Numero de  control");
+        lblControl.setText("Numero de  control");
 
-        jLabel2.setText("Nombre completo");
+        lblNombreAlumno.setText("Nombre completo");
 
-        jLabel3.setText("Telefono");
+        lblTelefono.setText("Telefono");
 
-        jLabel4.setText("Correo electronico");
+        lblCorreo.setText("Correo electronico");
 
-        jLabel5.setText("Proyecto");
+        lblProyecto.setForeground(new java.awt.Color(0, 102, 255));
+        lblProyecto.setText("Proyecto");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,17 +173,17 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(lblProyecto)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(lblNombreAlumno)
+                            .addComponent(lblControl))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(lblTelefono)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
+                        .addComponent(lblCorreo)
                         .addGap(65, 65, 65))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -194,15 +194,15 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel1)
+                .addComponent(lblControl)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(lblNombreAlumno)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(lblTelefono)
+                    .addComponent(lblCorreo))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
+                .addComponent(lblProyecto)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -286,6 +286,27 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         panel.setVisible(true);
     }
     }//GEN-LAST:event_LbLimportarMouseClicked
+
+
+    
+    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
+        try {
+            consultarAlumno(tablaAlumnos);
+            lblControl.setText(AlumnoDAO.alumnito[0]);
+            System.out.println(AlumnoDAO.alumnito[0]);
+            
+            lblNombreAlumno.setText(AlumnoDAO.alumnito[1]);
+            System.out.println(AlumnoDAO.alumnito[1]);
+            
+            lblTelefono.setText(AlumnoDAO.alumnito[2]);
+            System.out.println(AlumnoDAO.alumnito[2]);
+            
+            lblCorreo.setText(AlumnoDAO.alumnito[3]);
+            System.out.println(AlumnoDAO.alumnito[3]);
+        } catch (SQLException ex) {
+            Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_tablaAlumnosMouseClicked
     void actualizarTablaAlumnos() {
     AlumnoDAO dao = new AlumnoDAO();
     java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
@@ -307,11 +328,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JLabel LbLimportar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -319,6 +335,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JLabel lblAgregarAlumno;
     private javax.swing.JLabel lblAtras;
     private javax.swing.JLabel lblCerrarSesion;
+    private javax.swing.JLabel lblControl;
+    private javax.swing.JLabel lblCorreo;
+    private javax.swing.JLabel lblNombreAlumno;
+    private javax.swing.JLabel lblProyecto;
+    private javax.swing.JLabel lblTelefono;
     private javax.swing.JPanel panelAlumnos;
     private javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
