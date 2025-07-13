@@ -9,7 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
 
 public class AlumnoContr {
 
@@ -39,6 +42,15 @@ public class AlumnoContr {
                     || !alumno.getNumeroTelefono().isEmpty();
 
                 if (!filaValida) continue;
+
+                // Verificar si el número de control ya existe
+                if (existeNumeroControl(alumno.getNumeroControl())) {
+                    JOptionPane.showMessageDialog(null,
+                        "⚠️ El número de control " + alumno.getNumeroControl() + " ya está registrado y fue ignorado.",
+                        "Duplicado detectado",
+                        JOptionPane.WARNING_MESSAGE);
+                    continue;
+                }
 
                 guardarAlumnoEnBD(alumno);
                 contador++;
@@ -87,4 +99,21 @@ public class AlumnoContr {
             e.printStackTrace();
         }
     }
+
+    private boolean existeNumeroControl(String numeroControl) {
+        String sql = "SELECT COUNT(*) FROM alumnos WHERE numero_control = ?";
+        try (Connection conn = Conexx.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, numeroControl);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
+
