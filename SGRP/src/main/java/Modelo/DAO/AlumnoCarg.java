@@ -1,30 +1,31 @@
 package Modelo.DAO;
 
 public class AlumnoCarg {
+    private int id;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String numeroControl;
     private String correoElectronico;
     private String numeroTelefono;
-    
-    private int id;
-
-public int getId() { return id; }
-public void setId(int id) { this.id = id; }
-
+    private String proyecto;
 
     public AlumnoCarg() {}
 
     public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
-                      String numeroControl, String correoElectronico, String numeroTelefono) {
+                      String numeroControl, String correoElectronico, String numeroTelefono,
+                      String proyecto) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.numeroControl = numeroControl;
         this.correoElectronico = correoElectronico;
         this.numeroTelefono = numeroTelefono;
+        this.proyecto = proyecto;
     }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -43,4 +44,7 @@ public void setId(int id) { this.id = id; }
 
     public String getNumeroTelefono() { return numeroTelefono; }
     public void setNumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono; }
+
+    public String getProyecto() { return proyecto; }
+    public void setProyecto(String proyecto) { this.proyecto = proyecto; }
 }

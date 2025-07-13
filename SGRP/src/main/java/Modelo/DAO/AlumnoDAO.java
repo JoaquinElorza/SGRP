@@ -60,4 +60,8 @@ public class AlumnoDAO {
 
     return lista;
 } 
+
+    public AlumnoCarg buscarPorNumeroControl(String numeroControl) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -16,6 +16,24 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
+
+    tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int filaSeleccionada = tablaAlumnos.getSelectedRow();
+            if (filaSeleccionada >= 0) {
+                String numeroControl = tablaAlumnos.getValueAt(filaSeleccionada, 0).toString();
+
+                AlumnoDAO dao = new AlumnoDAO();
+                Modelo.DAO.AlumnoCarg alumno = dao.buscarPorNumeroControl(numeroControl);
+
+                jLabel1.setText("Número de control: " + alumno.getNumeroControl());
+                jLabel2.setText("Nombre completo: " + alumno.getNombre() + " " + alumno.getApellidoPaterno() + " " + alumno.getApellidoMaterno());
+                jLabel3.setText("Teléfono: " + alumno.getNumeroTelefono());
+                jLabel4.setText("Correo: " + alumno.getCorreoElectronico());
+                jLabel5.setText("Proyecto: " + alumno.getProyecto()); // Este atributo debes tenerlo en AlumnoCarg
+            }
+        }
+    });
 }
 
 
@@ -276,16 +294,12 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     model.setRowCount(0); // Limpiar tabla
 
     for (Modelo.DAO.AlumnoCarg a : lista) {
-        model.addRow(new Object[]{
-            a.getId(),
-            a.getNombre(),
-            a.getApellidoPaterno(),
-            a.getApellidoMaterno(),
-            a.getNumeroControl(),
-            a.getCorreoElectronico(),
-            a.getNumeroTelefono()
-        });
-    }
+    String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
+    model.addRow(new Object[]{
+        a.getNumeroControl(),
+        nombreCompleto
+    });
+}
 }
 
 

@@ -5,14 +5,10 @@ import Modelo.DAO.Conexx;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.swing.JOptionPane;
+import java.sql.*;
 
 public class AlumnoContr {
 
@@ -32,8 +28,8 @@ public class AlumnoContr {
                 alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
                 alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
                 alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
+                alumno.setProyecto(obtenerValorCelda(fila.getCell(6))); // Asegúrate de que esta celda exista en el Excel
 
-                // Validar si la fila contiene al menos algún dato útil
                 boolean filaValida = !alumno.getNombre().isEmpty()
                     || !alumno.getApellidoPaterno().isEmpty()
                     || !alumno.getApellidoMaterno().isEmpty()
@@ -43,7 +39,6 @@ public class AlumnoContr {
 
                 if (!filaValida) continue;
 
-                // Verificar si el número de control ya existe
                 if (existeNumeroControl(alumno.getNumeroControl())) {
                     JOptionPane.showMessageDialog(null,
                         "⚠️ El número de control " + alumno.getNumeroControl() + " ya está registrado y fue ignorado.",
@@ -82,7 +77,7 @@ public class AlumnoContr {
     }
 
     private void guardarAlumnoEnBD(AlumnoCarg alumno) {
-        String sql = "INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono, proyecto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Conexx.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -93,6 +88,7 @@ public class AlumnoContr {
             ps.setString(4, alumno.getNumeroControl());
             ps.setString(5, alumno.getCorreoElectronico());
             ps.setString(6, alumno.getNumeroTelefono());
+            ps.setString(7, alumno.getProyecto());
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -115,17 +111,19 @@ public class AlumnoContr {
         }
         return false;
     }
-    public void guardarFilaManual(Row fila) {
-    AlumnoCarg alumno = new AlumnoCarg();
-    alumno.setNombre(obtenerValorCelda(fila.getCell(0)));
-    alumno.setApellidoPaterno(obtenerValorCelda(fila.getCell(1)));
-    alumno.setApellidoMaterno(obtenerValorCelda(fila.getCell(2)));
-    alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
-    alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
-    alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
 
-    if (!alumno.getNumeroControl().isEmpty() && !existeNumeroControl(alumno.getNumeroControl())) {
-        guardarAlumnoEnBD(alumno);
+    public void guardarFilaManual(Row fila) {
+        AlumnoCarg alumno = new AlumnoCarg();
+        alumno.setNombre(obtenerValorCelda(fila.getCell(0)));
+        alumno.setApellidoPaterno(obtenerValorCelda(fila.getCell(1)));
+        alumno.setApellidoMaterno(obtenerValorCelda(fila.getCell(2)));
+        alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
+        alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
+        alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
+        alumno.setProyecto(obtenerValorCelda(fila.getCell(6)));
+
+        if (!alumno.getNumeroControl().isEmpty() && !existeNumeroControl(alumno.getNumeroControl())) {
+            guardarAlumnoEnBD(alumno);
+        }
     }
-}
 }
