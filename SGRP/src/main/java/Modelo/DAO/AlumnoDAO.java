@@ -13,8 +13,8 @@ import javax.swing.JTable;
 public class AlumnoDAO {
     public static String[] alumnito = new String[4]; 
     
-    public void insertarAlumno() {
-        
+    public void insertarAlumno(JTable tablaAlumnos) {
+
     }
     
     public static String[] consultarAlumno(JTable tablaAlumnos) throws SQLException{
@@ -55,20 +55,71 @@ public class AlumnoDAO {
         
     }
     
-    public boolean eliminarAlumno(String n_control) {
-        String sql = "DELETE FROM alumno WHERE n_control = ?";
-        try (
-            Connection conn = Conexion.getConexion();
-            PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
-            ps.setString(1, n_control);
-            int filas = ps.executeUpdate();
-            return filas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
+   public boolean eliminarAlumno(String n_control) {
+    String saberPersona = "SELECT FK_PERSONA FROM ALUMNO WHERE N_CONTROL = ?";
+    String borrarAlumno = "DELETE FROM alumno WHERE n_control = ?";
+    String borrarPersona = "DELETE FROM persona WHERE id_persona = ?";
+
+    Connection conn = null;
+    PreparedStatement psSaberPersona = null;
+    PreparedStatement psBorrarAlumno = null;
+    PreparedStatement psBorrarPersona = null;
+    ResultSet rs = null;
+
+    try {
+        conn = Conexion.getConexion();
+        conn.setAutoCommit(false); // Iniciar transacción
+
+        // 1. Obtener ID de persona
+        psSaberPersona = conn.prepareStatement(saberPersona);
+        psSaberPersona.setString(1, n_control);
+        rs = psSaberPersona.executeQuery();
+
+        int id_persona = -1;
+        if (rs.next()) {
+            id_persona = rs.getInt("fk_persona");
+        } else {
+            System.out.println("No se encontró al alumno con ese número de control.");
             return false;
         }
+
+        // 2. Eliminar al alumno
+        psBorrarAlumno = conn.prepareStatement(borrarAlumno);
+        psBorrarAlumno.setString(1, n_control);
+        psBorrarAlumno.executeUpdate();
+
+        // 3. Eliminar a la persona
+        psBorrarPersona = conn.prepareStatement(borrarPersona);
+        psBorrarPersona.setInt(1, id_persona);
+        psBorrarPersona.executeUpdate();
+
+        conn.commit(); // Confirmar transacción
+        return true;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        try {
+            if (conn != null) conn.rollback(); // Revertir en caso de error
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (psSaberPersona != null) psSaberPersona.close();
+            if (psBorrarAlumno != null) psBorrarAlumno.close();
+            if (psBorrarPersona != null) psBorrarPersona.close();
+            if (conn != null) conn.setAutoCommit(true); // Restaurar estado original
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
+
+   
     public List<AlumnoCarg> obtenerTodosLosAlumnos() {
     List<AlumnoCarg> lista = new ArrayList<>();
     String sql = "SELECT id, nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono FROM alumnos";
@@ -96,7 +147,4 @@ public class AlumnoDAO {
     return lista;
 } 
 
-    public AlumnoCarg buscarPorNumeroControl(String numeroControl) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
