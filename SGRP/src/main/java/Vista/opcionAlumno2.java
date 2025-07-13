@@ -170,18 +170,16 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked
-         JFileChooser selector = new JFileChooser();
+    JFileChooser selector = new JFileChooser();
     int resultado = selector.showOpenDialog(this);
 
     if (resultado == JFileChooser.APPROVE_OPTION) {
         File archivo = selector.getSelectedFile();
-        Controlador.AlumnoContr controlador = new Controlador.AlumnoContr();
-        int cantidad = controlador.importarDesdeExcel(archivo);
-        JOptionPane.showMessageDialog(this, "Se importaron " + cantidad + " alumnos correctamente.");
-        actualizarTablaAlumnos(); // Aquí se refresca la tabla
+        Vista.VentanaCargaProgreso panel = new Vista.VentanaCargaProgreso(null, archivo, this);
+        panel.setVisible(true);
     }
     }//GEN-LAST:event_LbLimportarMouseClicked
-    private void actualizarTablaAlumnos() {
+    void actualizarTablaAlumnos() {
     AlumnoDAO dao = new AlumnoDAO();
     java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
 

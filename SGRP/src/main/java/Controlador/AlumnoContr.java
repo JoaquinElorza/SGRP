@@ -61,7 +61,7 @@ public class AlumnoContr {
         return contador;
     }
 
-    private String obtenerValorCelda(Cell celda) {
+    public String obtenerValorCelda(Cell celda) {
         if (celda == null) return "";
         switch (celda.getCellType()) {
             case STRING:
@@ -100,7 +100,7 @@ public class AlumnoContr {
         }
     }
 
-    private boolean existeNumeroControl(String numeroControl) {
+    public boolean existeNumeroControl(String numeroControl) {
         String sql = "SELECT COUNT(*) FROM alumnos WHERE numero_control = ?";
         try (Connection conn = Conexx.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -115,4 +115,17 @@ public class AlumnoContr {
         }
         return false;
     }
+    public void guardarFilaManual(Row fila) {
+    AlumnoCarg alumno = new AlumnoCarg();
+    alumno.setNombre(obtenerValorCelda(fila.getCell(0)));
+    alumno.setApellidoPaterno(obtenerValorCelda(fila.getCell(1)));
+    alumno.setApellidoMaterno(obtenerValorCelda(fila.getCell(2)));
+    alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
+    alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
+    alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
+
+    if (!alumno.getNumeroControl().isEmpty() && !existeNumeroControl(alumno.getNumeroControl())) {
+        guardarAlumnoEnBD(alumno);
+    }
+}
 }
