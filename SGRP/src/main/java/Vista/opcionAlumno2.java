@@ -15,12 +15,16 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     CardLayout card;
     private JPanel panelContainer;
     
+    public opcionAlumno2(){}
+    
     public opcionAlumno2(CardLayout layout, javax.swing.JPanel container) {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
     actualizarTablaAlumnos();
 }
+    
+    
 
 
     @SuppressWarnings("unchecked")
@@ -43,6 +47,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblProyecto = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        lblactualizar = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -193,6 +198,13 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        lblactualizar.setText("reload");
+        lblactualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblactualizarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAlumnosLayout = new javax.swing.GroupLayout(panelAlumnos);
         panelAlumnos.setLayout(panelAlumnosLayout);
         panelAlumnosLayout.setHorizontalGroup(
@@ -204,7 +216,9 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addComponent(LbLimportar)
                         .addGap(28, 28, 28)
                         .addComponent(lblAgregarAlumno)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 480, Short.MAX_VALUE)
+                        .addGap(79, 79, 79)
+                        .addComponent(lblactualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblAtras)
                         .addGap(154, 154, 154))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
@@ -224,7 +238,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAtras)
                     .addComponent(lblAgregarAlumno)
-                    .addComponent(LbLimportar))
+                    .addComponent(LbLimportar)
+                    .addComponent(lblactualizar))
                 .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addGap(88, 88, 88)
@@ -331,6 +346,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         javax.swing.JOptionPane.showMessageDialog(null, "❌ No se pudo cargar el alumno.");
     }
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void lblactualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblactualizarMouseClicked
+        opcionAlumno2 op = new opcionAlumno2();
+        op.actualizarTablaAlumnos();
+    }//GEN-LAST:event_lblactualizarMouseClicked
     void actualizarTablaAlumnos() {
     AlumnoDAO dao = new AlumnoDAO();
     java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
@@ -363,6 +383,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JLabel lblNombreAlumno;
     private javax.swing.JLabel lblProyecto;
     private javax.swing.JLabel lblTelefono;
+    private javax.swing.JLabel lblactualizar;
     private javax.swing.JPanel panelAlumnos;
     private javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
