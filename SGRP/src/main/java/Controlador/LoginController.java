@@ -1,9 +1,9 @@
-package controlador;
+package Controlador;
 
 import Modelo.DAO.LoginDAO;
 import Vista.MenuPrincipal;
 import javax.swing.JOptionPane;
-import vista.Login1;
+import Vista.Login1;
 
 public class LoginController {
     private final LoginDAO loginDAO;

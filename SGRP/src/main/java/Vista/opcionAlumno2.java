@@ -34,7 +34,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblAgregarAlumno = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaAlumnos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lblControl = new javax.swing.JLabel();
@@ -98,7 +98,12 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tablaAlumnos);
 
-        jButton1.setText("Editar");
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Eliminar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -210,7 +215,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
+                            .addComponent(btnEditar)
                             .addComponent(jButton2))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +234,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addGap(88, 88, 88)
-                        .addComponent(jButton1)
+                        .addComponent(btnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
@@ -290,6 +295,48 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tablaAlumnosMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+     int fila = tablaAlumnos.getSelectedRow();
+    
+    if (fila == -1) {
+        javax.swing.JOptionPane.showMessageDialog(null, "⚠️ Selecciona un alumno para editar.");
+        return;
+    }
+
+    try {
+        // 1. Obtener los datos actuales del alumno seleccionado
+        AlumnoDAO dao = new AlumnoDAO();
+        String[] datos = dao.consultarAlumno(tablaAlumnos); // [nControl, nombreCompleto, telefono, correo]
+
+        // 2. Separar el nombre completo en partes
+        String[] nombrePartes = datos[1].split(" ");
+        String nombre = nombrePartes.length > 0 ? nombrePartes[0] : "";
+        String apPaterno = nombrePartes.length > 1 ? nombrePartes[1] : "";
+        String apMaterno = nombrePartes.length > 2 ? nombrePartes[2] : "";
+
+        // 3. Crear ventana de edición
+        EditarAlumno editarFrame = new EditarAlumno();
+
+        // 4. Cargar datos en el formulario
+        editarFrame.cargarDatos(datos[0], nombre, apPaterno, apMaterno, datos[3]);
+
+        // 5. Detectar cierre de la ventana para refrescar la tabla
+        editarFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                actualizarTablaAlumnos(); // refresca la tabla automáticamente al cerrar
+            }
+        });
+
+        editarFrame.setVisible(true);
+        editarFrame.setLocationRelativeTo(null);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(null, "❌ No se pudo cargar el alumno.");
+    }
+    }//GEN-LAST:event_btnEditarActionPerformed
     void actualizarTablaAlumnos() {
     AlumnoDAO dao = new AlumnoDAO();
     java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
@@ -309,7 +356,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LbLimportar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

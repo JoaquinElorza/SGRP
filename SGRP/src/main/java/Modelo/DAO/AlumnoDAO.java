@@ -51,7 +51,75 @@ public class AlumnoDAO {
         return alumnito;
     }
     
-    public void actualizarAlumno() {
+    public boolean actualizarAlumno(AlumnoCarg alumno) {
+        
+        String obtenerIdPersona = "SELECT fk_persona FROM alumno WHERE numero_control = ?";
+    String actualizarPersona = "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ?, correo = ?, telefono = ? WHERE id_persona = ?";
+    String actualizarAlumno = "UPDATE alumno SET numero_control = ? WHERE fk_persona = ?";
+
+    Connection conn = null;
+    PreparedStatement psBuscarPersona = null;
+    PreparedStatement psActualizarPersona = null;
+    PreparedStatement psActualizarAlumno = null;
+    ResultSet rs = null;
+
+    try {
+        conn = Conexion.getConexion();
+        conn.setAutoCommit(false); // Inicia la transacción
+
+        // 1. Obtener ID de persona
+        psBuscarPersona = conn.prepareStatement(obtenerIdPersona);
+        psBuscarPersona.setString(1, alumno.getNumeroControl());
+        rs = psBuscarPersona.executeQuery();
+
+        int id_persona = -1;
+        if (rs.next()) {
+            id_persona = rs.getInt("fk_persona");
+        } else {
+            System.out.println("Alumno no encontrado con número de control: " + alumno.getNumeroControl());
+            return false;
+        }
+
+        // 2. Actualizar datos de persona
+        psActualizarPersona = conn.prepareStatement(actualizarPersona);
+        psActualizarPersona.setString(1, alumno.getNombre());
+        psActualizarPersona.setString(2, alumno.getApellidoPaterno());
+        psActualizarPersona.setString(3, alumno.getApellidoMaterno());
+        psActualizarPersona.setString(4, alumno.getCorreoElectronico());
+        psActualizarPersona.setString(5, alumno.getNumeroTelefono());
+        psActualizarPersona.setInt(6, id_persona);
+        psActualizarPersona.executeUpdate();
+
+        // 3. Actualizar número de control en alumno
+        psActualizarAlumno = conn.prepareStatement(actualizarAlumno);
+        psActualizarAlumno.setString(1, alumno.getNumeroControl());
+        psActualizarAlumno.setInt(2, id_persona);
+        psActualizarAlumno.executeUpdate();
+
+        // 4. Confirmar la transacción
+        conn.commit();
+        return true;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        try {
+            if (conn != null) conn.rollback();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (psBuscarPersona != null) psBuscarPersona.close();
+            if (psActualizarPersona != null) psActualizarPersona.close();
+            if (psActualizarAlumno != null) psActualizarAlumno.close();
+            if (conn != null) conn.setAutoCommit(true);
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
         
     }
     

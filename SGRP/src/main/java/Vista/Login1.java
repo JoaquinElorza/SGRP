@@ -1,7 +1,7 @@
-package vista;
+package Vista;
 
 import Controlador.AcomodarImagen;
-import controlador.LoginController;
+import Controlador.LoginController;
 import java.awt.Color;
 
 public class Login1 extends javax.swing.JFrame {
