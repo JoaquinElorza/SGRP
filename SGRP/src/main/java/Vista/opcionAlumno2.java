@@ -399,4 +399,3 @@ for (Modelo.DAO.AlumnoCarg a : lista) {
     public javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
 }
-
