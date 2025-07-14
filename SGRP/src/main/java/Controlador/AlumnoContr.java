@@ -1,14 +1,19 @@
+
 package Controlador;
 
 import Modelo.DAO.AlumnoCarg;
+import Modelo.DAO.AlumnoDAO;
 import Utilidades.Conexion;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.*;
+import java.util.List;
 
 public class AlumnoContr {
 
@@ -19,37 +24,46 @@ public class AlumnoContr {
 
             Sheet hoja = workbook.getSheetAt(0);
             for (Row fila : hoja) {
-                if (fila.getRowNum() == 0) continue;
+                if (fila.getRowNum() == 0) continue; // Saltar encabezados
 
-                AlumnoCarg alumno = new AlumnoCarg();
-                alumno.setNombre(obtenerValorCelda(fila.getCell(0)));
-                alumno.setApellidoPaterno(obtenerValorCelda(fila.getCell(1)));
-                alumno.setApellidoMaterno(obtenerValorCelda(fila.getCell(2)));
-                alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
-                alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
-                alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
-                alumno.setProyecto(obtenerValorCelda(fila.getCell(6)));
+                String nombre = obtenerValorCelda(fila.getCell(0));
+                String apPaterno = obtenerValorCelda(fila.getCell(1));
+                String apMaterno = obtenerValorCelda(fila.getCell(2));
+                String numeroControl = obtenerValorCelda(fila.getCell(3));
+                String correo = obtenerValorCelda(fila.getCell(4));
+                String telefono = obtenerValorCelda(fila.getCell(5));
 
-                boolean filaValida = !alumno.getNombre().isEmpty()
-                        || !alumno.getApellidoPaterno().isEmpty()
-                        || !alumno.getApellidoMaterno().isEmpty()
-                        || !alumno.getNumeroControl().isEmpty()
-                        || !alumno.getCorreoElectronico().isEmpty()
-                        || !alumno.getNumeroTelefono().isEmpty();
+                try (Connection conn = Conexion.getConexion()) {
+                    conn.setAutoCommit(false);
 
-                if (!filaValida) continue;
+                    String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?)";
+                    PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
+                    psPersona.setString(1, nombre);
+                    psPersona.setString(2, apPaterno);
+                    psPersona.setString(3, apMaterno);
+                    psPersona.executeUpdate();
 
-                if (existeNumeroControl(alumno.getNumeroControl())) {
-                    JOptionPane.showMessageDialog(null,
-                            "⚠️ El número de control " + alumno.getNumeroControl() + " ya está registrado y fue ignorado.",
-                            "Duplicado detectado",
-                            JOptionPane.WARNING_MESSAGE);
-                    continue;
+                    ResultSet rs = psPersona.getGeneratedKeys();
+                    int idPersona = -1;
+                    if (rs.next()) {
+                        idPersona = rs.getInt(1);
+                    }
+
+                    String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
+                    PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
+                    psAlumno.setString(1, numeroControl);
+                    psAlumno.setString(2, telefono);
+                    psAlumno.setInt(3, idPersona);
+                    psAlumno.setString(4, correo);
+                    psAlumno.executeUpdate();
+
+                    conn.commit();
+                    contador++;
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-
-                guardarAlumnoEnBD(alumno);
-                contador++;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +85,6 @@ public class AlumnoContr {
 
     private void guardarAlumnoEnBD(AlumnoCarg alumno) {
         String sql = "INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono, proyecto) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -120,7 +133,6 @@ public class AlumnoContr {
         }
     }
 
-    // ✅ Método para agregar alumno manualmente desde formulario
     public boolean agregarAlumnoManual(String nombre, String apellidoP, String apellidoM, String numeroControl, String correo, String telefono, String proyecto) {
         if (existeNumeroControl(numeroControl)) {
             JOptionPane.showMessageDialog(null,
@@ -141,5 +153,17 @@ public class AlumnoContr {
 
         guardarAlumnoEnBD(alumno);
         return true;
+    }
+
+    public void actualizarTablaAlumnos(JTable tablaAlumnos) {
+        AlumnoDAO dao = new AlumnoDAO();
+        List<AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
+        DefaultTableModel model = (DefaultTableModel) tablaAlumnos.getModel();
+        model.setRowCount(0);
+
+        for (AlumnoCarg a : lista) {
+            String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
+            model.addRow(new Object[]{ a.getNumeroControl(), nombreCompleto });
+        }
     }
 }

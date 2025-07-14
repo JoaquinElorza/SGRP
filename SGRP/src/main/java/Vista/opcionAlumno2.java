@@ -9,7 +9,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import Controlador.AlumnoContr;
+
 
 public class opcionAlumno2 extends javax.swing.JPanel {
 
@@ -275,13 +278,21 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked
-    JFileChooser selector = new JFileChooser();
+     JFileChooser selector = new JFileChooser();
     int resultado = selector.showOpenDialog(this);
 
     if (resultado == JFileChooser.APPROVE_OPTION) {
         File archivo = selector.getSelectedFile();
-        Vista.VentanaCargaProgreso panel = new Vista.VentanaCargaProgreso(null, archivo, this);
-        panel.setVisible(true);
+
+        AlumnoContr controlador = new AlumnoContr();
+        int registrosImportados = controlador.importarDesdeExcel(archivo);
+
+        if (registrosImportados > 0) {
+            JOptionPane.showMessageDialog(this, "✅ Se importaron " + registrosImportados + " alumnos correctamente.");
+            actualizarTablaAlumnos(tablaAlumnos); // Refresca la tabla
+        } else {
+            JOptionPane.showMessageDialog(this, "⚠️ No se importaron registros. Verifica el archivo.");
+        }
     }
     }//GEN-LAST:event_LbLimportarMouseClicked
 

@@ -13,7 +13,7 @@ public class Login1 extends javax.swing.JFrame {
      */
     public Login1() {
         initComponents();
-      //   acomodarImagen.configurarPanelConImagen("/img/ITO.png", jPanel2);  
+         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);  
          jPanel2.setOpaque(false);
          jPanel2.setBorder(null);
          jPanel2.setBackground(new Color(0,0,0,0));
