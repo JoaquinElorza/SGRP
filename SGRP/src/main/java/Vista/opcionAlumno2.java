@@ -28,7 +28,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private void initComponents() {
 
         panelAlumnos = new javax.swing.JPanel();
-        lblCerrarSesion = new javax.swing.JLabel();
         lblAtras = new javax.swing.JLabel();
         LbLimportar = new javax.swing.JLabel();
         lblAgregarAlumno = new javax.swing.JLabel();
@@ -46,8 +45,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
 
         setLayout(new java.awt.BorderLayout());
-
-        lblCerrarSesion.setText("Cerrar sesión");
 
         lblAtras.setText("Atrás");
         lblAtras.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -77,7 +74,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"22161052", null}
+
             },
             new String [] {
                 "Numero de  control", "Nombre"
@@ -209,8 +206,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addComponent(lblAgregarAlumno)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 480, Short.MAX_VALUE)
                         .addComponent(lblAtras)
-                        .addGap(80, 80, 80)
-                        .addComponent(lblCerrarSesion))
+                        .addGap(154, 154, 154))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
@@ -219,15 +215,13 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                             .addComponent(jButton2))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
-                .addContainerGap())
+                        .addGap(14, 14, 14))))
         );
         panelAlumnosLayout.setVerticalGroup(
             panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAlumnosLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCerrarSesion)
                     .addComponent(lblAtras)
                     .addComponent(lblAgregarAlumno)
                     .addComponent(LbLimportar))
@@ -238,7 +232,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jButton2))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
-                        .addGap(67, 67, 67)
+                        .addGap(28, 28, 28)
                         .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -249,7 +243,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAtrasMouseClicked
-        card.show(panelContainer, "menuPrincipal");
+        card.show(panelContainer, "menu principal");
     }//GEN-LAST:event_lblAtrasMouseClicked
 
     private void lblAgregarAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarAlumnoMouseClicked
@@ -364,7 +358,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAgregarAlumno;
     private javax.swing.JLabel lblAtras;
-    private javax.swing.JLabel lblCerrarSesion;
     private javax.swing.JLabel lblControl;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblNombreAlumno;

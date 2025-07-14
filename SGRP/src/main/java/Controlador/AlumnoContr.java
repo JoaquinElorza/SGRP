@@ -1,10 +1,9 @@
 package Controlador;
 
 import Modelo.DAO.AlumnoCarg;
-import Modelo.DAO.Conexx;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import Utilidades.Conexion;
 import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,7 +78,7 @@ public class AlumnoContr {
     private void guardarAlumnoEnBD(AlumnoCarg alumno) {
         String sql = "INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono, proyecto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = Conexx.getConexion();
+        try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, alumno.getNombre());
@@ -98,7 +97,7 @@ public class AlumnoContr {
 
     public boolean existeNumeroControl(String numeroControl) {
         String sql = "SELECT COUNT(*) FROM alumnos WHERE numero_control = ?";
-        try (Connection conn = Conexx.getConexion();
+        try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, numeroControl);

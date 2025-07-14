@@ -31,6 +31,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelCambiante = new javax.swing.JPanel();
         panelPrincipal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,6 +44,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Cerrar sesion");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
@@ -50,12 +58,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(150, 150, 150)
                 .addComponent(jLabel1)
-                .addContainerGap(408, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addContainerGap())
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(108, 108, 108)
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(86, 86, 86)
                 .addComponent(jLabel1)
                 .addContainerGap(176, Short.MAX_VALUE))
         );
@@ -70,6 +84,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         card.show(panelCambiante,"panelAlumnos");
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
 
     
@@ -108,6 +126,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel panelCambiante;
     private javax.swing.JPanel panelPrincipal;
     // End of variables declaration//GEN-END:variables

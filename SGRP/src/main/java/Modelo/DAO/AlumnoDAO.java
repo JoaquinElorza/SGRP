@@ -13,8 +13,8 @@ import javax.swing.JTable;
 public class AlumnoDAO {
     public static String[] alumnito = new String[4]; 
     
-    public void insertarAlumno(JTable tablaAlumnos) {
-
+    public static void insertarAlumno(JTable tablaAlumnos) {
+        
     }
     
     public static String[] consultarAlumno(JTable tablaAlumnos) throws SQLException{
@@ -192,7 +192,7 @@ public class AlumnoDAO {
     List<AlumnoCarg> lista = new ArrayList<>();
     String sql = "SELECT id, nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono FROM alumnos";
 
-    try (Connection conn = Conexx.getConexion();
+    try (Connection conn = Conexion.getConexion();
          PreparedStatement ps = conn.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
 
