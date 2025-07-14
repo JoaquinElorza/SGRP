@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Vista;
 
-/**
- *
- * @author yahir
- */
 import Controlador.AlumnoContr;
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +75,8 @@ public class VentanaCargaProgreso extends JDialog {
             } else {
                 JOptionPane.showMessageDialog(this, "✅ Se importaron " + importados + " alumnos correctamente.", "Completado", JOptionPane.INFORMATION_MESSAGE);
                 if (vistaTabla != null) {
-                    SwingUtilities.invokeLater(() -> vistaTabla.actualizarTablaAlumnos());
+                    opcionAlumno2 o = new opcionAlumno2();
+                    SwingUtilities.invokeLater(() -> vistaTabla.actualizarTablaAlumnos(o.tablaAlumnos));
                 }
             }
         } catch (Exception e) {

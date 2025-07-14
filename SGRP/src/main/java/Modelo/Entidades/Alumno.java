@@ -16,6 +16,11 @@ public class Alumno extends Persona {
         this.telefono      = telefono;
     }
 
+    public Alumno(String nControl, String Nombre){
+        nControl = nControl;
+        Nombre = Nombre;
+    }
+    
     public String getNumeroControl() { return numeroControl; }
     public void setNumeroControl(String numeroControl) { this.numeroControl = numeroControl; }
 
