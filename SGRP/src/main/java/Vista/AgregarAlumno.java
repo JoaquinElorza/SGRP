@@ -1,24 +1,23 @@
 package Vista;
 
+import Controlador.AlumnoContr;
 import java.awt.CardLayout;
 import javax.smartcardio.Card;
 import javax.swing.JPanel;
 import Modelo.DAO.AlumnoDAO;
 import Vista.opcionAlumno2;
 
-
 public class AgregarAlumno extends javax.swing.JPanel {
 
     CardLayout card;
     private JPanel panelContainer;
-    
+
     public AgregarAlumno(CardLayout layout, javax.swing.JPanel container) {
         this.card = layout;
         this.panelContainer = container;
         initComponents();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -153,7 +152,32 @@ public class AgregarAlumno extends javax.swing.JPanel {
     }//GEN-LAST:event_tf_TelefonoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //AlumnoDAO.insertarAlumno(tablaAlumnos);
+        String numeroControl = tf_nControl.getText().trim();
+        String nombre = tf_Nombre.getText().trim();
+        String apellidoP = tf_paterno.getText().trim();
+        String apellidoM = tf_Materno.getText().trim();
+        String correo = tf_Correo.getText().trim();
+        String telefono = tf_Telefono.getText().trim();
+        String proyecto = "Sin asignar"; // Puedes agregar un campo si tienes uno
+
+        // Validación simple (puedes mejorarla si gustas)
+        if (numeroControl.isEmpty() || nombre.isEmpty() || apellidoP.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Llena al menos los campos obligatorios: número de control, nombre y apellido paterno.");
+            return;
+        }
+
+        AlumnoContr controlador = new AlumnoContr();
+        boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM, numeroControl, correo, telefono, proyecto);
+
+        if (exito) {
+            javax.swing.JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
+      
+            card.show(panelContainer, "panelAlumnos");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "❌ No se pudo agregar el alumno.");
+        }
+        
+        
         card.show(panelContainer, "panelAlumnos");
     }//GEN-LAST:event_jButton1ActionPerformed
 

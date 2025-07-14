@@ -1,9 +1,10 @@
 package Controlador;
 
 import Modelo.DAO.AlumnoCarg;
+import Utilidades.Conexion;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import Utilidades.Conexion;
+
 import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,22 +28,22 @@ public class AlumnoContr {
                 alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
                 alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
                 alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
-                alumno.setProyecto(obtenerValorCelda(fila.getCell(6))); // Asegúrate de que esta celda exista en el Excel
+                alumno.setProyecto(obtenerValorCelda(fila.getCell(6)));
 
                 boolean filaValida = !alumno.getNombre().isEmpty()
-                    || !alumno.getApellidoPaterno().isEmpty()
-                    || !alumno.getApellidoMaterno().isEmpty()
-                    || !alumno.getNumeroControl().isEmpty()
-                    || !alumno.getCorreoElectronico().isEmpty()
-                    || !alumno.getNumeroTelefono().isEmpty();
+                        || !alumno.getApellidoPaterno().isEmpty()
+                        || !alumno.getApellidoMaterno().isEmpty()
+                        || !alumno.getNumeroControl().isEmpty()
+                        || !alumno.getCorreoElectronico().isEmpty()
+                        || !alumno.getNumeroTelefono().isEmpty();
 
                 if (!filaValida) continue;
 
                 if (existeNumeroControl(alumno.getNumeroControl())) {
                     JOptionPane.showMessageDialog(null,
-                        "⚠️ El número de control " + alumno.getNumeroControl() + " ya está registrado y fue ignorado.",
-                        "Duplicado detectado",
-                        JOptionPane.WARNING_MESSAGE);
+                            "⚠️ El número de control " + alumno.getNumeroControl() + " ya está registrado y fue ignorado.",
+                            "Duplicado detectado",
+                            JOptionPane.WARNING_MESSAGE);
                     continue;
                 }
 
@@ -58,20 +59,13 @@ public class AlumnoContr {
     public String obtenerValorCelda(Cell celda) {
         if (celda == null) return "";
         switch (celda.getCellType()) {
-            case STRING:
-                return celda.getStringCellValue();
-            case NUMERIC:
-                return String.valueOf((long) celda.getNumericCellValue());
-            case BOOLEAN:
-                return String.valueOf(celda.getBooleanCellValue());
+            case STRING: return celda.getStringCellValue();
+            case NUMERIC: return String.valueOf((long) celda.getNumericCellValue());
+            case BOOLEAN: return String.valueOf(celda.getBooleanCellValue());
             case FORMULA:
-                try {
-                    return celda.getStringCellValue();
-                } catch (Exception e) {
-                    return String.valueOf(celda.getNumericCellValue());
-                }
-            default:
-                return "";
+                try { return celda.getStringCellValue(); }
+                catch (Exception e) { return String.valueOf(celda.getNumericCellValue()); }
+            default: return "";
         }
     }
 
@@ -124,5 +118,28 @@ public class AlumnoContr {
         if (!alumno.getNumeroControl().isEmpty() && !existeNumeroControl(alumno.getNumeroControl())) {
             guardarAlumnoEnBD(alumno);
         }
+    }
+
+    // ✅ Método para agregar alumno manualmente desde formulario
+    public boolean agregarAlumnoManual(String nombre, String apellidoP, String apellidoM, String numeroControl, String correo, String telefono, String proyecto) {
+        if (existeNumeroControl(numeroControl)) {
+            JOptionPane.showMessageDialog(null,
+                    "❌ Ya existe un alumno con el número de control: " + numeroControl,
+                    "Duplicado",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        AlumnoCarg alumno = new AlumnoCarg();
+        alumno.setNombre(nombre);
+        alumno.setApellidoPaterno(apellidoP);
+        alumno.setApellidoMaterno(apellidoM);
+        alumno.setNumeroControl(numeroControl);
+        alumno.setCorreoElectronico(correo);
+        alumno.setNumeroTelefono(telefono);
+        alumno.setProyecto(proyecto);
+
+        guardarAlumnoEnBD(alumno);
+        return true;
     }
 }

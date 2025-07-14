@@ -1,5 +1,6 @@
 package Modelo.DAO;
 
+import Modelo.Entidades.Alumno;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,8 +14,24 @@ import javax.swing.JTable;
 public class AlumnoDAO {
     public static String[] alumnito = new String[4]; 
     
-    public static void insertarAlumno(JTable tablaAlumnos) {
-        
+    public boolean agregarAlumno(Alumno alumno) {
+        String sql = "INSERT INTO alumno (nombre, apellido_paterno, apellido_materno, correo, numero_control) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, alumno.getNombre());
+            ps.setString(2, alumno.getApellidoPaterno());
+            ps.setString(3, alumno.getApellidoMaterno());
+            ps.setString(4, alumno.getCorreo());
+            ps.setString(5, alumno.getNumeroControl());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public static String[] consultarAlumno(JTable tablaAlumnos) throws SQLException{
