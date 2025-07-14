@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 
 public class opcionAlumno2 extends javax.swing.JPanel {
 
@@ -21,7 +22,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     this.card = layout;
     this.panelContainer = container;
     initComponents();
-    actualizarTablaAlumnos();
+    actualizarTablaAlumnos(tablaAlumnos);
 }
     
     
@@ -334,7 +335,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         editarFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                actualizarTablaAlumnos(); // refresca la tabla automáticamente al cerrar
+                actualizarTablaAlumnos(tablaAlumnos); // refresca la tabla automáticamente al cerrar
             }
         });
 
@@ -347,24 +348,34 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    
     private void lblactualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblactualizarMouseClicked
         opcionAlumno2 op = new opcionAlumno2();
-        op.actualizarTablaAlumnos();
+        op.actualizarTablaAlumnos(tablaAlumnos);
     }//GEN-LAST:event_lblactualizarMouseClicked
-    void actualizarTablaAlumnos() {
-    AlumnoDAO dao = new AlumnoDAO();
-    java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
+    
+    void actualizarTablaAlumnos(JTable tablaAlumnos) {
+AlumnoDAO dao = new AlumnoDAO();
+java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
 
-    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tablaAlumnos.getModel();
-    model.setRowCount(0); // Limpiar tabla
+if (tablaAlumnos == null) {
+    System.out.println("tablaAlumnos es null");
+} else {
+    System.out.println("tablaAlumnos está inicializada");
+}
 
-    for (Modelo.DAO.AlumnoCarg a : lista) {
+
+javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tablaAlumnos.getModel();
+model.setRowCount(0); // Limpiar tabla
+
+for (Modelo.DAO.AlumnoCarg a : lista) {
     String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
     model.addRow(new Object[]{
         a.getNumeroControl(),
         nombreCompleto
     });
 }
+
 }
 
 
@@ -385,7 +396,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblactualizar;
     private javax.swing.JPanel panelAlumnos;
-    private javax.swing.JTable tablaAlumnos;
+    public javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
 }
 

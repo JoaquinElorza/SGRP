@@ -24,6 +24,15 @@ public class AlumnoCarg {
         this.proyecto = proyecto;
     }
 
+    public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
+                      String numeroControl) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.numeroControl = numeroControl;
+    }
+    
+    
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

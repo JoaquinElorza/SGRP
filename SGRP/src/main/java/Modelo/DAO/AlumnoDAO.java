@@ -53,9 +53,9 @@ public class AlumnoDAO {
     
     public boolean actualizarAlumno(AlumnoCarg alumno) {
         
-        String obtenerIdPersona = "SELECT fk_persona FROM alumno WHERE numero_control = ?";
-    String actualizarPersona = "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ?, correo = ?, telefono = ? WHERE id_persona = ?";
-    String actualizarAlumno = "UPDATE alumno SET numero_control = ? WHERE fk_persona = ?";
+    String obtenerIdPersona = "SELECT fk_persona FROM alumno WHERE n_control = ?";
+    String actualizarPersona = "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ? WHERE id_persona = ?";
+    String actualizarAlumno = "UPDATE alumno SET n_control = ?, correo = ?, telefono = ? WHERE fk_persona = ?";
 
     Connection conn = null;
     PreparedStatement psBuscarPersona = null;
@@ -85,15 +85,16 @@ public class AlumnoDAO {
         psActualizarPersona.setString(1, alumno.getNombre());
         psActualizarPersona.setString(2, alumno.getApellidoPaterno());
         psActualizarPersona.setString(3, alumno.getApellidoMaterno());
-        psActualizarPersona.setString(4, alumno.getCorreoElectronico());
-        psActualizarPersona.setString(5, alumno.getNumeroTelefono());
-        psActualizarPersona.setInt(6, id_persona);
+        psActualizarPersona.setInt(4, id_persona);
         psActualizarPersona.executeUpdate();
+        
 
         // 3. Actualizar número de control en alumno
         psActualizarAlumno = conn.prepareStatement(actualizarAlumno);
         psActualizarAlumno.setString(1, alumno.getNumeroControl());
-        psActualizarAlumno.setInt(2, id_persona);
+        psActualizarAlumno.setString(2, alumno.getCorreoElectronico());
+        psActualizarAlumno.setString(3, alumno.getNumeroTelefono());
+        psActualizarAlumno.setInt(4, id_persona);
         psActualizarAlumno.executeUpdate();
 
         // 4. Confirmar la transacción
@@ -190,21 +191,19 @@ public class AlumnoDAO {
    
     public List<AlumnoCarg> obtenerTodosLosAlumnos() {
     List<AlumnoCarg> lista = new ArrayList<>();
-    String sql = "SELECT id, nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono FROM alumnos";
-
+    String sql = "select n_control, nombre, ap_paterno, ap_materno from sgrp.alumno join sgrp.persona\n" +
+                  "on alumno.fk_persona = persona.id_persona;";
+            
     try (Connection conn = Conexion.getConexion();
          PreparedStatement ps = conn.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
 
         while (rs.next()) {
             AlumnoCarg alumno = new AlumnoCarg();
-            alumno.setId(rs.getInt("id"));
             alumno.setNombre(rs.getString("nombre"));
-            alumno.setApellidoPaterno(rs.getString("apellido_paterno"));
-            alumno.setApellidoMaterno(rs.getString("apellido_materno"));
-            alumno.setNumeroControl(rs.getString("numero_control"));
-            alumno.setCorreoElectronico(rs.getString("correo_electronico"));
-            alumno.setNumeroTelefono(rs.getString("numero_telefono"));
+            alumno.setApellidoPaterno(rs.getString("ap_paterno"));
+            alumno.setApellidoMaterno(rs.getString("ap_materno"));
+            alumno.setNumeroControl(rs.getString("n_control"));
             lista.add(alumno);
         }
 
