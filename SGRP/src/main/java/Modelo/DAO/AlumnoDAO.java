@@ -8,6 +8,8 @@ import Utilidades.Conexion;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 public class AlumnoDAO {
@@ -15,23 +17,84 @@ public class AlumnoDAO {
     public static String[] alumnito = new String[4];
 
     public boolean agregarAlumno(Alumno alumno) {
-        String sql = "INSERT INTO alumno (nombre, apellido_paterno, apellido_materno, correo, numero_control) VALUES (?, ?, ?, ?, ?)";
+    Connection conn = null;
+    PreparedStatement psPersona = null;
+    PreparedStatement psAlumno = null;
+    PreparedStatement psVerificar = null;
+    ResultSet rs = null;
+    ResultSet rsId = null;
 
-        try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    try {
+        conn = Conexion.getConexion();
 
-            ps.setString(1, alumno.getNombre());
-            ps.setString(2, alumno.getApellidoPaterno());
-            ps.setString(3, alumno.getApellidoMaterno());
-            ps.setString(4, alumno.getCorreo());
-            ps.setString(5, alumno.getNumeroControl());
+        // 1. Verificar si el número de control ya existe
+        String sqlVerificar = "SELECT COUNT(*) FROM alumno WHERE n_control = ?";
+        psVerificar = conn.prepareStatement(sqlVerificar);
+        psVerificar.setString(1, alumno.getNumeroControl());
+        rs = psVerificar.executeQuery();
 
-            return ps.executeUpdate() > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (rs.next() && rs.getInt(1) > 0) {
+            JOptionPane.showMessageDialog(null, "⛔ Ya existe un alumno con el número de control: " + alumno.getNumeroControl());
             return false;
         }
+
+        conn.setAutoCommit(false);
+
+        // 2. Insertar en persona
+        String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, correo) VALUES (?, ?, ?, ?)";
+        psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
+        psPersona.setString(1, alumno.getNombre());
+        psPersona.setString(2, alumno.getApellidoPaterno());
+        psPersona.setString(3, alumno.getApellidoMaterno());
+        psPersona.setString(4, alumno.getCorreo());
+        psPersona.executeUpdate();
+
+        rsId = psPersona.getGeneratedKeys();
+        int idPersona = -1;
+        if (rsId.next()) {
+            idPersona = rsId.getInt(1);
+        } else {
+            throw new SQLException("❌ No se generó ID para persona.");
+        }
+
+        // 3. Insertar en alumno
+        String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona) VALUES (?, ?, ?)";
+        psAlumno = conn.prepareStatement(sqlAlumno);
+        psAlumno.setString(1, alumno.getNumeroControl());
+        psAlumno.setString(2, alumno.getTelefono());
+        psAlumno.setInt(3, idPersona);
+        psAlumno.executeUpdate();
+
+        conn.commit();
+        return true;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        try {
+            if (conn != null) conn.rollback();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (rsId != null) rsId.close();
+            if (psVerificar != null) psVerificar.close();
+            if (psPersona != null) psPersona.close();
+            if (psAlumno != null) psAlumno.close();
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
+
+
 
     public static String[] consultarAlumno(JTable tablaAlumnos) throws SQLException {
         int fila = tablaAlumnos.getSelectedRow();
