@@ -171,11 +171,11 @@ public class AgregarAlumno extends javax.swing.JPanel {
         String apellidoM = tf_Materno.getText().trim();
         String correo = tf_Correo.getText().trim();
         String telefono = tf_Telefono.getText().trim();
-        String proyecto = "Sin asignar"; // Puedes agregar un campo si tienes uno
+        String proyecto = "Sin asignar"; 
 
-        // Validación simple (puedes mejorarla si gustas)
+
         if (numeroControl.isEmpty() || nombre.isEmpty() || apellidoP.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Llena al menos los campos obligatorios: número de control, nombre y apellido paterno.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
             return;
         }
 

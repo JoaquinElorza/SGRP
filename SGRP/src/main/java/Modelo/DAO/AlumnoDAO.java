@@ -41,12 +41,11 @@ public class AlumnoDAO {
         conn.setAutoCommit(false);
 
         // 2. Insertar en persona
-        String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, correo) VALUES (?, ?, ?, ?)";
+        String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?)";
         psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
         psPersona.setString(1, alumno.getNombre());
         psPersona.setString(2, alumno.getApellidoPaterno());
         psPersona.setString(3, alumno.getApellidoMaterno());
-        psPersona.setString(4, alumno.getCorreo());
         psPersona.executeUpdate();
 
         rsId = psPersona.getGeneratedKeys();
@@ -58,11 +57,12 @@ public class AlumnoDAO {
         }
 
         // 3. Insertar en alumno
-        String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona) VALUES (?, ?, ?)";
+        String sqlAlumno = "INSERT INTO alumno (n_control, telefono, correo, fk_persona) VALUES (?, ?, ?, ?)";
         psAlumno = conn.prepareStatement(sqlAlumno);
         psAlumno.setString(1, alumno.getNumeroControl());
         psAlumno.setString(2, alumno.getTelefono());
-        psAlumno.setInt(3, idPersona);
+        psAlumno.setString(3, alumno.getCorreo());
+        psAlumno.setInt(4, idPersona);
         psAlumno.executeUpdate();
 
         conn.commit();
@@ -92,7 +92,7 @@ public class AlumnoDAO {
             e.printStackTrace();
         }
     }
-}
+} 
 
 
 

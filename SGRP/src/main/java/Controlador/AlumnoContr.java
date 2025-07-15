@@ -66,7 +66,7 @@ public class AlumnoContr {
 
                 // Insertar en alumno (sin campo 'correo')
                 String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona) VALUES (?, ?, ?)";
-                PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
+                PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno, Statement.RETURN_GENERATED_KEYS);
                 psAlumno.setString(1, numeroControl);
                 psAlumno.setString(2, telefono);
                 psAlumno.setInt(3, idPersona);
@@ -119,12 +119,11 @@ public class AlumnoContr {
             conn.setAutoCommit(false);
 
             // Insertar en persona
-            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, correo) VALUES (?, ?, ?, ?)";
+            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?);";
             PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
             psPersona.setString(1, alumno.getNombre());
             psPersona.setString(2, alumno.getApellidoPaterno());
             psPersona.setString(3, alumno.getApellidoMaterno());
-            psPersona.setString(4, alumno.getCorreoElectronico());
             psPersona.executeUpdate();
 
             ResultSet rs = psPersona.getGeneratedKeys();
@@ -134,8 +133,8 @@ public class AlumnoContr {
             }
 
             // Insertar en alumno
-            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
-            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
+            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?);";
+            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno, Statement.RETURN_GENERATED_KEYS);
             psAlumno.setString(1, alumno.getNumeroControl());
             psAlumno.setString(2, alumno.getNumeroTelefono());
             psAlumno.setInt(3, idPersona);
@@ -180,7 +179,8 @@ public class AlumnoContr {
         }
     }
 
-    public boolean agregarAlumnoManual(String nombre, String apellidoP, String apellidoM, String numeroControl, String correo, String telefono, String proyecto) {
+    public boolean agregarAlumnoManual(String nombre, String apellidoP, String apellidoM,
+            String numeroControl, String correo, String telefono, String proyecto) {
         if (existeNumeroControl(numeroControl)) {
             JOptionPane.showMessageDialog(null,
                     "❌ Ya existe un alumno con el número de control: " + numeroControl,
