@@ -9,20 +9,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() {
         initComponents();
         card = (CardLayout) panelCambiante.getLayout();
-        
-        AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante);
-        
-        
-        
+
+        opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
+        AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
+
         panelCambiante.add(panelPrincipal, "menu principal");
-        panelCambiante.add(new opcionAlumno2(card, panelCambiante), "panelAlumnos");
-        panelCambiante.add(agregarAlumno, "Agregar alumno");
-        
-
-        
+        panelCambiante.add(panelAlumnos, "panelAlumnos");       
+        panelCambiante.add(agregarAlumno, "Agregar alumno");    
     }
-
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -82,15 +76,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        card.show(panelCambiante,"panelAlumnos");
+        card.show(panelCambiante, "panelAlumnos");
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
-
-
-    
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

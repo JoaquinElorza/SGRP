@@ -1,4 +1,3 @@
-
 package Controlador;
 
 import Modelo.DAO.AlumnoCarg;
@@ -19,13 +18,13 @@ public class AlumnoContr {
 
     public int importarDesdeExcel(File archivoExcel) {
         int contador = 0;
-        try (FileInputStream fis = new FileInputStream(archivoExcel);
-             Workbook workbook = new XSSFWorkbook(fis)) {
+        try (FileInputStream fis = new FileInputStream(archivoExcel); Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet hoja = workbook.getSheetAt(0);
             for (Row fila : hoja) {
-                if (fila.getRowNum() == 0) continue; // Saltar encabezados
-
+                if (fila.getRowNum() == 0) {
+                    continue; // Saltar encabezados
+                }
                 String nombre = obtenerValorCelda(fila.getCell(0));
                 String apPaterno = obtenerValorCelda(fila.getCell(1));
                 String apMaterno = obtenerValorCelda(fila.getCell(2));
@@ -71,31 +70,56 @@ public class AlumnoContr {
     }
 
     public String obtenerValorCelda(Cell celda) {
-        if (celda == null) return "";
+        if (celda == null) {
+            return "";
+        }
         switch (celda.getCellType()) {
-            case STRING: return celda.getStringCellValue();
-            case NUMERIC: return String.valueOf((long) celda.getNumericCellValue());
-            case BOOLEAN: return String.valueOf(celda.getBooleanCellValue());
+            case STRING:
+                return celda.getStringCellValue();
+            case NUMERIC:
+                return String.valueOf((long) celda.getNumericCellValue());
+            case BOOLEAN:
+                return String.valueOf(celda.getBooleanCellValue());
             case FORMULA:
-                try { return celda.getStringCellValue(); }
-                catch (Exception e) { return String.valueOf(celda.getNumericCellValue()); }
-            default: return "";
+                try {
+                    return celda.getStringCellValue();
+                } catch (Exception e) {
+                    return String.valueOf(celda.getNumericCellValue());
+                }
+            default:
+                return "";
         }
     }
 
     private void guardarAlumnoEnBD(AlumnoCarg alumno) {
-        String sql = "INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, numero_control, correo_electronico, numero_telefono, proyecto) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion()) {
+            conn.setAutoCommit(false);
 
-            ps.setString(1, alumno.getNombre());
-            ps.setString(2, alumno.getApellidoPaterno());
-            ps.setString(3, alumno.getApellidoMaterno());
-            ps.setString(4, alumno.getNumeroControl());
-            ps.setString(5, alumno.getCorreoElectronico());
-            ps.setString(6, alumno.getNumeroTelefono());
-            ps.setString(7, alumno.getProyecto());
-            ps.executeUpdate();
+            // Insertar en persona
+            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, correo) VALUES (?, ?, ?, ?)";
+            PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
+            psPersona.setString(1, alumno.getNombre());
+            psPersona.setString(2, alumno.getApellidoPaterno());
+            psPersona.setString(3, alumno.getApellidoMaterno());
+            psPersona.setString(4, alumno.getCorreoElectronico());
+            psPersona.executeUpdate();
+
+            ResultSet rs = psPersona.getGeneratedKeys();
+            int idPersona = -1;
+            if (rs.next()) {
+                idPersona = rs.getInt(1);
+            }
+
+            // Insertar en alumno
+            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
+            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
+            psAlumno.setString(1, alumno.getNumeroControl());
+            psAlumno.setString(2, alumno.getNumeroTelefono());
+            psAlumno.setInt(3, idPersona);
+            psAlumno.setString(4, alumno.getCorreoElectronico());
+            psAlumno.executeUpdate();
+
+            conn.commit();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,9 +127,9 @@ public class AlumnoContr {
     }
 
     public boolean existeNumeroControl(String numeroControl) {
-        String sql = "SELECT COUNT(*) FROM alumnos WHERE numero_control = ?";
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT COUNT(*) FROM alumno WHERE n_control = ?";
+
+        try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, numeroControl);
             ResultSet rs = ps.executeQuery();
@@ -163,7 +187,7 @@ public class AlumnoContr {
 
         for (AlumnoCarg a : lista) {
             String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
-            model.addRow(new Object[]{ a.getNumeroControl(), nombreCompleto });
+            model.addRow(new Object[]{a.getNumeroControl(), nombreCompleto});
         }
     }
 }

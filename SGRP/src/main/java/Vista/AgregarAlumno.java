@@ -6,16 +6,29 @@ import javax.smartcardio.Card;
 import javax.swing.JPanel;
 import Modelo.DAO.AlumnoDAO;
 import Vista.opcionAlumno2;
+import javax.swing.JOptionPane;
 
 public class AgregarAlumno extends javax.swing.JPanel {
+
+    private opcionAlumno2 panelAlumno2;
 
     CardLayout card;
     private JPanel panelContainer;
 
-    public AgregarAlumno(CardLayout layout, javax.swing.JPanel container) {
+    public AgregarAlumno(CardLayout layout, JPanel container, opcionAlumno2 panelAlumno2) {
         this.card = layout;
         this.panelContainer = container;
+        this.panelAlumno2 = panelAlumno2;
         initComponents();
+    }
+
+    private void limpiarCampos() {
+        tf_nControl.setText("");
+        tf_Nombre.setText("");
+        tf_paterno.setText("");
+        tf_Materno.setText("");
+        tf_Correo.setText("");
+        tf_Telefono.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -170,15 +183,15 @@ public class AgregarAlumno extends javax.swing.JPanel {
         boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM, numeroControl, correo, telefono, proyecto);
 
         if (exito) {
-            javax.swing.JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
-      
-            card.show(panelContainer, "panelAlumnos");
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "❌ No se pudo agregar el alumno.");
+            JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
+
+            panelAlumno2.actualizarTabla();   // refresca la tabla
+            limpiarCampos();                  // limpia el formulario
+
+            card.show(panelContainer, "panelAlumnos"); // cambia de vista
         }
-        
-        
-        card.show(panelContainer, "panelAlumnos");
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tf_NombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_NombreActionPerformed

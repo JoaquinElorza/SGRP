@@ -13,23 +13,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import Controlador.AlumnoContr;
 
-
 public class opcionAlumno2 extends javax.swing.JPanel {
 
     CardLayout card;
     private JPanel panelContainer;
-    
-    public opcionAlumno2(){}
-    
-    public opcionAlumno2(CardLayout layout, javax.swing.JPanel container) {
-    this.card = layout;
-    this.panelContainer = container;
-    initComponents();
-    actualizarTablaAlumnos(tablaAlumnos);
-}
-    
-    
 
+    public opcionAlumno2() {
+    }
+
+    public opcionAlumno2(CardLayout layout, javax.swing.JPanel container) {
+        this.card = layout;
+        this.panelContainer = container;
+        initComponents();
+        actualizarTablaAlumnos(tablaAlumnos);
+    }
+
+    public void actualizarTabla() {
+        AlumnoContr controlador = new AlumnoContr();
+        controlador.actualizarTablaAlumnos(tablaAlumnos); // usa el nombre real de tu JTable
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -266,7 +268,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_lblAtrasMouseClicked
 
     private void lblAgregarAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarAlumnoMouseClicked
-       card.show(panelContainer, "Agregar alumno");
+        card.show(panelContainer, "Agregar alumno");
     }//GEN-LAST:event_lblAgregarAlumnoMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -278,38 +280,37 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked
-     JFileChooser selector = new JFileChooser();
-    int resultado = selector.showOpenDialog(this);
+        JFileChooser selector = new JFileChooser();
+        int resultado = selector.showOpenDialog(this);
 
-    if (resultado == JFileChooser.APPROVE_OPTION) {
-        File archivo = selector.getSelectedFile();
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivo = selector.getSelectedFile();
 
-        AlumnoContr controlador = new AlumnoContr();
-        int registrosImportados = controlador.importarDesdeExcel(archivo);
+            AlumnoContr controlador = new AlumnoContr();
+            int registrosImportados = controlador.importarDesdeExcel(archivo);
 
-        if (registrosImportados > 0) {
-            JOptionPane.showMessageDialog(this, "✅ Se importaron " + registrosImportados + " alumnos correctamente.");
-            actualizarTablaAlumnos(tablaAlumnos); // Refresca la tabla
-        } else {
-            JOptionPane.showMessageDialog(this, "⚠️ No se importaron registros. Verifica el archivo.");
+            if (registrosImportados > 0) {
+                JOptionPane.showMessageDialog(this, "✅ Se importaron " + registrosImportados + " alumnos correctamente.");
+                actualizarTablaAlumnos(tablaAlumnos); // Refresca la tabla
+            } else {
+                JOptionPane.showMessageDialog(this, "⚠️ No se importaron registros. Verifica el archivo.");
+            }
         }
-    }
     }//GEN-LAST:event_LbLimportarMouseClicked
 
 
-    
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
         try {
             consultarAlumno(tablaAlumnos);
             lblControl.setText(AlumnoDAO.alumnito[0]);
             System.out.println(AlumnoDAO.alumnito[0]);
-            
+
             lblNombreAlumno.setText(AlumnoDAO.alumnito[1]);
             System.out.println(AlumnoDAO.alumnito[1]);
-            
+
             lblTelefono.setText(AlumnoDAO.alumnito[2]);
             System.out.println(AlumnoDAO.alumnito[2]);
-            
+
             lblCorreo.setText(AlumnoDAO.alumnito[3]);
             System.out.println(AlumnoDAO.alumnito[3]);
         } catch (SQLException ex) {
@@ -318,76 +319,75 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaAlumnosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-     int fila = tablaAlumnos.getSelectedRow();
-    
-    if (fila == -1) {
-        javax.swing.JOptionPane.showMessageDialog(null, "⚠️ Selecciona un alumno para editar.");
-        return;
-    }
+        int fila = tablaAlumnos.getSelectedRow();
 
-    try {
-        // 1. Obtener los datos actuales del alumno seleccionado
-        AlumnoDAO dao = new AlumnoDAO();
-        String[] datos = dao.consultarAlumno(tablaAlumnos); // [nControl, nombreCompleto, telefono, correo]
+        if (fila == -1) {
+            javax.swing.JOptionPane.showMessageDialog(null, "⚠️ Selecciona un alumno para editar.");
+            return;
+        }
 
-        // 2. Separar el nombre completo en partes
-        String[] nombrePartes = datos[1].split(" ");
-        String nombre = nombrePartes.length > 0 ? nombrePartes[0] : "";
-        String apPaterno = nombrePartes.length > 1 ? nombrePartes[1] : "";
-        String apMaterno = nombrePartes.length > 2 ? nombrePartes[2] : "";
+        try {
+            // 1. Obtener los datos actuales del alumno seleccionado
+            AlumnoDAO dao = new AlumnoDAO();
+            String[] datos = dao.consultarAlumno(tablaAlumnos); // [nControl, nombreCompleto, telefono, correo]
 
-        // 3. Crear ventana de edición
-        EditarAlumno editarFrame = new EditarAlumno();
+            // 2. Separar el nombre completo en partes
+            String[] nombrePartes = datos[1].split(" ");
+            String nombre = nombrePartes.length > 0 ? nombrePartes[0] : "";
+            String apPaterno = nombrePartes.length > 1 ? nombrePartes[1] : "";
+            String apMaterno = nombrePartes.length > 2 ? nombrePartes[2] : "";
 
-        // 4. Cargar datos en el formulario
-        editarFrame.cargarDatos(datos[0], nombre, apPaterno, apMaterno, datos[3]);
+            // 3. Crear ventana de edición
+            EditarAlumno editarFrame = new EditarAlumno();
 
-        // 5. Detectar cierre de la ventana para refrescar la tabla
-        editarFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosed(java.awt.event.WindowEvent e) {
-                actualizarTablaAlumnos(tablaAlumnos); // refresca la tabla automáticamente al cerrar
-            }
-        });
+            // 4. Cargar datos en el formulario
+            editarFrame.cargarDatos(datos[0], nombre, apPaterno, apMaterno, datos[3]);
 
-        editarFrame.setVisible(true);
-        editarFrame.setLocationRelativeTo(null);
+            // 5. Detectar cierre de la ventana para refrescar la tabla
+            editarFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    actualizarTablaAlumnos(tablaAlumnos); // refresca la tabla automáticamente al cerrar
+                }
+            });
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(null, "❌ No se pudo cargar el alumno.");
-    }
+            editarFrame.setVisible(true);
+            editarFrame.setLocationRelativeTo(null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null, "❌ No se pudo cargar el alumno.");
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    
+
     private void lblactualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblactualizarMouseClicked
         opcionAlumno2 op = new opcionAlumno2();
         op.actualizarTablaAlumnos(tablaAlumnos);
     }//GEN-LAST:event_lblactualizarMouseClicked
-    
+
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
-AlumnoDAO dao = new AlumnoDAO();
-java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
+        AlumnoDAO dao = new AlumnoDAO();
+        java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
 
-if (tablaAlumnos == null) {
-    System.out.println("tablaAlumnos es null");
-} else {
-    System.out.println("tablaAlumnos está inicializada");
-}
+        if (tablaAlumnos == null) {
+            System.out.println("tablaAlumnos es null");
+        } else {
+            System.out.println("tablaAlumnos está inicializada");
+        }
 
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tablaAlumnos.getModel();
+        model.setRowCount(0); // Limpiar tabla
 
-javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tablaAlumnos.getModel();
-model.setRowCount(0); // Limpiar tabla
+        for (Modelo.DAO.AlumnoCarg a : lista) {
+            String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
+            model.addRow(new Object[]{
+                a.getNumeroControl(),
+                nombreCompleto
+            });
+        }
 
-for (Modelo.DAO.AlumnoCarg a : lista) {
-    String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
-    model.addRow(new Object[]{
-        a.getNumeroControl(),
-        nombreCompleto
-    });
-}
-
-}
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
