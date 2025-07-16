@@ -12,6 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import Controlador.AlumnoContr;
 import Modelo.DAO.AlumnoCarg;
+import Utilidades.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -276,29 +280,48 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = tablaAlumnos.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
-            return;
-        }
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
+        return;
+    }
 
-        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-        String nombreCompleto = lblNombreAlumno.getText();
+    String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+    String nombreCompleto = lblNombreAlumno.getText();
 
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Deseas eliminar al alumno " + nombreCompleto + " con número de control " + nControl + "?",
-            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    int confirmacion = JOptionPane.showConfirmDialog(this,
+        "¿Deseas eliminar al alumno " + nombreCompleto +
+        " con número de control " + nControl + "?",
+        "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            AlumnoDAO dao = new AlumnoDAO();
-            boolean eliminado = dao.eliminarAlumno(nControl);
-            if (eliminado) {
-                JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
-                actualizarTablaAlumnos(tablaAlumnos);
-                limpiarPanelAlumno();
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        try {
+            Connection conn = Conexion.getConexion();
+            String sql = "SELECT fk_persona FROM alumno WHERE n_control = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nControl);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int idPersona = rs.getInt("fk_persona");
+                AlumnoDAO dao = new AlumnoDAO();
+                boolean eliminado = dao.eliminarAlumno(idPersona);
+
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "✅ Alumno marcado como eliminado.");
+                    actualizarTablaAlumnos(tablaAlumnos);
+                    limpiarPanelAlumno();
+                } else {
+                    JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+                JOptionPane.showMessageDialog(this, "⚠️ No se encontró el alumno.");
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "❌ Error al intentar eliminar.");
         }
+    }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked

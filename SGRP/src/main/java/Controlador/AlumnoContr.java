@@ -94,7 +94,7 @@ public class AlumnoContr {
     }
 
     public boolean existeNumeroControl(String numeroControl) {
-        String sql = "SELECT COUNT(*) FROM alumno WHERE n_control = ?";
+        String sql = "SELECT COUNT(*) FROM alumno a JOIN persona p ON a.fk_persona = p.id_persona WHERE a.n_control = ? AND p.status = 'A'";
         try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, numeroControl);
             ResultSet rs = ps.executeQuery();

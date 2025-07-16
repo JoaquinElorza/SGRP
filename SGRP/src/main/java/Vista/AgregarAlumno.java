@@ -193,25 +193,41 @@ public class AgregarAlumno extends javax.swing.JPanel {
         return true;
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!validarCampos()) return;
+         if (!validarCampos()) return;
 
-        String numeroControl = tf_nControl.getText().trim();
-        String nombre = tf_Nombre.getText().trim();
-        String apellidoP = tf_paterno.getText().trim();
-        String apellidoM = tf_Materno.getText().trim();
-        String correo = tf_Correo.getText().trim();
-        String telefono = tf_Telefono.getText().trim();
-        String proyecto = "Sin asignar";
+    String numeroControl = tf_nControl.getText().trim();
+    String nombre        = tf_Nombre.getText().trim();
+    String apellidoP     = tf_paterno.getText().trim();
+    String apellidoM     = tf_Materno.getText().trim();
+    String correo        = tf_Correo.getText().trim();
+    String telefono      = tf_Telefono.getText().trim();
+    String proyecto      = "Sin asignar";
 
-        AlumnoContr controlador = new AlumnoContr();
-        boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM, numeroControl, correo, telefono);
+    // 🧠 Validaciones adicionales
+    if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
+        !apellidoP.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
+        !apellidoM.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Nombre y apellidos solo deben contener letras y espacios.");
+        return;
+    }
 
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
-            panelAlumno2.actualizarTabla();
-            limpiarCampos();
-            card.show(panelContainer, "panelAlumnos");
-        }
+    if (!telefono.matches("\\d{10}")) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ El número de teléfono debe contener solo 10 dígitos.");
+        return;
+    }
+
+    AlumnoContr controlador = new AlumnoContr();
+    boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM,
+                                                    numeroControl, correo, telefono);
+
+    if (exito) {
+        JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
+        panelAlumno2.actualizarTabla();
+        limpiarCampos();
+        card.show(panelContainer, "panelAlumnos");
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tf_NombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_NombreActionPerformed

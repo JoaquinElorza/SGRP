@@ -78,9 +78,17 @@ public class EditarAlumno extends JFrame {
         return;
     }
 
-    // 📞 Validación de teléfono (10 dígitos exactos)
+    // 🔡 Validación de nombre y apellidos (solo letras y espacios)
+    if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
+        !apPaterno.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
+        !apMaterno.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+        JOptionPane.showMessageDialog(this, "⚠️ Nombre y apellidos solo deben contener letras.");
+        return;
+    }
+
+    // 📞 Validación de teléfono (10 dígitos exactos, sin letras)
     if (!telefono.matches("\\d{10}")) {
-        JOptionPane.showMessageDialog(this, "⚠️ El teléfono debe tener 10 dígitos.");
+        JOptionPane.showMessageDialog(this, "⚠️ El teléfono debe tener solo números (10 dígitos).");
         return;
     }
 
@@ -101,5 +109,6 @@ public class EditarAlumno extends JFrame {
         JOptionPane.showMessageDialog(this, "❌ Error al actualizar. Revisa los datos.");
     }
 }
+
 
 }

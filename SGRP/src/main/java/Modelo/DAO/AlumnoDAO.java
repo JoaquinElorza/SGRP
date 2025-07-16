@@ -20,13 +20,13 @@ public class AlumnoDAO {
         try {
             conn = Conexion.getConexion();
 
-            String sqlVerificar = "SELECT COUNT(*) FROM alumno WHERE n_control = ?";
+            String sqlVerificar = "SELECT COUNT(*) FROM alumno a JOIN persona p ON a.fk_persona = p.id_persona WHERE a.n_control = ? AND p.status = 'A'";
             psVerificar = conn.prepareStatement(sqlVerificar);
             psVerificar.setString(1, alumno.getNumeroControl());
             rs = psVerificar.executeQuery();
 
             if (rs.next() && rs.getInt(1) > 0) {
-                JOptionPane.showMessageDialog(null, "⛔ Ya existe un alumno con ese número de control.");
+                JOptionPane.showMessageDialog(null, "⛔ Ya existe un alumno activo con ese número de control.");
                 return false;
             }
 
@@ -81,7 +81,7 @@ public class AlumnoDAO {
                      "p.nombre, p.ap_paterno, p.ap_materno " +
                      "FROM alumno a " +
                      "JOIN persona p ON a.fk_persona = p.id_persona " +
-                     "WHERE a.n_control = ?";
+                     "WHERE a.n_control = ? AND p.status = 'A'";
 
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nControl);
@@ -143,36 +143,13 @@ public class AlumnoDAO {
         }
     }
 
-    public boolean eliminarAlumno(String numeroControl) {
-        String sqlBuscar = "SELECT fk_persona FROM alumno WHERE n_control = ?";
-        String sqlDeleteAlumno = "DELETE FROM alumno WHERE n_control = ?";
-        String sqlDeletePersona = "DELETE FROM persona WHERE id_persona = ?";
+    public boolean eliminarAlumno(int idPersona) {
+        String sql = "UPDATE persona SET status = 'E' WHERE id_persona = ?";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        try (Connection conn = Conexion.getConexion()) {
-            conn.setAutoCommit(false);
-
-            int idPersona = -1;
-            try (PreparedStatement psBuscar = conn.prepareStatement(sqlBuscar)) {
-                psBuscar.setString(1, numeroControl);
-                ResultSet rs = psBuscar.executeQuery();
-                if (rs.next()) {
-                    idPersona = rs.getInt("fk_persona");
-                } else {
-                    return false;
-                }
-            }
-
-            try (PreparedStatement psAlumno = conn.prepareStatement(sqlDeleteAlumno);
-                 PreparedStatement psPersona = conn.prepareStatement(sqlDeletePersona)) {
-                psAlumno.setString(1, numeroControl);
-                psAlumno.executeUpdate();
-
-                psPersona.setInt(1, idPersona);
-                psPersona.executeUpdate();
-            }
-
-            conn.commit();
-            return true;
+            stmt.setInt(1, idPersona);
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -42,48 +42,66 @@ public class VentanaCargaProgreso extends JDialog {
     }
 
     private void importarConProgreso(File archivoExcel, opcionAlumno2 vistaTabla) {
-        try (Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(new FileInputStream(archivoExcel))) {
-            Sheet hoja = workbook.getSheetAt(0);
-            AlumnoContr controlador = new AlumnoContr();
+       try (Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(new FileInputStream(archivoExcel))) {
+        Sheet hoja = workbook.getSheetAt(0);
+        AlumnoContr controlador = new AlumnoContr();
 
-            int total = hoja.getLastRowNum();
-            int procesados = 0;
-            int importados = 0;
+        int total = hoja.getLastRowNum();
+        int procesados = 0;
+        int importados = 0;
+        int rechazados = 0;
 
-            for (Row fila : hoja) {
-                if (cancelado) break;
-                if (fila.getRowNum() == 0) continue;
+        for (Row fila : hoja) {
+            if (cancelado) break;
+            if (fila.getRowNum() == 0) continue;
 
-                String numeroControl = controlador.obtenerValorCelda(fila.getCell(3));
-                boolean vacia = controlador.obtenerValorCelda(fila.getCell(0)).isEmpty()
-                        && controlador.obtenerValorCelda(fila.getCell(1)).isEmpty()
-                        && controlador.obtenerValorCelda(fila.getCell(2)).isEmpty()
-                        && numeroControl.isEmpty();
+            String nombre         = controlador.obtenerValorCelda(fila.getCell(0));
+            String apPaterno      = controlador.obtenerValorCelda(fila.getCell(1));
+            String apMaterno      = controlador.obtenerValorCelda(fila.getCell(2));
+            String numeroControl  = controlador.obtenerValorCelda(fila.getCell(3));
+            String correo         = controlador.obtenerValorCelda(fila.getCell(4));
+            String telefono       = controlador.obtenerValorCelda(fila.getCell(5));
 
-                if (!vacia && !controlador.existeNumeroControl(numeroControl)) {
-                    controlador.guardarFilaManual(fila);
-                    importados++;
-                }
+            boolean vacia = nombre.isEmpty() && apPaterno.isEmpty() &&
+                            apMaterno.isEmpty() && numeroControl.isEmpty();
 
-                procesados++;
-                int porcentaje = (int) ((double) procesados / total * 100);
-                barraProgreso.setValue(Math.min(porcentaje, 100));
-                texto.setText("Importando: " + procesados + " / " + total);
-                Thread.sleep(50);
+            boolean datosValidos = 
+                nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") &&
+                apPaterno.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") &&
+                apMaterno.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") &&
+                telefono.matches("\\d{10}");
+
+            if (vacia || !datosValidos || controlador.existeNumeroControl(numeroControl)) {
+                rechazados++;
+                continue;
             }
 
-            if (cancelado) {
-                JOptionPane.showMessageDialog(this, "⚠️ Importación cancelada por el usuario.", "Cancelado", JOptionPane.WARNING_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "✅ Se importaron " + importados + " alumno(s).", "Completado", JOptionPane.INFORMATION_MESSAGE);
-                SwingUtilities.invokeLater(vistaTabla::actualizarTabla);
-            }
+            controlador.guardarFilaManual(fila);
+            importados++;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            dispose();
+            procesados++;
+            int porcentaje = (int) ((double) procesados / total * 100);
+            barraProgreso.setValue(Math.min(porcentaje, 100));
+            texto.setText("Importando: " + procesados + " / " + total);
+            Thread.sleep(50);
         }
+
+        if (cancelado) {
+            JOptionPane.showMessageDialog(this, "⚠️ Importación cancelada por el usuario.", "Cancelado", JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "✅ Se importaron " + importados + " alumno(s).\n" +
+                "⛔ Rechazados por datos inválidos o duplicados: " + rechazados,
+                "Resultado de importación", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(vistaTabla::actualizarTabla);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        dispose();
     }
+}
+
 }
