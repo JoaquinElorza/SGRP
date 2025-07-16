@@ -1,6 +1,7 @@
 package Modelo.DAO;
 
 public class AlumnoCarg {
+
     private int id;
     private String nombre;
     private String apellidoPaterno;
@@ -8,31 +9,11 @@ public class AlumnoCarg {
     private String numeroControl;
     private String correoElectronico;
     private String numeroTelefono;
-    private String proyecto;
 
     public AlumnoCarg() {}
 
+    // Constructor completo sin proyecto
     public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
-                      String numeroControl, String correoElectronico, String numeroTelefono,
-                      String proyecto) {
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.numeroControl = numeroControl;
-        this.correoElectronico = correoElectronico;
-        this.numeroTelefono = numeroTelefono;
-        this.proyecto = proyecto;
-    }
-
-    public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
-                      String numeroControl) {
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.numeroControl = numeroControl;
-    }
-    
-        public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
                       String numeroControl, String correoElectronico, String numeroTelefono) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -41,7 +22,16 @@ public class AlumnoCarg {
         this.correoElectronico = correoElectronico;
         this.numeroTelefono = numeroTelefono;
     }
-    
+
+    // Constructor básico
+    public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
+                      String numeroControl) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.numeroControl = numeroControl;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -62,7 +52,4 @@ public class AlumnoCarg {
 
     public String getNumeroTelefono() { return numeroTelefono; }
     public void setNumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono; }
-
-    public String getProyecto() { return proyecto; }
-    public void setProyecto(String proyecto) { this.proyecto = proyecto; }
 }

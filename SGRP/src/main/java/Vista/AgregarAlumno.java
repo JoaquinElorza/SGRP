@@ -6,13 +6,13 @@ import javax.smartcardio.Card;
 import javax.swing.JPanel;
 import Modelo.DAO.AlumnoDAO;
 import Vista.opcionAlumno2;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class AgregarAlumno extends javax.swing.JPanel {
 
     private opcionAlumno2 panelAlumno2;
-
-    CardLayout card;
+    private CardLayout card;
     private JPanel panelContainer;
 
     public AgregarAlumno(CardLayout layout, JPanel container, opcionAlumno2 panelAlumno2) {
@@ -163,35 +163,55 @@ public class AgregarAlumno extends javax.swing.JPanel {
     private void tf_TelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_TelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_TelefonoActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private boolean validarCampos() {
         String numeroControl = tf_nControl.getText().trim();
         String nombre = tf_Nombre.getText().trim();
         String apellidoP = tf_paterno.getText().trim();
         String apellidoM = tf_Materno.getText().trim();
         String correo = tf_Correo.getText().trim();
         String telefono = tf_Telefono.getText().trim();
-        String proyecto = "Sin asignar"; 
 
-
-        if (numeroControl.isEmpty() || nombre.isEmpty() || apellidoP.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
-            return;
+        if (numeroControl.isEmpty() || nombre.isEmpty() || apellidoP.isEmpty() || apellidoM.isEmpty() ||
+            correo.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "⚠️ Todos los campos son obligatorios.");
+            return false;
         }
 
+        // Teléfono: exactamente 10 dígitos numéricos
+        if (!telefono.matches("\\d{10}")) {
+            JOptionPane.showMessageDialog(this, "⚠️ El número de teléfono debe contener exactamente 10 dígitos.");
+            return false;
+        }
+
+        // Correo: formato válido
+        String correoRegex = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
+        if (!Pattern.matches(correoRegex, correo)) {
+            JOptionPane.showMessageDialog(this, "⚠️ Ingresa un correo electrónico válido.");
+            return false;
+        }
+
+        return true;
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (!validarCampos()) return;
+
+        String numeroControl = tf_nControl.getText().trim();
+        String nombre = tf_Nombre.getText().trim();
+        String apellidoP = tf_paterno.getText().trim();
+        String apellidoM = tf_Materno.getText().trim();
+        String correo = tf_Correo.getText().trim();
+        String telefono = tf_Telefono.getText().trim();
+        String proyecto = "Sin asignar";
+
         AlumnoContr controlador = new AlumnoContr();
-        boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM, numeroControl, correo, telefono, proyecto);
+        boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM, numeroControl, correo, telefono);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
-
-            panelAlumno2.actualizarTabla();   // refresca la tabla
-            limpiarCampos();                  // limpia el formulario
-
-            card.show(panelContainer, "panelAlumnos"); // cambia de vista
+            panelAlumno2.actualizarTabla();
+            limpiarCampos();
+            card.show(panelContainer, "panelAlumnos");
         }
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tf_NombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_NombreActionPerformed

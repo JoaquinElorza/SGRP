@@ -6,8 +6,7 @@ import Utilidades.Conexion;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class AlumnoContr {
 
-    public int importarDesdeExcel(File archivoExcel) {
+    public int importarDesdeExcel(File archivoExcel, JTable tablaAlumnos) {
         int importados = 0;
         int duplicados = 0;
 
@@ -34,13 +33,9 @@ public class AlumnoContr {
                 String correo         = obtenerValorCelda(fila.getCell(4));
                 String telefono       = obtenerValorCelda(fila.getCell(5));
 
-                if (numeroControl.isEmpty()) {
-                    System.out.println("⚠️ Fila " + fila.getRowNum() + " ignorada: número de control vacío.");
-                    continue;
-                }
+                if (numeroControl.isEmpty()) continue;
 
                 if (existeNumeroControl(numeroControl)) {
-                    System.out.println("⛔ Duplicado ignorado: " + numeroControl);
                     duplicados++;
                     continue;
                 }
@@ -48,21 +43,17 @@ public class AlumnoContr {
                 try (Connection conn = Conexion.getConexion()) {
                     conn.setAutoCommit(false);
 
-                    // Insertar en persona (sin correo)
-                    String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?)";
+                    String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, status) VALUES (?, ?, ?, ?)";
                     PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
                     psPersona.setString(1, nombre);
                     psPersona.setString(2, apPaterno);
                     psPersona.setString(3, apMaterno);
+                    psPersona.setString(4, "A");
                     psPersona.executeUpdate();
 
                     ResultSet rs = psPersona.getGeneratedKeys();
-                    int idPersona = -1;
-                    if (rs.next()) {
-                        idPersona = rs.getInt(1);
-                    }
+                    int idPersona = rs.next() ? rs.getInt(1) : -1;
 
-                    // Insertar en alumno (correo incluido aquí)
                     String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
                     PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
                     psAlumno.setString(1, numeroControl);
@@ -73,9 +64,8 @@ public class AlumnoContr {
 
                     conn.commit();
                     importados++;
-                    System.out.println("✅ Importado: " + nombre + " (" + numeroControl + ")");
                 } catch (SQLException e) {
-                    System.out.println("❌ Error en fila " + fila.getRowNum() + ": " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
@@ -84,61 +74,22 @@ public class AlumnoContr {
         }
 
         JOptionPane.showMessageDialog(null,
-            "✅ Se importaron " + importados + " alumno(s).\n" +
-            "⚠️ Se ignoraron " + duplicados + " duplicado(s).");
+            "✅ Importados: " + importados + "\n⛔ Duplicados: " + duplicados);
 
+        actualizarTablaAlumnos(tablaAlumnos);
         return importados;
     }
 
     public String obtenerValorCelda(Cell celda) {
         if (celda == null) return "";
         switch (celda.getCellType()) {
-            case STRING:
-                return celda.getStringCellValue();
-            case NUMERIC:
-                return String.valueOf((long) celda.getNumericCellValue());
-            case BOOLEAN:
-                return String.valueOf(celda.getBooleanCellValue());
+            case STRING: return celda.getStringCellValue();
+            case NUMERIC: return String.valueOf((long) celda.getNumericCellValue());
+            case BOOLEAN: return String.valueOf(celda.getBooleanCellValue());
             case FORMULA:
-                try {
-                    return celda.getStringCellValue();
-                } catch (Exception e) {
-                    return String.valueOf(celda.getNumericCellValue());
-                }
-            default:
-                return "";
-        }
-    }
-
-    private void guardarAlumnoEnBD(AlumnoCarg alumno) {
-        try (Connection conn = Conexion.getConexion()) {
-            conn.setAutoCommit(false);
-
-            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?)";
-            PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
-            psPersona.setString(1, alumno.getNombre());
-            psPersona.setString(2, alumno.getApellidoPaterno());
-            psPersona.setString(3, alumno.getApellidoMaterno());
-            psPersona.executeUpdate();
-
-            ResultSet rs = psPersona.getGeneratedKeys();
-            int idPersona = -1;
-            if (rs.next()) {
-                idPersona = rs.getInt(1);
-            }
-
-            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
-            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
-            psAlumno.setString(1, alumno.getNumeroControl());
-            psAlumno.setString(2, alumno.getNumeroTelefono());
-            psAlumno.setInt(3, idPersona);
-            psAlumno.setString(4, alumno.getCorreoElectronico());
-            psAlumno.executeUpdate();
-
-            conn.commit();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+                try { return celda.getStringCellValue(); }
+                catch (Exception e) { return String.valueOf(celda.getNumericCellValue()); }
+            default: return "";
         }
     }
 
@@ -147,37 +98,18 @@ public class AlumnoContr {
         try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, numeroControl);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
+            return rs.next() && rs.getInt(1) > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return false;
-    }
-
-    public void guardarFilaManual(Row fila) {
-        AlumnoCarg alumno = new AlumnoCarg();
-        alumno.setNombre(obtenerValorCelda(fila.getCell(0)));
-        alumno.setApellidoPaterno(obtenerValorCelda(fila.getCell(1)));
-        alumno.setApellidoMaterno(obtenerValorCelda(fila.getCell(2)));
-        alumno.setNumeroControl(obtenerValorCelda(fila.getCell(3)));
-        alumno.setCorreoElectronico(obtenerValorCelda(fila.getCell(4)));
-        alumno.setNumeroTelefono(obtenerValorCelda(fila.getCell(5)));
-        alumno.setProyecto(obtenerValorCelda(fila.getCell(6)));
-
-        if (!alumno.getNumeroControl().isEmpty() && !existeNumeroControl(alumno.getNumeroControl())) {
-            guardarAlumnoEnBD(alumno);
+            return false;
         }
     }
 
     public boolean agregarAlumnoManual(String nombre, String apellidoP, String apellidoM,
-                                       String numeroControl, String correo, String telefono, String proyecto) {
+                                       String numeroControl, String correo, String telefono) {
         if (existeNumeroControl(numeroControl)) {
             JOptionPane.showMessageDialog(null,
-                    "❌ Ya existe un alumno con el número de control: " + numeroControl,
-                    "Duplicado",
-                    JOptionPane.WARNING_MESSAGE);
+                    "⛔ Ya existe un alumno con el número de control: " + numeroControl);
             return false;
         }
 
@@ -188,11 +120,53 @@ public class AlumnoContr {
         alumno.setNumeroControl(numeroControl);
         alumno.setCorreoElectronico(correo);
         alumno.setNumeroTelefono(telefono);
-        alumno.setProyecto(proyecto);
 
         guardarAlumnoEnBD(alumno);
         return true;
     }
+
+    private void guardarAlumnoEnBD(AlumnoCarg alumno) {
+        try (Connection conn = Conexion.getConexion()) {
+            conn.setAutoCommit(false);
+
+            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, status) VALUES (?, ?, ?, ?)";
+            PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
+            psPersona.setString(1, alumno.getNombre());
+            psPersona.setString(2, alumno.getApellidoPaterno());
+            psPersona.setString(3, alumno.getApellidoMaterno());
+            psPersona.setString(4, "A");
+            psPersona.executeUpdate();
+
+            ResultSet rs = psPersona.getGeneratedKeys();
+            int idPersona = rs.next() ? rs.getInt(1) : -1;
+
+            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
+            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
+            psAlumno.setString(1, alumno.getNumeroControl());
+            psAlumno.setString(2, alumno.getNumeroTelefono());
+            psAlumno.setInt(3, idPersona);
+            psAlumno.setString(4, alumno.getCorreoElectronico());
+            psAlumno.executeUpdate();
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void guardarFilaManual(Row fila) {
+    String nombre         = obtenerValorCelda(fila.getCell(0));
+    String apPaterno      = obtenerValorCelda(fila.getCell(1));
+    String apMaterno      = obtenerValorCelda(fila.getCell(2));
+    String numeroControl  = obtenerValorCelda(fila.getCell(3));
+    String correo         = obtenerValorCelda(fila.getCell(4));
+    String telefono       = obtenerValorCelda(fila.getCell(5));
+
+    if (numeroControl.isEmpty()) return;
+    if (existeNumeroControl(numeroControl)) return;
+
+    AlumnoCarg alumno = new AlumnoCarg(nombre, apPaterno, apMaterno, numeroControl, correo, telefono);
+    guardarAlumnoEnBD(alumno);
+}
 
     public void actualizarTablaAlumnos(JTable tablaAlumnos) {
         AlumnoDAO dao = new AlumnoDAO();

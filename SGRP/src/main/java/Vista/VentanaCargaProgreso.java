@@ -1,11 +1,13 @@
 package Vista;
 
 import Controlador.AlumnoContr;
+import Modelo.DAO.AlumnoCarg;
+import org.apache.poi.ss.usermodel.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
-import org.apache.poi.ss.usermodel.*;
 
 public class VentanaCargaProgreso extends JDialog {
 
@@ -14,7 +16,7 @@ public class VentanaCargaProgreso extends JDialog {
     private JButton botonCancelar;
     private volatile boolean cancelado = false;
 
-    public VentanaCargaProgreso(Frame owner, File archivoExcel, Vista.opcionAlumno2 vistaTabla) {
+    public VentanaCargaProgreso(Frame owner, File archivoExcel, opcionAlumno2 vistaTabla) {
         super(owner, "Importando alumnos...", true);
         setLayout(new BorderLayout());
         setSize(400, 150);
@@ -26,7 +28,7 @@ public class VentanaCargaProgreso extends JDialog {
         texto = new JLabel("Procesando...");
         texto.setHorizontalAlignment(SwingConstants.CENTER);
 
-        botonCancelar = new JButton("Cancelar exportación");
+        botonCancelar = new JButton("Cancelar importación");
         botonCancelar.addActionListener(e -> cancelado = true);
 
         JPanel panelCentro = new JPanel(new BorderLayout());
@@ -39,7 +41,7 @@ public class VentanaCargaProgreso extends JDialog {
         new Thread(() -> importarConProgreso(archivoExcel, vistaTabla)).start();
     }
 
-    private void importarConProgreso(File archivoExcel, Vista.opcionAlumno2 vistaTabla) {
+    private void importarConProgreso(File archivoExcel, opcionAlumno2 vistaTabla) {
         try (Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(new FileInputStream(archivoExcel))) {
             Sheet hoja = workbook.getSheetAt(0);
             AlumnoContr controlador = new AlumnoContr();
@@ -59,7 +61,7 @@ public class VentanaCargaProgreso extends JDialog {
                         && numeroControl.isEmpty();
 
                 if (!vacia && !controlador.existeNumeroControl(numeroControl)) {
-                    controlador.guardarFilaManual(fila); // método sugerido en tu controlador para guardar una fila directa
+                    controlador.guardarFilaManual(fila);
                     importados++;
                 }
 
@@ -67,18 +69,16 @@ public class VentanaCargaProgreso extends JDialog {
                 int porcentaje = (int) ((double) procesados / total * 100);
                 barraProgreso.setValue(Math.min(porcentaje, 100));
                 texto.setText("Importando: " + procesados + " / " + total);
-                Thread.sleep(80);
+                Thread.sleep(50);
             }
 
             if (cancelado) {
-                JOptionPane.showMessageDialog(this, "⚠️ Exportación cancelada por el usuario.", "Cancelado", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "⚠️ Importación cancelada por el usuario.", "Cancelado", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "✅ Se importaron " + importados + " alumnos correctamente.", "Completado", JOptionPane.INFORMATION_MESSAGE);
-                if (vistaTabla != null) {
-                    opcionAlumno2 o = new opcionAlumno2();
-                    SwingUtilities.invokeLater(() -> vistaTabla.actualizarTablaAlumnos(o.tablaAlumnos));
-                }
+                JOptionPane.showMessageDialog(this, "✅ Se importaron " + importados + " alumno(s).", "Completado", JOptionPane.INFORMATION_MESSAGE);
+                SwingUtilities.invokeLater(vistaTabla::actualizarTabla);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

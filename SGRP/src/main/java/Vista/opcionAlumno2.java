@@ -3,7 +3,6 @@ package Vista;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import Modelo.DAO.AlumnoDAO;
-import static Modelo.DAO.AlumnoDAO.consultarAlumno;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -13,25 +12,30 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import Controlador.AlumnoContr;
 import Modelo.DAO.AlumnoCarg;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 public class opcionAlumno2 extends javax.swing.JPanel {
 
     CardLayout card;
     private JPanel panelContainer;
-
+    private EditarAlumno editar;
+    
+    
     public opcionAlumno2() {
     }
 
-    public opcionAlumno2(CardLayout layout, javax.swing.JPanel container) {
+     public opcionAlumno2(CardLayout layout, JPanel container) {
         this.card = layout;
         this.panelContainer = container;
         initComponents();
         actualizarTablaAlumnos(tablaAlumnos);
-    }
-
+    } 
+     
+     
     public void actualizarTabla() {
         AlumnoContr controlador = new AlumnoContr();
-        controlador.actualizarTablaAlumnos(tablaAlumnos); 
+        controlador.actualizarTablaAlumnos(tablaAlumnos);
     }
 
     @SuppressWarnings("unchecked")
@@ -205,7 +209,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lblactualizar.setText("reload");
+        lblactualizar.setText("Refrescar");
         lblactualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblactualizarMouseClicked(evt);
@@ -225,7 +229,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addComponent(lblAgregarAlumno)
                         .addGap(79, 79, 79)
                         .addComponent(lblactualizar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
                         .addComponent(lblAtras)
                         .addGap(154, 154, 154))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
@@ -247,17 +251,15 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                     .addComponent(lblAgregarAlumno)
                     .addComponent(LbLimportar)
                     .addComponent(lblactualizar))
+                .addGap(28, 28, 28)
                 .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
-                        .addGap(88, 88, 88)
+                        .addGap(60, 60, 60)
                         .addComponent(btnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar))
-                    .addGroup(panelAlumnosLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -273,144 +275,119 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_lblAgregarAlumnoMouseClicked
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-         int fs = tablaAlumnos.getSelectedRow();
-
-    if (fs == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
-        return;
-    }
-
-    String nControl = tablaAlumnos.getValueAt(fs, 0).toString();
-    
-    int confirmacion = JOptionPane.showConfirmDialog(this,
-        "¿Estás seguro de que deseas eliminar al alumno con número de control " + nControl + "?",
-        "Confirmar eliminación",
-        JOptionPane.YES_NO_OPTION);
-
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        AlumnoDAO a = new AlumnoDAO();
-        boolean eliminado = a.eliminarAlumno(nControl);
-
-        if (eliminado) {
-            JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
-            actualizarTablaAlumnos(tablaAlumnos); // refrescar la tabla
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar el alumno.");
+        int fila = tablaAlumnos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
+            return;
         }
-    }
+
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+        String nombreCompleto = lblNombreAlumno.getText();
+
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Deseas eliminar al alumno " + nombreCompleto + " con número de control " + nControl + "?",
+            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            AlumnoDAO dao = new AlumnoDAO();
+            boolean eliminado = dao.eliminarAlumno(nControl);
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
+                actualizarTablaAlumnos(tablaAlumnos);
+                limpiarPanelAlumno();
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked
         JFileChooser selector = new JFileChooser();
-        int resultado = selector.showOpenDialog(this);
-
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivo = selector.getSelectedFile();
-
-            AlumnoContr controlador = new AlumnoContr();
-            int registrosImportados = controlador.importarDesdeExcel(archivo);
-
-            if (registrosImportados > 0) {
-                JOptionPane.showMessageDialog(this, "✅ Se importaron " + registrosImportados + " alumnos correctamente.");
-                actualizarTablaAlumnos(tablaAlumnos); // Refresca la tabla
-            } else {
-                JOptionPane.showMessageDialog(this, "⚠️ No se importaron registros. Verifica el archivo.");
-            }
-        }
+    int resultado = selector.showOpenDialog(this);
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+    File archivo = selector.getSelectedFile();
+    VentanaCargaProgreso progreso = new VentanaCargaProgreso(null, archivo, this);
+    progreso.setVisible(true); 
+    }
     }//GEN-LAST:event_LbLimportarMouseClicked
 
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
-        try {
-            AlumnoCarg alumnoTabla =consultarAlumno(tablaAlumnos);
-            lblControl.setText(alumnoTabla.getNumeroControl());
-            System.out.println(alumnoTabla.getNumeroControl());
+      int fila = tablaAlumnos.getSelectedRow();
+    if (fila == -1) return;
 
-            lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " +
-                    alumnoTabla.getApellidoMaterno());
-            System.out.println(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " +
-                    alumnoTabla.getApellidoMaterno());
+    String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+    try {
+        AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
 
-            lblTelefono.setText(alumnoTabla.getNumeroTelefono());
-            System.out.println(alumnoTabla.getNumeroTelefono());
+        lblControl.setText(alumnoTabla.getNumeroControl());
+        lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
+        lblTelefono.setText(alumnoTabla.getNumeroTelefono());
+        lblCorreo.setText(alumnoTabla.getCorreoElectronico());
 
-            lblCorreo.setText(alumnoTabla.getCorreoElectronico());
-            System.out.println(alumnoTabla.getCorreoElectronico());
-        } catch (SQLException ex) {
-            Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // 👉 Removido: lblProyecto.setText(...);
+
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_tablaAlumnosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int fila = tablaAlumnos.getSelectedRow();
-
         if (fila == -1) {
-            javax.swing.JOptionPane.showMessageDialog(null, "⚠️ Selecciona un alumno para editar.");
+            JOptionPane.showMessageDialog(null, "⚠️ Selecciona un alumno para editar.");
             return;
         }
 
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
         try {
-            // 1. Obtener los datos actuales del alumno seleccionado
             AlumnoDAO dao = new AlumnoDAO();
-            AlumnoCarg datos = dao.consultarAlumno(tablaAlumnos); // [nControl, nombreCompleto, telefono, correo]
+AlumnoCarg datos = dao.consultarAlumno(nControl);
+editar = new EditarAlumno();
+editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
+                   datos.getApellidoMaterno(), datos.getNumeroTelefono(), datos.getCorreoElectronico());
 
 
-            // 3. Crear ventana de edición
-            EditarAlumno editarFrame = new EditarAlumno();
-
-            // 4. Cargar datos en el formulario
-            editarFrame.cargarDatos(datos.getNumeroControl(), datos.getNombre(),
-                    datos.getApellidoPaterno(), datos.getApellidoMaterno(),
-                    datos.getNumeroTelefono(), datos.getCorreoElectronico());
-
-            // 5. Detectar cierre de la ventana para refrescar la tabla
-            editarFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            editar.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosed(java.awt.event.WindowEvent e) {
-                    actualizarTablaAlumnos(tablaAlumnos); // refresca la tabla automáticamente al cerrar
+                    actualizarTablaAlumnos(tablaAlumnos);
                 }
             });
 
-            editarFrame.setVisible(true);
-            editarFrame.setLocationRelativeTo(null);
-
-        } catch (Exception e) {
+            editar.setVisible(true);
+            editar.setLocationRelativeTo(null);
+        } catch (SQLException e) {
             e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(null, "❌ No se pudo cargar el alumno.");
+            JOptionPane.showMessageDialog(null, "❌ No se pudo cargar el alumno.");
         }
+    
     }//GEN-LAST:event_btnEditarActionPerformed
 
 
     private void lblactualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblactualizarMouseClicked
-        opcionAlumno2 op = new opcionAlumno2();
-        op.actualizarTablaAlumnos(tablaAlumnos);
+         actualizarTablaAlumnos(tablaAlumnos);
     }//GEN-LAST:event_lblactualizarMouseClicked
 
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
-        AlumnoDAO AlumnoAcutalizadorTabla = new AlumnoDAO();
-        java.util.List<Modelo.DAO.AlumnoCarg> lista = AlumnoAcutalizadorTabla.obtenerTodosLosAlumnos();
+         AlumnoDAO dao = new AlumnoDAO();
+        List<AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
+        DefaultTableModel model = (DefaultTableModel) tablaAlumnos.getModel();
+        model.setRowCount(0);
 
-        if (tablaAlumnos == null) {
-            System.out.println("tablaAlumnos es null");
-        } else {
-            System.out.println("tablaAlumnos está inicializada");
-        }
-
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tablaAlumnos.getModel();
-        model.setRowCount(0); // Limpiar tabla
-
-        for (Modelo.DAO.AlumnoCarg a : lista) {
-            
+        for (AlumnoCarg a : lista) {
             String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
-            model.addRow(new Object[]{
-                a.getNumeroControl(),
-                nombreCompleto
-            });
+            model.addRow(new Object[]{a.getNumeroControl(), nombreCompleto});
         }
-
     }
-
-
+        private void limpiarPanelAlumno() {
+        lblControl.setText("Número de control");
+    lblNombreAlumno.setText("Nombre completo");
+    lblTelefono.setText("Teléfono");
+    lblCorreo.setText("Correo electrónico");
+    ((DefaultTableModel) jTable1.getModel()).setRowCount(0);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LbLimportar;
     private javax.swing.JButton btnEditar;
@@ -430,4 +407,5 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JPanel panelAlumnos;
     public javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
+
 }
