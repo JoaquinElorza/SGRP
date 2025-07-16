@@ -14,8 +14,6 @@ import javax.swing.JTable;
 
 public class AlumnoDAO {
 
-    public static String[] alumnito = new String[4];
-
     public boolean agregarAlumno(Alumno alumno) {
     Connection conn = null;
     PreparedStatement psPersona = null;
@@ -94,21 +92,16 @@ public class AlumnoDAO {
     }
 } 
 
-
-
-    public static String[] consultarAlumno(JTable tablaAlumnos) throws SQLException {
+    public static AlumnoCarg consultarAlumno(JTable tablaAlumnos) throws SQLException {
         int fila = tablaAlumnos.getSelectedRow();
-        if (fila == -1) {
-            System.out.println("⚠️ No hay fila seleccionada.");
-            return new String[4];
-        }
-
+        System.out.println("Fila seleccionada: " + fila);
+        
         String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-        System.out.println("🔍 Consultando alumno con n_control: " + nControl);
+        System.out.println("Consultando alumno con n_control: " + nControl);
 
-        String sql = "SELECT a.n_control, a.telefono, p.nombre, p.ap_paterno, p.ap_materno, p.correo "
-                + "FROM alumno a JOIN persona p ON a.fk_persona = p.id_persona "
-                + "WHERE a.n_control = ?";
+        String sql = "SELECT n_control, telefono, nombre, ap_paterno, ap_materno, correo\n" +
+                     "FROM alumno join persona on alumno.fk_persona = persona.id_persona\n" +
+                     "where n_control= ?;";
 
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -122,10 +115,8 @@ public class AlumnoDAO {
                 String ap2 = rs.getString("ap_materno");
                 String correo = rs.getString("correo");
 
-                alumnito[0] = nControl;
-                alumnito[1] = nombre + " " + ap1 + " " + ap2;
-                alumnito[2] = telefono;
-                alumnito[3] = correo;
+            AlumnoCarg alumnoConsultar = new AlumnoCarg(nombre, ap1, ap2, nControl, correo, telefono);    
+            return alumnoConsultar;
             } else {
                 System.out.println("❌ No se encontró el alumno con ese número de control.");
             }
@@ -134,7 +125,7 @@ public class AlumnoDAO {
             e.printStackTrace();
         }
 
-        return alumnito;
+        return null;
     }
 
     public boolean actualizarAlumno(AlumnoCarg alumno) {
@@ -224,13 +215,12 @@ public class AlumnoDAO {
     }
 
     public boolean eliminarAlumno(String n_control) {
+        //no lo elimina; si su status es "E", no lo muestra en la lista
         String saberPersona = "SELECT FK_PERSONA FROM ALUMNO WHERE N_CONTROL = ?";
-        String borrarAlumno = "DELETE FROM alumno WHERE n_control = ?";
-        String borrarPersona = "DELETE FROM persona WHERE id_persona = ?";
+        String borrarPersona = "UPDATE persona SET status = 'E' WHERE (id_persona = ?);";
 
         Connection conn = null;
         PreparedStatement psSaberPersona = null;
-        PreparedStatement psBorrarAlumno = null;
         PreparedStatement psBorrarPersona = null;
         ResultSet rs = null;
 
@@ -251,10 +241,6 @@ public class AlumnoDAO {
                 return false;
             }
 
-            // 2. Eliminar al alumno
-            psBorrarAlumno = conn.prepareStatement(borrarAlumno);
-            psBorrarAlumno.setString(1, n_control);
-            psBorrarAlumno.executeUpdate();
 
             // 3. Eliminar a la persona
             psBorrarPersona = conn.prepareStatement(borrarPersona);
@@ -283,9 +269,6 @@ public class AlumnoDAO {
                 if (psSaberPersona != null) {
                     psSaberPersona.close();
                 }
-                if (psBorrarAlumno != null) {
-                    psBorrarAlumno.close();
-                }
                 if (psBorrarPersona != null) {
                     psBorrarPersona.close();
                 }
@@ -303,18 +286,22 @@ public class AlumnoDAO {
 
     public List<AlumnoCarg> obtenerTodosLosAlumnos() {
         List<AlumnoCarg> lista = new ArrayList<>();
-        String sql = "select n_control, nombre, ap_paterno, ap_materno from sgrp.alumno join sgrp.persona\n"
+        String sql = "select n_control, nombre, ap_paterno, ap_materno, status from sgrp.alumno join sgrp.persona\n"
                 + "on alumno.fk_persona = persona.id_persona;";
 
         try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+                if(rs.getString("Status").equals("E")){
+                    rs.next();
+                }
                 AlumnoCarg alumno = new AlumnoCarg();
                 alumno.setNombre(rs.getString("nombre"));
                 alumno.setApellidoPaterno(rs.getString("ap_paterno"));
                 alumno.setApellidoMaterno(rs.getString("ap_materno"));
                 alumno.setNumeroControl(rs.getString("n_control"));
                 lista.add(alumno);
+                
             }
 
         } catch (SQLException e) {

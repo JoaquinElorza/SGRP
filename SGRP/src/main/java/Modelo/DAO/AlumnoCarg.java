@@ -32,6 +32,15 @@ public class AlumnoCarg {
         this.numeroControl = numeroControl;
     }
     
+        public AlumnoCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
+                      String numeroControl, String correoElectronico, String numeroTelefono) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.numeroControl = numeroControl;
+        this.correoElectronico = correoElectronico;
+        this.numeroTelefono = numeroTelefono;
+    }
     
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

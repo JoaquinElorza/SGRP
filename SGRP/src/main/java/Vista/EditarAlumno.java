@@ -27,11 +27,13 @@ public class EditarAlumno extends javax.swing.JFrame {
     
     
     
-    public void cargarDatos(String numeroControl, String nombre, String apellidoPaterno, String apellidoMaterno, String correo) {
+    public void cargarDatos(String numeroControl, String nombre, String apellidoPaterno,
+            String apellidoMaterno,String telefono, String correo) {
     txtFieldNumeroControl.setText(numeroControl);
     txtFieldNombre.setText(nombre);
     txtFieldApellidoPaterno.setText(apellidoPaterno);
     txtFieldApellidoMaterno.setText(apellidoMaterno);
+    txtTelefono.setText(telefono);
     txtFieldCorreo.setText(correo);
 }
 

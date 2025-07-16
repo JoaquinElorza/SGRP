@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import Controlador.AlumnoContr;
+import Modelo.DAO.AlumnoCarg;
 
 public class opcionAlumno2 extends javax.swing.JPanel {
 
@@ -301,18 +302,20 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
         try {
-            consultarAlumno(tablaAlumnos);
-            lblControl.setText(AlumnoDAO.alumnito[0]);
-            System.out.println(AlumnoDAO.alumnito[0]);
+            AlumnoCarg alumnoTabla =consultarAlumno(tablaAlumnos);
+            lblControl.setText(alumnoTabla.getNumeroControl());
+            System.out.println(alumnoTabla.getNumeroControl());
 
-            lblNombreAlumno.setText(AlumnoDAO.alumnito[1]);
-            System.out.println(AlumnoDAO.alumnito[1]);
+            lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " +
+                    alumnoTabla.getApellidoMaterno());
+            System.out.println(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " +
+                    alumnoTabla.getApellidoMaterno());
 
-            lblTelefono.setText(AlumnoDAO.alumnito[2]);
-            System.out.println(AlumnoDAO.alumnito[2]);
+            lblTelefono.setText(alumnoTabla.getNumeroTelefono());
+            System.out.println(alumnoTabla.getNumeroTelefono());
 
-            lblCorreo.setText(AlumnoDAO.alumnito[3]);
-            System.out.println(AlumnoDAO.alumnito[3]);
+            lblCorreo.setText(alumnoTabla.getCorreoElectronico());
+            System.out.println(alumnoTabla.getCorreoElectronico());
         } catch (SQLException ex) {
             Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -329,19 +332,16 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         try {
             // 1. Obtener los datos actuales del alumno seleccionado
             AlumnoDAO dao = new AlumnoDAO();
-            String[] datos = dao.consultarAlumno(tablaAlumnos); // [nControl, nombreCompleto, telefono, correo]
+            AlumnoCarg datos = dao.consultarAlumno(tablaAlumnos); // [nControl, nombreCompleto, telefono, correo]
 
-            // 2. Separar el nombre completo en partes
-            String[] nombrePartes = datos[1].split(" ");
-            String nombre = nombrePartes.length > 0 ? nombrePartes[0] : "";
-            String apPaterno = nombrePartes.length > 1 ? nombrePartes[1] : "";
-            String apMaterno = nombrePartes.length > 2 ? nombrePartes[2] : "";
 
             // 3. Crear ventana de edición
             EditarAlumno editarFrame = new EditarAlumno();
 
             // 4. Cargar datos en el formulario
-            editarFrame.cargarDatos(datos[0], nombre, apPaterno, apMaterno, datos[3]);
+            editarFrame.cargarDatos(datos.getNumeroControl(), datos.getNombre(),
+                    datos.getApellidoPaterno(), datos.getApellidoMaterno(),
+                    datos.getNumeroTelefono(), datos.getCorreoElectronico());
 
             // 5. Detectar cierre de la ventana para refrescar la tabla
             editarFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -367,8 +367,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_lblactualizarMouseClicked
 
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
-        AlumnoDAO dao = new AlumnoDAO();
-        java.util.List<Modelo.DAO.AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
+        AlumnoDAO AlumnoAcutalizadorTabla = new AlumnoDAO();
+        java.util.List<Modelo.DAO.AlumnoCarg> lista = AlumnoAcutalizadorTabla.obtenerTodosLosAlumnos();
 
         if (tablaAlumnos == null) {
             System.out.println("tablaAlumnos es null");
@@ -380,6 +380,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         model.setRowCount(0); // Limpiar tabla
 
         for (Modelo.DAO.AlumnoCarg a : lista) {
+            
             String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
             model.addRow(new Object[]{
                 a.getNumeroControl(),
