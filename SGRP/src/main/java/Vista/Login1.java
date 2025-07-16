@@ -3,6 +3,8 @@ package Vista;
 import Controlador.AcomodarImagen;
 import Controlador.LoginController;
 import java.awt.Color;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 public class Login1 extends javax.swing.JFrame {
     
@@ -11,6 +13,7 @@ public class Login1 extends javax.swing.JFrame {
     /**
      * Creates new form Login1
      */
+    private int intentosFallidos = 0;
     public Login1() {
         initComponents();
          acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);  
@@ -125,11 +128,48 @@ public class Login1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // dentro de jButton1ActionPerformed
-        LoginController controlador = new LoginController();
-        controlador.validarCredenciales(jTextField3.getText(), new String(jPasswordField1.getPassword()), this);
+        String usuario = jTextField3.getText();
+    String contrasena = new String(jPasswordField1.getPassword());
 
+    LoginController controlador = new LoginController();
+    boolean accesoPermitido = controlador.validarCredenciales(usuario, contrasena, this);
+
+    if (accesoPermitido) {
+        intentosFallidos = 0; 
+    } else {
+        intentosFallidos++;
+
+        if (intentosFallidos < 3) {
+            JOptionPane.showMessageDialog(this,
+                "❌ Usuario o contraseña incorrectos (intento " + intentosFallidos + "/3)");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "⛔ Demasiados intentos.Vuelva a intentarlo dentro de 15 segundos.");
+            bloquearIntentoPorSegundos(15);
+            intentosFallidos = 0;
+        }
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void bloquearIntentoPorSegundos(int segundosBloqueo) {
+    jButton1.setEnabled(false); // bloquear botón
+    jButton1.setText("⏳ Reintenta en " + segundosBloqueo + "s");
+
+    Timer timer = new Timer(1000, new java.awt.event.ActionListener() {
+        int restante = segundosBloqueo;
+
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            restante--;
+            jButton1.setText("⏳ Reintenta en " + restante + "s");
+            if (restante <= 0) {
+                ((Timer) e.getSource()).stop();
+                jButton1.setEnabled(true);
+                jButton1.setText("Acceder");
+            }
+        }
+    });
+    timer.start();
+}
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
