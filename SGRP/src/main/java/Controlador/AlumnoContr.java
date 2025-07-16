@@ -17,85 +17,81 @@ import java.util.List;
 public class AlumnoContr {
 
     public int importarDesdeExcel(File archivoExcel) {
-    int importados = 0;
-    int duplicados = 0;
+        int importados = 0;
+        int duplicados = 0;
 
-    try (FileInputStream fis = new FileInputStream(archivoExcel);
-         Workbook workbook = new XSSFWorkbook(fis)) {
+        try (FileInputStream fis = new FileInputStream(archivoExcel);
+             Workbook workbook = new XSSFWorkbook(fis)) {
 
-        Sheet hoja = workbook.getSheetAt(0);
-        for (Row fila : hoja) {
-            if (fila.getRowNum() == 0) continue; // Saltar encabezado
+            Sheet hoja = workbook.getSheetAt(0);
+            for (Row fila : hoja) {
+                if (fila.getRowNum() == 0) continue;
 
-            String nombre         = obtenerValorCelda(fila.getCell(0));
-            String apPaterno      = obtenerValorCelda(fila.getCell(1));
-            String apMaterno      = obtenerValorCelda(fila.getCell(2));
-            String numeroControl  = obtenerValorCelda(fila.getCell(3));
-            String correo         = obtenerValorCelda(fila.getCell(4));
-            String telefono       = obtenerValorCelda(fila.getCell(5));
+                String nombre         = obtenerValorCelda(fila.getCell(0));
+                String apPaterno      = obtenerValorCelda(fila.getCell(1));
+                String apMaterno      = obtenerValorCelda(fila.getCell(2));
+                String numeroControl  = obtenerValorCelda(fila.getCell(3));
+                String correo         = obtenerValorCelda(fila.getCell(4));
+                String telefono       = obtenerValorCelda(fila.getCell(5));
 
-            if (numeroControl.isEmpty()) {
-                System.out.println("⚠️ Fila " + fila.getRowNum() + " ignorada: número de control vacío.");
-                continue;
-            }
-
-            if (existeNumeroControl(numeroControl)) {
-                System.out.println("⛔ Duplicado ignorado: " + numeroControl);
-                duplicados++;
-                continue;
-            }
-
-            try (Connection conn = Conexion.getConexion()) {
-                conn.setAutoCommit(false);
-                
-                // Insertar en persona
-                String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, correo) VALUES (?, ?, ?, ?)";
-                PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
-                
-                psPersona.setString(1, nombre);
-                psPersona.setString(2, apPaterno);
-                psPersona.setString(3, apMaterno);
-                psPersona.setString(4, correo);
-                psPersona.executeUpdate();
-
-                ResultSet rs = psPersona.getGeneratedKeys();
-                int idPersona = -1;
-                if (rs.next()) {
-                    idPersona = rs.getInt(1);
+                if (numeroControl.isEmpty()) {
+                    System.out.println("⚠️ Fila " + fila.getRowNum() + " ignorada: número de control vacío.");
+                    continue;
                 }
 
-                // Insertar en alumno (sin campo 'correo')
-                String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona) VALUES (?, ?, ?)";
-                PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno, Statement.RETURN_GENERATED_KEYS);
-                psAlumno.setString(1, numeroControl);
-                psAlumno.setString(2, telefono);
-                psAlumno.setInt(3, idPersona);
-                psAlumno.executeUpdate();
+                if (existeNumeroControl(numeroControl)) {
+                    System.out.println("⛔ Duplicado ignorado: " + numeroControl);
+                    duplicados++;
+                    continue;
+                }
 
-                conn.commit();
-                importados++;
-                System.out.println("✅ Importado: " + nombre + " (" + numeroControl + ")");
-            } catch (SQLException e) {
-                System.out.println("❌ Error en fila " + fila.getRowNum() + ": " + e.getMessage());
+                try (Connection conn = Conexion.getConexion()) {
+                    conn.setAutoCommit(false);
+
+                    // Insertar en persona (sin correo)
+                    String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?)";
+                    PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
+                    psPersona.setString(1, nombre);
+                    psPersona.setString(2, apPaterno);
+                    psPersona.setString(3, apMaterno);
+                    psPersona.executeUpdate();
+
+                    ResultSet rs = psPersona.getGeneratedKeys();
+                    int idPersona = -1;
+                    if (rs.next()) {
+                        idPersona = rs.getInt(1);
+                    }
+
+                    // Insertar en alumno (correo incluido aquí)
+                    String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
+                    PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
+                    psAlumno.setString(1, numeroControl);
+                    psAlumno.setString(2, telefono);
+                    psAlumno.setInt(3, idPersona);
+                    psAlumno.setString(4, correo);
+                    psAlumno.executeUpdate();
+
+                    conn.commit();
+                    importados++;
+                    System.out.println("✅ Importado: " + nombre + " (" + numeroControl + ")");
+                } catch (SQLException e) {
+                    System.out.println("❌ Error en fila " + fila.getRowNum() + ": " + e.getMessage());
+                }
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(null,
+            "✅ Se importaron " + importados + " alumno(s).\n" +
+            "⚠️ Se ignoraron " + duplicados + " duplicado(s).");
+
+        return importados;
     }
 
-    JOptionPane.showMessageDialog(null,
-        "✅ Se importaron " + importados + " alumno(s).\n" +
-        "⚠️ Se ignoraron " + duplicados + " duplicado(s).");
-
-    return importados;
-}
-
-
     public String obtenerValorCelda(Cell celda) {
-        if (celda == null) {
-            return "";
-        }
+        if (celda == null) return "";
         switch (celda.getCellType()) {
             case STRING:
                 return celda.getStringCellValue();
@@ -118,8 +114,7 @@ public class AlumnoContr {
         try (Connection conn = Conexion.getConexion()) {
             conn.setAutoCommit(false);
 
-            // Insertar en persona
-            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?);";
+            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno) VALUES (?, ?, ?)";
             PreparedStatement psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
             psPersona.setString(1, alumno.getNombre());
             psPersona.setString(2, alumno.getApellidoPaterno());
@@ -132,9 +127,8 @@ public class AlumnoContr {
                 idPersona = rs.getInt(1);
             }
 
-            // Insertar en alumno
-            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?);";
-            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno, Statement.RETURN_GENERATED_KEYS);
+            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, fk_persona, correo) VALUES (?, ?, ?, ?)";
+            PreparedStatement psAlumno = conn.prepareStatement(sqlAlumno);
             psAlumno.setString(1, alumno.getNumeroControl());
             psAlumno.setString(2, alumno.getNumeroTelefono());
             psAlumno.setInt(3, idPersona);
@@ -150,9 +144,7 @@ public class AlumnoContr {
 
     public boolean existeNumeroControl(String numeroControl) {
         String sql = "SELECT COUNT(*) FROM alumno WHERE n_control = ?";
-
         try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setString(1, numeroControl);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -180,7 +172,7 @@ public class AlumnoContr {
     }
 
     public boolean agregarAlumnoManual(String nombre, String apellidoP, String apellidoM,
-            String numeroControl, String correo, String telefono, String proyecto) {
+                                       String numeroControl, String correo, String telefono, String proyecto) {
         if (existeNumeroControl(numeroControl)) {
             JOptionPane.showMessageDialog(null,
                     "❌ Ya existe un alumno con el número de control: " + numeroControl,

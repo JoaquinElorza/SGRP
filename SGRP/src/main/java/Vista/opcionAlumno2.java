@@ -31,7 +31,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
     public void actualizarTabla() {
         AlumnoContr controlador = new AlumnoContr();
-        controlador.actualizarTablaAlumnos(tablaAlumnos); // usa el nombre real de tu JTable
+        controlador.actualizarTablaAlumnos(tablaAlumnos); 
     }
 
     @SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaAlumnos = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lblControl = new javax.swing.JLabel();
         lblNombreAlumno = new javax.swing.JLabel();
@@ -114,10 +114,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("Eliminar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -233,7 +233,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnEditar)
-                            .addComponent(jButton2))
+                            .addComponent(btnEliminar))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14))))
@@ -252,7 +252,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addGap(88, 88, 88)
                         .addComponent(btnEditar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addComponent(btnEliminar))
                     .addGroup(panelAlumnosLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(panelAlumnosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,13 +272,33 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         card.show(panelContainer, "Agregar alumno");
     }//GEN-LAST:event_lblAgregarAlumnoMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+         int fs = tablaAlumnos.getSelectedRow();
+
+    if (fs == -1) {
+        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
+        return;
+    }
+
+    String nControl = tablaAlumnos.getValueAt(fs, 0).toString();
+    
+    int confirmacion = JOptionPane.showConfirmDialog(this,
+        "¿Estás seguro de que deseas eliminar al alumno con número de control " + nControl + "?",
+        "Confirmar eliminación",
+        JOptionPane.YES_NO_OPTION);
+
+    if (confirmacion == JOptionPane.YES_OPTION) {
         AlumnoDAO a = new AlumnoDAO();
-        int fs = tablaAlumnos.getSelectedRow();
-        String nControl = tablaAlumnos.getValueAt(0, fs).toString();
-        a.eliminarAlumno(nControl);
-        //actualizarTabla(tablaAlumnos);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        boolean eliminado = a.eliminarAlumno(nControl);
+
+        if (eliminado) {
+            JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
+            actualizarTablaAlumnos(tablaAlumnos); // refrescar la tabla
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar el alumno.");
+        }
+    }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked
         JFileChooser selector = new JFileChooser();
@@ -394,7 +414,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LbLimportar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
