@@ -156,6 +156,24 @@ public class AlumnoDAO {
             return false;
         }
     }
+    
+    
+    
+ public int obtenerIdPersonaPorNumeroControl(String nControl) {
+    String sql = "SELECT fk_persona FROM alumno WHERE n_control = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nControl);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("fk_persona");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return -1; // No encontrado
+}
+    
 
     public List<AlumnoCarg> obtenerTodosLosAlumnos() {
         List<AlumnoCarg> lista = new ArrayList<>();

@@ -166,30 +166,12 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Documento", "Estatus"
+                "Documento", ""
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -287,7 +269,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             }
         });
         JPanelImport1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        panelAlumnos.add(JPanelImport1, new org.netbeans.lib.awtextra.AbsoluteConstraints(149, 115, 39, 40));
+        panelAlumnos.add(JPanelImport1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 35, 35));
 
         jButton1.setBackground(new java.awt.Color(51, 153, 255));
         jButton1.setText("Agregar");
@@ -300,6 +282,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
         jButton2.setBackground(new java.awt.Color(51, 153, 255));
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(203, 515, 91, -1));
 
         add(panelAlumnos, java.awt.BorderLayout.CENTER);
@@ -452,6 +439,51 @@ editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellid
         ajustarVentana(); 
          
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+               int fs = tablaAlumnos.getSelectedRow();
+
+    // Verifica si se seleccionó una fila
+    if (fs == -1) {
+        JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar un alumno.");
+        return;
+    }
+
+    // Asegúrate de que el índice de columna corresponde al "Número de Control"
+    // Ajusta el número de columna según tu tabla: aquí se asume que está en la columna 4
+    String nControl;
+    try {
+        nControl = tablaAlumnos.getValueAt(fs, 0).toString();
+    } catch (ArrayIndexOutOfBoundsException e) {
+        JOptionPane.showMessageDialog(this, "❌ Error: La columna del número de control no existe.");
+        return;
+    }
+
+    // Confirmar eliminación
+    int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Estás seguro de que deseas eliminar al alumno con número de control " + nControl + "?",
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION);
+
+    if (confirmacion != JOptionPane.YES_OPTION) return;
+
+    // Obtener ID persona y eliminar
+    AlumnoDAO dao = new AlumnoDAO();
+    int idPersona = dao.obtenerIdPersonaPorNumeroControl(nControl);
+
+    if (idPersona != -1) {
+        boolean eliminado = dao.eliminarAlumno(idPersona);
+        if (eliminado) {
+            JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
+            //actualizarTablaAlumnos(); // ← llama este método si lo tienes implementado
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "❌ No se encontró el alumno en la base de datos.");
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
          AlumnoDAO dao = new AlumnoDAO();
