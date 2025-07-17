@@ -9,11 +9,13 @@ import javax.swing.Timer;
 public class Login1 extends javax.swing.JFrame {
     
     private final AcomodarImagen acomodarImagen = new AcomodarImagen();
+    private int intentosFallidos = 0;
+
    
     /**
      * Creates new form Login1
      */
-    private int intentosFallidos = 0;
+    
     public Login1() {
         initComponents();
          acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);  
@@ -214,6 +216,8 @@ public class Login1 extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

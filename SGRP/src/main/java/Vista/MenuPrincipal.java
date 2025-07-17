@@ -1,21 +1,70 @@
 package Vista;
 
+import Controlador.AcomodarImagen;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
     CardLayout card;
+    private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
     public MenuPrincipal() {
         initComponents();
         card = (CardLayout) panelCambiante.getLayout();
+        //this.setPreferredSize(new Dimension(626, 468));
+        //setSize(626,470);
 
         opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
         AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
 
         panelCambiante.add(panelPrincipal, "menu principal");
         panelCambiante.add(panelAlumnos, "panelAlumnos");       
-        panelCambiante.add(agregarAlumno, "Agregar alumno");    
+        panelCambiante.add(agregarAlumno, "Agregar alumno"); 
+        
+        
+         
+        //IMAGEN DE LOGO
+        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);  
+         jPanel2.setOpaque(false);
+         jPanel2.setBorder(null);
+         jPanel2.setBackground(new Color(0,0,0,0));
+         this.setVisible(true);
+         
+         //IMAGEN OPCION ALUMNOS
+         acomodarImagen.configurarPanelConImagen("/img/user.png", panelOpAlumno);  
+         panelOpAlumno.setOpaque(false);
+         panelOpAlumno.setBorder(null);
+         panelOpAlumno.setBackground(new Color(0,0,0,0));
+         this.setVisible(true);
+         
+         //imagen proyectos 
+         acomodarImagen.configurarPanelConImagen("/img/proyectos.png", jPanelProyectos);  
+         jPanelProyectos.setOpaque(false);
+         jPanelProyectos.setBorder(null);
+         jPanelProyectos.setBackground(new Color(0,0,0,0));
+         this.setVisible(true);
+         //Imagen Docentes
+           acomodarImagen.configurarPanelConImagen("/img/docentes.png", jPanelDocentes);  
+         jPanelDocentes.setOpaque(false);
+         jPanelDocentes.setBorder(null);
+         jPanelDocentes.setBackground(new Color(0,0,0,0));
+         this.setVisible(true);
+         //Imagen Empresas
+            acomodarImagen.configurarPanelConImagen("/img/empresas.png", jPanelEmpresas);  
+         jPanelEmpresas.setOpaque(false);
+         jPanelEmpresas.setBorder(null);
+         jPanelEmpresas.setBackground(new Color(0,0,0,0));
+         this.setVisible(true);
+         
+         //Imagen LogOut
+            acomodarImagen.configurarPanelConImagen("/img/logout.png", JPanelLogOut);  
+         JPanelLogOut.setOpaque(false);
+         JPanelLogOut.setBorder(null);
+         JPanelLogOut.setBackground(new Color(0,0,0,0));
+         this.setVisible(true);
+         
     }
 
     @SuppressWarnings("unchecked")
@@ -24,12 +73,50 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         panelCambiante = new javax.swing.JPanel();
         panelPrincipal = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        JPanelLogOut = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanelProyectos = new javax.swing.JPanel();
+        jPanelDocentes = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        panelOpAlumno = new javax.swing.JPanel();
+        jPanelEmpresas = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelCambiante.setLayout(new java.awt.CardLayout());
+
+        panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setText("Cerrar sesion");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, -1, 20));
+
+        JPanelLogOut.setBackground(new java.awt.Color(255, 255, 255));
+        JPanelLogOut.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        JPanelLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JPanelLogOutMouseClicked(evt);
+            }
+        });
+        JPanelLogOut.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(JPanelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 30, 30));
 
         jLabel1.setText("Alumno");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -38,34 +125,86 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Cerrar sesion");
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanelProyectos.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelProyectos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelProyectos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanelDocentes.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelDocentes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelDocentes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setText("Proyectos");
+
+        jLabel4.setText("Docentes");
+
+        jLabel5.setText("Empresas");
+
+        panelOpAlumno.setBackground(new java.awt.Color(255, 255, 255));
+        panelOpAlumno.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelOpAlumno.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                panelOpAlumnoMouseClicked(evt);
             }
         });
+        panelOpAlumno.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanelEmpresas.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelEmpresas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelEmpresas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanelEmpresas.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 110, 100));
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(jLabel1)
-                .addContainerGap(208, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addContainerGap())
+                .addGap(230, 230, 230)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jPanelEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jPanelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addComponent(jLabel5)
+                .addGap(82, 82, 82)
+                .addComponent(jLabel3)
+                .addGap(74, 74, 74)
+                .addComponent(jLabel4))
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(260, 260, 260)
+                .addComponent(panelOpAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(280, 280, 280)
+                .addComponent(jLabel1))
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(86, 86, 86)
-                .addComponent(jLabel1)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addGap(12, 12, 12)
+                .addComponent(panelOpAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel1))
         );
 
         panelCambiante.add(panelPrincipal, "card2");
@@ -77,11 +216,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         card.show(panelCambiante, "panelAlumnos");
+         this.pack();
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        this.dispose();
+        
+        new Vista.Login1().setVisible(true); // Abre el login
+        dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void panelOpAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelOpAlumnoMouseClicked
+        // TODO add your handling code here:
+        card.show(panelCambiante, "panelAlumnos");
+         this.pack();
+    }//GEN-LAST:event_panelOpAlumnoMouseClicked
+
+    private void JPanelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelLogOutMouseClicked
+        // TODO add your handling code here:
+        new Vista.Login1().setVisible(true); // Abre el login
+        dispose();
+         
+    }//GEN-LAST:event_JPanelLogOutMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -116,9 +271,20 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel JPanelLogOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanelDocentes;
+    private javax.swing.JPanel jPanelEmpresas;
+    private javax.swing.JPanel jPanelProyectos;
     private javax.swing.JPanel panelCambiante;
+    private javax.swing.JPanel panelOpAlumno;
     private javax.swing.JPanel panelPrincipal;
     // End of variables declaration//GEN-END:variables
 }
