@@ -20,7 +20,7 @@ public class AlumnoDAO {
         try {
             conn = Conexion.getConexion();
 
-            String sqlVerificar = "SELECT COUNT(*) FROM alumno a JOIN persona p ON a.fk_persona = p.id_persona WHERE a.n_control = ? AND p.status = 'A'";
+            String sqlVerificar = "SELECT COUNT(*) FROM alumno a JOIN persona p ON a.fk_persona = p.id_persona WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E') ;";
             psVerificar = conn.prepareStatement(sqlVerificar);
             psVerificar.setString(1, alumno.getNumeroControl());
             rs = psVerificar.executeQuery();
@@ -81,7 +81,7 @@ public class AlumnoDAO {
                      "p.nombre, p.ap_paterno, p.ap_materno " +
                      "FROM alumno a " +
                      "JOIN persona p ON a.fk_persona = p.id_persona " +
-                     "WHERE a.n_control = ? AND p.status = 'A'";
+                     "WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E') ;";
 
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nControl);
@@ -180,7 +180,7 @@ public class AlumnoDAO {
         String sql = "SELECT a.n_control, a.telefono, a.correo, p.nombre, p.ap_paterno, p.ap_materno " +
                      "FROM alumno a " +
                      "JOIN persona p ON a.fk_persona = p.id_persona " +
-                     "WHERE p.status = 'A'";
+                     "WHERE (p.status IS NULL OR p.status <> 'E') ;";
 
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql);
