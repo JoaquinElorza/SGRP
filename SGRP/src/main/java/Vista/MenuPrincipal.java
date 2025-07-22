@@ -20,51 +20,49 @@ public class MenuPrincipal extends javax.swing.JFrame {
         AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
 
         panelCambiante.add(panelPrincipal, "menu principal");
-        panelCambiante.add(panelAlumnos, "panelAlumnos");       
-        panelCambiante.add(agregarAlumno, "Agregar alumno"); 
-        
-        
-         
+        panelCambiante.add(panelAlumnos, "panelAlumnos");
+        panelCambiante.add(agregarAlumno, "Agregar alumno");
+
         //IMAGEN DE LOGO
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);  
-         jPanel2.setOpaque(false);
-         jPanel2.setBorder(null);
-         jPanel2.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         //IMAGEN OPCION ALUMNOS
-         acomodarImagen.configurarPanelConImagen("/img/user.png", panelOpAlumno);  
-         panelOpAlumno.setOpaque(false);
-         panelOpAlumno.setBorder(null);
-         panelOpAlumno.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         //imagen proyectos 
-         acomodarImagen.configurarPanelConImagen("/img/proyectos.png", jPanelProyectos);  
-         jPanelProyectos.setOpaque(false);
-         jPanelProyectos.setBorder(null);
-         jPanelProyectos.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         //Imagen Docentes
-           acomodarImagen.configurarPanelConImagen("/img/docentes.png", jPanelDocentes);  
-         jPanelDocentes.setOpaque(false);
-         jPanelDocentes.setBorder(null);
-         jPanelDocentes.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         //Imagen Empresas
-            acomodarImagen.configurarPanelConImagen("/img/empresas.png", jPanelEmpresas);  
-         jPanelEmpresas.setOpaque(false);
-         jPanelEmpresas.setBorder(null);
-         jPanelEmpresas.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         //Imagen LogOut
-            acomodarImagen.configurarPanelConImagen("/img/logout.png", JPanelLogOut);  
-         JPanelLogOut.setOpaque(false);
-         JPanelLogOut.setBorder(null);
-         JPanelLogOut.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
+        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
+        jPanel2.setOpaque(false);
+        jPanel2.setBorder(null);
+        jPanel2.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+
+        //IMAGEN OPCION ALUMNOS
+        acomodarImagen.configurarPanelConImagen("/img/user.png", panelOpAlumno);
+        panelOpAlumno.setOpaque(false);
+        panelOpAlumno.setBorder(null);
+        panelOpAlumno.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+
+        //imagen proyectos 
+        acomodarImagen.configurarPanelConImagen("/img/proyectos.png", jPanelProyectos);
+        jPanelProyectos.setOpaque(false);
+        jPanelProyectos.setBorder(null);
+        jPanelProyectos.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+        //Imagen Docentes
+        acomodarImagen.configurarPanelConImagen("/img/docentes.png", jPanelDocentes);
+        jPanelDocentes.setOpaque(false);
+        jPanelDocentes.setBorder(null);
+        jPanelDocentes.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+        //Imagen Empresas
+        acomodarImagen.configurarPanelConImagen("/img/empresas.png", jPanelEmpresas);
+        jPanelEmpresas.setOpaque(false);
+        jPanelEmpresas.setBorder(null);
+        jPanelEmpresas.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+
+        //Imagen LogOut
+        acomodarImagen.configurarPanelConImagen("/img/logout.png", JPanelLogOut);
+        JPanelLogOut.setOpaque(false);
+        JPanelLogOut.setBorder(null);
+        JPanelLogOut.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -150,6 +148,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jPanelEmpresas.setBackground(new java.awt.Color(255, 255, 255));
         jPanelEmpresas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelEmpresas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelEmpresasMouseClicked(evt);
+            }
+        });
         jPanelEmpresas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
@@ -216,11 +219,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         card.show(panelCambiante, "panelAlumnos");
-         this.pack();
+        this.pack();
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        
+
         new Vista.Login1().setVisible(true); // Abre el login
         dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
@@ -228,15 +231,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void panelOpAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelOpAlumnoMouseClicked
         // TODO add your handling code here:
         card.show(panelCambiante, "panelAlumnos");
-         this.pack();
+        this.pack();
     }//GEN-LAST:event_panelOpAlumnoMouseClicked
 
     private void JPanelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelLogOutMouseClicked
         // TODO add your handling code here:
         new Vista.Login1().setVisible(true); // Abre el login
         dispose();
-         
+
     }//GEN-LAST:event_JPanelLogOutMouseClicked
+
+    private void jPanelEmpresasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelEmpresasMouseClicked
+        Vista.Empresa.Empresa ventanaEmpresa = new Vista.Empresa.Empresa();
+        ventanaEmpresa.setVisible(true);
+        ventanaEmpresa.setLocationRelativeTo(this); // centra la ventana
+    }//GEN-LAST:event_jPanelEmpresasMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
