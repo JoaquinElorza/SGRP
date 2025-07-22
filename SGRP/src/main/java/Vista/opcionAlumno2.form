@@ -63,6 +63,9 @@
             <Property name="autoscrolls" type="boolean" value="true"/>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jScrollPane2MouseClicked"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="19" y="167" width="475" height="336"/>
@@ -155,7 +158,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblSolicitud" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnSubirDocumento" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -183,12 +186,12 @@
                       <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblSolicitud" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="comboSoli" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEiminarDocumento" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnSubirDocumento" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="254" max="32767" attributes="0"/>
+                      <EmptySpace pref="230" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -238,12 +241,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEiminarDocumentoActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel1">
+            <Component class="javax.swing.JLabel" name="lblSolicitud">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Solicitud de residencia"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel1MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblSolicitudMouseClicked"/>
               </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="comboSoli">
@@ -253,7 +256,7 @@
                     <StringItem index="0" value="No recibida"/>
                     <StringItem index="1" value="Recibida"/>
                     <StringItem index="2" value="Enviada a firmar"/>
-                    <StringItem index="3" value="Firmada"/>
+                    <StringItem index="3" value="Firmada y sellada"/>
                     <StringItem index="4" value="Entregada al alumno"/>
                   </StringArray>
                 </Property>

@@ -45,6 +45,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         initComponents();
         actualizarTablaAlumnos(tablaAlumnos);
 
+        if(comboSoli.getSelectedIndex()!=0){
+            lblSolicitud.setForeground(Color.blue);
+        }
+        
         
         //Imagen Logo
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
@@ -94,7 +98,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblProyecto = new javax.swing.JLabel();
         btnSubirDocumento = new javax.swing.JButton();
         btnEiminarDocumento = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblSolicitud = new javax.swing.JLabel();
         comboSoli = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         JPanelLOGO = new javax.swing.JPanel();
@@ -122,6 +126,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         jScrollPane2.setToolTipText("");
         jScrollPane2.setAutoscrolls(true);
         jScrollPane2.setName(""); // NOI18N
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane2MouseClicked(evt);
+            }
+        });
 
         tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -184,14 +193,14 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("Solicitud de residencia");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblSolicitud.setText("Solicitud de residencia");
+        lblSolicitud.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                lblSolicitudMouseClicked(evt);
             }
         });
 
-        comboSoli.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No recibida", "Recibida", "Enviada a firmar", "Firmada", "Entregada al alumno" }));
+        comboSoli.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No recibida", "Recibida", "Enviada a firmar", "Firmada y sellada", "Entregada al alumno" }));
         comboSoli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboSoliActionPerformed(evt);
@@ -214,7 +223,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                             .addComponent(lblProyecto)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addComponent(jLabel1)
+                        .addComponent(lblSolicitud)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSubirDocumento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -238,11 +247,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addComponent(lblCorreo)
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblSolicitud)
                     .addComponent(comboSoli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEiminarDocumento)
                     .addComponent(btnSubirDocumento))
-                .addContainerGap(254, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         panelAlumnos.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(538, 167, -1, -1));
@@ -400,7 +409,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         lblTelefono.setText(alumnoTabla.getNumeroTelefono());
         lblCorreo.setText(alumnoTabla.getCorreoElectronico());
         
-
+        
+        comboSoli.setSelectedIndex(DocumentoDao.comboSolicitud(lblControl.getText()));
     } catch (SQLException ex) {
         ex.printStackTrace();
     }
@@ -521,7 +531,6 @@ editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellid
             DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(), "Solicitud de residencia", this);
             try {
                 DocumentoDao.crearSoli(lblControl.getText());
-                comboSoli.setSelectedIndex(1);
             } catch (SQLException ex) {
                 Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -538,11 +547,11 @@ editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellid
         }
     }//GEN-LAST:event_btnEiminarDocumentoActionPerformed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void lblSolicitudMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSolicitudMouseClicked
             String rutaCadena = "C:\\SGRP\\" + lblControl.getText() + "\\Solicitud de residencia.pdf";
             Path ruta = Paths.get(rutaCadena);
             CarpetaOculta.abrirPDF(ruta);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_lblSolicitudMouseClicked
 
     private void comboSoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSoliActionPerformed
         try {
@@ -551,6 +560,10 @@ editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellid
             Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_comboSoliActionPerformed
+
+    private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPane2MouseClicked
 
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
          AlumnoDAO dao = new AlumnoDAO();
@@ -592,7 +605,6 @@ editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellid
     private javax.swing.JComboBox<String> comboSoli;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
@@ -600,6 +612,7 @@ editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellid
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblNombreAlumno;
     private javax.swing.JLabel lblProyecto;
+    private javax.swing.JLabel lblSolicitud;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JPanel panelAlumnos;
     public javax.swing.JTable tablaAlumnos;

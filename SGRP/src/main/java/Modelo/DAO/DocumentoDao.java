@@ -24,8 +24,8 @@ public class DocumentoDao {
     
 }
     
-    public static ExpedienteAlumno comboSolicitud(String nControl) throws SQLException{
-        String sql = "SELECT e.estatus\n" +
+    public static Integer comboSolicitud(String nControl) throws SQLException{
+        String sql = "SELECT e.id_estatus\n" +
                         "FROM alumno a\n" +
                         "JOIN soli_residencia sr ON a.id_alumno = sr.fk_alumno\n" +
                         "JOIN estatus_soli_residencia e ON sr.fk_estatus = e.id_estatus\n" +
@@ -36,12 +36,10 @@ public class DocumentoDao {
             ResultSet rs = stmt.executeQuery();
             
         if(rs.next()){
-           ExpedienteAlumno doc = new ExpedienteAlumno("Solicitud de residencia", rs.getString("estatus"));
-           return doc;
+           return rs.getInt("id_estatus");
         }
-       
     }
-        return null;
+        return 0;
     }
     
     public static void crearSoli(String nControl) throws SQLException{
