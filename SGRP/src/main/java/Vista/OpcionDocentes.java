@@ -4,62 +4,19 @@
  */
 package Vista;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.List;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import Controlador.AcomodarImagen;
-import Modelo.DAO.DocenteDAO;
-import Modelo.DAO.DocenteCarg;
-
 /**
  *
- * @author yahir
+ * @author emilio
  */
 public class OpcionDocentes extends javax.swing.JFrame {
-    private final AcomodarImagen acomodarImagen = new AcomodarImagen();
-    
-    CardLayout card;
-    private JPanel panelContainer;
 
-    public OpcionDocentes(CardLayout layout, JPanel container) {
-        this.card = layout;
-        this.panelContainer = container;
-        this.setPreferredSize(new Dimension(905, 539));
-        initComponents();
-        
-        
-        //Imagen Logo
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", LogoDocente);  
-         LogoDocente.setOpaque(false);
-         LogoDocente.setBorder(null);
-         LogoDocente.setBackground(new Color(0,0,0,0));
-         actualizarTablaDocentes();
-         this.setVisible(true);
-         
-    } 
     /**
      * Creates new form OpcionDocentes
      */
     public OpcionDocentes() {
         initComponents();
-        actualizarTablaDocentes();
     }
-    private void actualizarTablaDocentes(){
-    DefaultTableModel modelo = (DefaultTableModel) tablaAlumnos.getModel();
-        modelo.setRowCount(0);
 
-        List<DocenteCarg> lista = new DocenteDAO().obtenerTodos();
-        for (DocenteCarg d : lista) {
-            String nombreCompleto = d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno();
-            modelo.addRow(new Object[]{d.getRfc(), nombreCompleto});
-        }
-    }
- 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,318 +27,20 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private void initComponents() {
 
         opcionDocentesPanel = new javax.swing.JPanel();
-        TablaDocentes = new javax.swing.JScrollPane();
-        tablaAlumnos = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        textotitle = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        MostrarNombreCompletoD = new javax.swing.JTextField();
-        MostrarProyectoD = new javax.swing.JTextField();
-        MostrarCorreoDocente = new javax.swing.JTextField();
-        MostrarNumeroTelefonoD = new javax.swing.JTextField();
-        MostrarNControlDocente = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        lblNombreAlumno = new javax.swing.JLabel();
-        lblTelefono = new javax.swing.JLabel();
-        lblControl = new javax.swing.JLabel();
-        lblProyecto = new javax.swing.JLabel();
-        lblCorreo = new javax.swing.JLabel();
-        BtnAgregarDocente = new javax.swing.JButton();
-        BtnEliminarDocente = new javax.swing.JButton();
-        BtnEditarDocente = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        LogoDocente = new javax.swing.JPanel();
-        Regresarmenup = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         opcionDocentesPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        TablaDocentes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
-        TablaDocentes.setToolTipText("");
-        TablaDocentes.setAutoscrolls(true);
-        TablaDocentes.setName(""); // NOI18N
-
-        tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Numero de  control", "Nombre"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaAlumnosMouseClicked(evt);
-            }
-        });
-        TablaDocentes.setViewportView(tablaAlumnos);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Documento", ""
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        textotitle.setText("DATOS DEL DOCENTE");
-
-        MostrarNombreCompletoD.setEditable(false);
-
-        MostrarProyectoD.setEditable(false);
-
-        MostrarCorreoDocente.setEditable(false);
-
-        MostrarNumeroTelefonoD.setEditable(false);
-
-        MostrarNControlDocente.setEditable(false);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MostrarProyectoD, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-                    .addComponent(MostrarCorreoDocente)
-                    .addComponent(MostrarNombreCompletoD)
-                    .addComponent(MostrarNControlDocente)
-                    .addComponent(MostrarNumeroTelefonoD))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(MostrarNControlDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(MostrarNombreCompletoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(MostrarNumeroTelefonoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(MostrarCorreoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(MostrarProyectoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-
-        lblNombreAlumno.setText("Nombre Completo");
-
-        lblTelefono.setText("Telefono");
-
-        lblControl.setText("Numero de  control");
-
-        lblProyecto.setText("Proyecto");
-
-        lblCorreo.setText("Correo electronico");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblProyecto))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTelefono)))
-                .addContainerGap(34, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(2, 10, Short.MAX_VALUE)
-                        .addComponent(lblControl))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblCorreo)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblNombreAlumno)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(lblControl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(lblNombreAlumno)
-                .addGap(18, 18, 18)
-                .addComponent(lblTelefono)
-                .addGap(18, 18, 18)
-                .addComponent(lblCorreo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblProyecto)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(textotitle))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(textotitle)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(40, 40, 40)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-
-        BtnAgregarDocente.setBackground(new java.awt.Color(51, 153, 255));
-        BtnAgregarDocente.setText("Agregar");
-        BtnAgregarDocente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnAgregarDocenteActionPerformed(evt);
-            }
-        });
-
-        BtnEliminarDocente.setBackground(new java.awt.Color(51, 153, 255));
-        BtnEliminarDocente.setText("Eliminar");
-        BtnEliminarDocente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnEliminarDocenteActionPerformed(evt);
-            }
-        });
-
-        BtnEditarDocente.setBackground(new java.awt.Color(51, 153, 255));
-        BtnEditarDocente.setText("Editar");
-        BtnEditarDocente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnEditarDocenteActionPerformed(evt);
-            }
-        });
-
-        jTextField1.setText("Ingresa número de control");
-        jTextField1.setOpaque(true);
-
-        jButton1.setText("Buscar");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        LogoDocente.setBackground(new java.awt.Color(255, 255, 255));
-        LogoDocente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        LogoDocente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Regresarmenup.setText("Atras");
-        Regresarmenup.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                RegresarmenupMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout opcionDocentesPanelLayout = new javax.swing.GroupLayout(opcionDocentesPanel);
         opcionDocentesPanel.setLayout(opcionDocentesPanelLayout);
         opcionDocentesPanelLayout.setHorizontalGroup(
             opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, opcionDocentesPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addComponent(TablaDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(BtnAgregarDocente)
-                        .addGap(15, 15, 15)
-                        .addComponent(BtnEliminarDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(BtnEditarDocente)))
-                .addContainerGap(20, Short.MAX_VALUE))
-            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(Regresarmenup)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(LogoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+            .addGap(0, 481, Short.MAX_VALUE)
         );
         opcionDocentesPanelLayout.setVerticalGroup(
             opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(LogoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, opcionDocentesPanelLayout.createSequentialGroup()
-                        .addComponent(Regresarmenup)
-                        .addGap(17, 17, 17)))
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TablaDocentes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnAgregarDocente)
-                    .addComponent(BtnEliminarDocente)
-                    .addComponent(BtnEditarDocente))
-                .addContainerGap())
+            .addGap(0, 336, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -390,7 +49,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,97 +58,6 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-   
-    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
-       int filaVisual = tablaAlumnos.getSelectedRow();
-        if (filaVisual == -1) return;
-        int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-        String rfc = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
-
-        DocenteCarg d = new DocenteDAO().consultarPorRFC(rfc);
-        if (d != null) {
-            MostrarNombreCompletoD.setText(d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno());
-            MostrarNumeroTelefonoD.setText(d.getTelefono());
-            MostrarCorreoDocente.setText(d.getCorreo());
-            MostrarNControlDocente.setText(d.getRfc());
-            MostrarProyectoD.setText("Sin asignar");
-        }
-    }//GEN-LAST:event_tablaAlumnosMouseClicked
-
-    private void BtnAgregarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarDocenteActionPerformed
-        AgregarDocente agregar = new AgregarDocente();
-        agregar.setVisible(true);
-        agregar.setLocationRelativeTo(null);
-        agregar.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                actualizarTablaDocentes();
-            }
-        });
-    }//GEN-LAST:event_BtnAgregarDocenteActionPerformed
-
-    private void BtnEliminarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarDocenteActionPerformed
-       int filaVisual = tablaAlumnos.getSelectedRow();
-        if (filaVisual == -1) {
-            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para eliminar.");
-            return;
-        }
-        int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-        String rfc = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
-        String nombre = MostrarNombreCompletoD.getText();
-
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Deseas eliminar a " + nombre + " con RFC " + rfc + "?",
-            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean eliminado = new DocenteDAO().eliminarDocente(rfc);
-            if (eliminado) {
-                JOptionPane.showMessageDialog(this, "✅ Docente eliminado correctamente.");
-                actualizarTablaDocentes();
-                MostrarNombreCompletoD.setText("");
-                MostrarNumeroTelefonoD.setText("");
-                MostrarCorreoDocente.setText("");
-                MostrarNControlDocente.setText("");
-                MostrarProyectoD.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al docente.");
-            }
-        }
-    }//GEN-LAST:event_BtnEliminarDocenteActionPerformed
-
-    private void BtnEditarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarDocenteActionPerformed
-         int filaVisual = tablaAlumnos.getSelectedRow();
-        if (filaVisual == -1) {
-            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para editar.");
-            return;
-        }
-        int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-        String rfc = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
-
-        DocenteCarg datos = new DocenteDAO().consultarPorRFC(rfc);
-        if (datos == null) {
-            JOptionPane.showMessageDialog(this, "❌ No se pudo cargar el docente.");
-            return;
-        }
-
-        EditarDocente editar = new EditarDocente();
-        editar.cargarDatos(datos.getRfc(), datos.getNombre(), datos.getApellidoPaterno(),
-                           datos.getApellidoMaterno(), datos.getTelefono(), datos.getCorreo());
-        editar.setVisible(true);
-        editar.setLocationRelativeTo(null);
-        editar.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                actualizarTablaDocentes();
-            }
-        });
-    }//GEN-LAST:event_BtnEditarDocenteActionPerformed
-
-    private void RegresarmenupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegresarmenupMouseClicked
-        card.show(panelContainer, "menu principal"); 
-    }//GEN-LAST:event_RegresarmenupMouseClicked
 
     /**
      * @param args the command line arguments
@@ -527,32 +95,6 @@ public class OpcionDocentes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnAgregarDocente;
-    private javax.swing.JButton BtnEditarDocente;
-    private javax.swing.JButton BtnEliminarDocente;
-    private javax.swing.JPanel LogoDocente;
-    private javax.swing.JTextField MostrarCorreoDocente;
-    private javax.swing.JTextField MostrarNControlDocente;
-    private javax.swing.JTextField MostrarNombreCompletoD;
-    private javax.swing.JTextField MostrarNumeroTelefonoD;
-    private javax.swing.JTextField MostrarProyectoD;
-    private javax.swing.JButton Regresarmenup;
-    private javax.swing.JScrollPane TablaDocentes;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel lblControl;
-    private javax.swing.JLabel lblCorreo;
-    private javax.swing.JLabel lblNombreAlumno;
-    private javax.swing.JLabel lblProyecto;
-    private javax.swing.JLabel lblTelefono;
     private javax.swing.JPanel opcionDocentesPanel;
-    public javax.swing.JTable tablaAlumnos;
-    private javax.swing.JLabel textotitle;
     // End of variables declaration//GEN-END:variables
 }

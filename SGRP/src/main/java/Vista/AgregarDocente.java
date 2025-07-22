@@ -1,20 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Vista;
 
-/**
- *
- * @author yahir
- */
 import Modelo.DAO.DocenteDAO;
 import Modelo.DAO.DocenteCarg;
 import javax.swing.*;
 
 public class AgregarDocente extends JFrame {
 
-    private JTextField txtNombre, txtApPaterno, txtApMaterno, txtTelefono, txtCorreo, txtRFC;
+    private JTextField txtNombre, txtApPaterno, txtApMaterno, txtTelefono, txtCorreo, txtControl;
     private JButton btnGuardar;
 
     public AgregarDocente() {
@@ -28,14 +20,14 @@ public class AgregarDocente extends JFrame {
         txtApMaterno = new JTextField(); txtApMaterno.setBounds(150, 100, 200, 25); add(txtApMaterno);
         txtTelefono  = new JTextField(); txtTelefono.setBounds(150, 140, 200, 25); add(txtTelefono);
         txtCorreo    = new JTextField(); txtCorreo.setBounds(150, 180, 200, 25); add(txtCorreo);
-        txtRFC       = new JTextField(); txtRFC.setBounds(150, 220, 200, 25); add(txtRFC);
+        txtControl   = new JTextField(); txtControl.setBounds(150, 220, 200, 25); add(txtControl);
 
         btnGuardar   = new JButton("Guardar"); btnGuardar.setBounds(150, 260, 100, 30); add(btnGuardar);
         btnGuardar.addActionListener(e -> guardar());
 
         JLabel[] labels = {
             new JLabel("Nombre"), new JLabel("Apellido Paterno"), new JLabel("Apellido Materno"),
-            new JLabel("Teléfono (10 dígitos)"), new JLabel("Correo electrónico"), new JLabel("RFC")
+            new JLabel("Teléfono (10 dígitos)"), new JLabel("Correo electrónico"), new JLabel("Número de control")
         };
 
         int y = 20;
@@ -47,16 +39,16 @@ public class AgregarDocente extends JFrame {
     }
 
     private void guardar() {
-        String nombre     = txtNombre.getText().trim();
-        String apPaterno  = txtApPaterno.getText().trim();
-        String apMaterno  = txtApMaterno.getText().trim();
-        String telefono   = txtTelefono.getText().trim();
-        String correo     = txtCorreo.getText().trim();
-        String rfc        = txtRFC.getText().trim();
+        String nombre        = txtNombre.getText().trim();
+        String apPaterno     = txtApPaterno.getText().trim();
+        String apMaterno     = txtApMaterno.getText().trim();
+        String telefono      = txtTelefono.getText().trim();
+        String correo        = txtCorreo.getText().trim();
+        String numeroControl = txtControl.getText().trim();
 
         // 🛡️ Validaciones
         if (nombre.isEmpty() || apPaterno.isEmpty() || apMaterno.isEmpty() ||
-            telefono.isEmpty() || correo.isEmpty() || rfc.isEmpty()) {
+            telefono.isEmpty() || correo.isEmpty() || numeroControl.isEmpty()) {
             JOptionPane.showMessageDialog(this, "⚠️ Todos los campos son obligatorios.");
             return;
         }
@@ -79,7 +71,7 @@ public class AgregarDocente extends JFrame {
         }
 
         // 🚀 Registro
-        DocenteCarg d = new DocenteCarg(nombre, apPaterno, apMaterno, rfc, telefono, correo);
+        DocenteCarg d = new DocenteCarg(nombre, apPaterno, apMaterno, numeroControl, telefono, correo);
         boolean ok = new DocenteDAO().agregarDocente(d);
 
         if (ok) {
@@ -90,4 +82,3 @@ public class AgregarDocente extends JFrame {
         }
     }
 }
-

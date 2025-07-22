@@ -1,21 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Vista;
 
-/**
- *
- * @author yahir
- */
 import Modelo.DAO.DocenteCarg;
 import Modelo.DAO.DocenteDAO;
 import javax.swing.*;
 
 public class EditarDocente extends JFrame {
 
-    private JTextField txtNombre, txtApPaterno, txtApMaterno, txtTelefono, txtCorreo, txtRFC;
+    private JTextField txtNombre, txtApPaterno, txtApMaterno, txtTelefono, txtCorreo, txtControl;
     private JButton btnGuardar;
+    private String numeroControlOriginal;
+
 
     public EditarDocente() {
         setTitle("Editar Docente");
@@ -28,14 +22,14 @@ public class EditarDocente extends JFrame {
         txtApMaterno = new JTextField(); txtApMaterno.setBounds(150, 100, 200, 25); add(txtApMaterno);
         txtTelefono  = new JTextField(); txtTelefono.setBounds(150, 140, 200, 25); add(txtTelefono);
         txtCorreo    = new JTextField(); txtCorreo.setBounds(150, 180, 200, 25); add(txtCorreo);
-        txtRFC       = new JTextField(); txtRFC.setBounds(150, 220, 200, 25); txtRFC.setEditable(false); add(txtRFC);
+        txtControl   = new JTextField(); txtControl.setBounds(150, 220, 200, 25); add(txtControl); // ahora editable
 
         btnGuardar   = new JButton("Guardar"); btnGuardar.setBounds(150, 260, 100, 30); add(btnGuardar);
         btnGuardar.addActionListener(e -> actualizar());
 
         JLabel[] labels = {
             new JLabel("Nombre"), new JLabel("Apellido Paterno"), new JLabel("Apellido Materno"),
-            new JLabel("Teléfono (10 dígitos)"), new JLabel("Correo electrónico"), new JLabel("RFC")
+            new JLabel("Teléfono (10 dígitos)"), new JLabel("Correo electrónico"), new JLabel("Número de control")
         };
 
         int y = 20;
@@ -46,28 +40,37 @@ public class EditarDocente extends JFrame {
         }
     }
 
-    public void cargarDatos(String rfc, String nombre, String apPaterno,
-                            String apMaterno, String telefono, String correo) {
-        txtRFC.setText(rfc);
-        txtNombre.setText(nombre);
-        txtApPaterno.setText(apPaterno);
-        txtApMaterno.setText(apMaterno);
-        txtTelefono.setText(telefono);
-        txtCorreo.setText(correo);
-    }
+    public void cargarDatos(String numeroControl, String nombre, String apPaterno,
+                        String apMaterno, String telefono, String correo) {
+    numeroControlOriginal = numeroControl; // ← aquí la guardas
+    txtControl.setText(numeroControl);
+    txtNombre.setText(nombre);
+    txtApPaterno.setText(apPaterno);
+    txtApMaterno.setText(apMaterno);
+    txtTelefono.setText(telefono);
+    txtCorreo.setText(correo);
+}
+
 
     private void actualizar() {
-        String nombre     = txtNombre.getText().trim();
-        String apPaterno  = txtApPaterno.getText().trim();
-        String apMaterno  = txtApMaterno.getText().trim();
-        String telefono   = txtTelefono.getText().trim();
-        String correo     = txtCorreo.getText().trim();
-        String rfc        = txtRFC.getText().trim();
+        String nombre        = txtNombre.getText().trim();
+        String apPaterno     = txtApPaterno.getText().trim();
+        String apMaterno     = txtApMaterno.getText().trim();
+        String telefono      = txtTelefono.getText().trim();
+        String correo        = txtCorreo.getText().trim();
+        String numeroControl = txtControl.getText().trim();
 
         if (nombre.isEmpty() || apPaterno.isEmpty() || apMaterno.isEmpty() ||
-            telefono.isEmpty() || correo.isEmpty()) {
+            telefono.isEmpty() || correo.isEmpty() || numeroControl.isEmpty()) {
             JOptionPane.showMessageDialog(this, "⚠️ Todos los campos son obligatorios.");
             return;
+        }
+        DocenteDAO dao = new DocenteDAO();
+        boolean yaExiste = dao.existeNumeroControl(numeroControl);
+
+        if (yaExiste && !numeroControl.equals(txtControl.getText().trim())) {
+         JOptionPane.showMessageDialog(this, "⚠️ Ese número de control ya existe.");
+        return;
         }
 
         if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
@@ -87,8 +90,9 @@ public class EditarDocente extends JFrame {
             return;
         }
 
-        DocenteCarg d = new DocenteCarg(nombre, apPaterno, apMaterno, rfc, telefono, correo);
-        boolean ok = new DocenteDAO().actualizarDocente(d);
+        DocenteCarg d = new DocenteCarg(nombre, apPaterno, apMaterno, numeroControl, telefono, correo);
+        boolean ok = dao.actualizarDocente(d, numeroControlOriginal);
+
 
         if (ok) {
             JOptionPane.showMessageDialog(this, "✅ Docente actualizado correctamente.");
