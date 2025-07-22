@@ -73,20 +73,21 @@ public class OpcionDocentes extends javax.swing.JFrame {
         TablaDocentes = new javax.swing.JScrollPane();
         tablaAlumnos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        lblControl = new javax.swing.JLabel();
-        lblNombreAlumno = new javax.swing.JLabel();
-        lblTelefono = new javax.swing.JLabel();
-        lblCorreo = new javax.swing.JLabel();
-        lblProyecto = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         textotitle = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         MostrarNombreCompletoD = new javax.swing.JTextField();
-        MostrarNumeroTelefonoD = new javax.swing.JTextField();
         MostrarProyectoD = new javax.swing.JTextField();
         MostrarCorreoDocente = new javax.swing.JTextField();
+        MostrarNumeroTelefonoD = new javax.swing.JTextField();
         MostrarNControlDocente = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        lblNombreAlumno = new javax.swing.JLabel();
+        lblTelefono = new javax.swing.JLabel();
+        lblControl = new javax.swing.JLabel();
+        lblProyecto = new javax.swing.JLabel();
+        lblCorreo = new javax.swing.JLabel();
         BtnAgregarDocente = new javax.swing.JButton();
         BtnEliminarDocente = new javax.swing.JButton();
         BtnEditarDocente = new javax.swing.JButton();
@@ -94,6 +95,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         LogoDocente = new javax.swing.JPanel();
+        Regresarmenup = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,16 +131,6 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
-        lblControl.setText("Numero de  control");
-
-        lblNombreAlumno.setText("Nombre Completo");
-
-        lblTelefono.setText("Telefono");
-
-        lblCorreo.setText("Correo electronico");
-
-        lblProyecto.setText("Proyecto");
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -153,11 +145,11 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
         MostrarNombreCompletoD.setEditable(false);
 
-        MostrarNumeroTelefonoD.setEditable(false);
-
         MostrarProyectoD.setEditable(false);
 
         MostrarCorreoDocente.setEditable(false);
+
+        MostrarNumeroTelefonoD.setEditable(false);
 
         MostrarNControlDocente.setEditable(false);
 
@@ -168,27 +160,80 @@ public class OpcionDocentes extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MostrarNumeroTelefonoD, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-                    .addComponent(MostrarProyectoD)
+                    .addComponent(MostrarProyectoD, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                     .addComponent(MostrarCorreoDocente)
+                    .addComponent(MostrarNombreCompletoD)
                     .addComponent(MostrarNControlDocente)
-                    .addComponent(MostrarNombreCompletoD))
+                    .addComponent(MostrarNumeroTelefonoD))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(MostrarNControlDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(MostrarNombreCompletoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(MostrarNumeroTelefonoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(MostrarCorreoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(MostrarProyectoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(MostrarCorreoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(MostrarNControlDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(9, Short.MAX_VALUE))
+        );
+
+        lblNombreAlumno.setText("Nombre Completo");
+
+        lblTelefono.setText("Telefono");
+
+        lblControl.setText("Numero de  control");
+
+        lblProyecto.setText("Proyecto");
+
+        lblCorreo.setText("Correo electronico");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblProyecto))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTelefono)))
+                .addContainerGap(34, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(2, 10, Short.MAX_VALUE)
+                        .addComponent(lblControl))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblCorreo)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblNombreAlumno)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(lblControl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(lblNombreAlumno)
+                .addGap(18, 18, 18)
+                .addComponent(lblTelefono)
+                .addGap(18, 18, 18)
+                .addComponent(lblCorreo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblProyecto)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -198,24 +243,9 @@ public class OpcionDocentes extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblNombreAlumno)
-                                            .addComponent(lblControl))
-                                        .addGap(18, 18, 18))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblProyecto)
-                                            .addComponent(lblTelefono))
-                                        .addGap(41, 41, 41))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblCorreo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(115, 115, 115)
@@ -231,19 +261,11 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(textotitle)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblControl)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblNombreAlumno)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTelefono)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblProyecto)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblCorreo)
-                        .addGap(13, 13, 13))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
@@ -303,6 +325,13 @@ public class OpcionDocentes extends javax.swing.JFrame {
         LogoDocente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         LogoDocente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Regresarmenup.setText("Atras");
+        Regresarmenup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RegresarmenupMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout opcionDocentesPanelLayout = new javax.swing.GroupLayout(opcionDocentesPanel);
         opcionDocentesPanel.setLayout(opcionDocentesPanelLayout);
         opcionDocentesPanelLayout.setHorizontalGroup(
@@ -311,33 +340,39 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                                .addComponent(TablaDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                                .addGap(93, 93, 93)
-                                .addComponent(BtnAgregarDocente)
-                                .addGap(15, 15, 15)
-                                .addComponent(BtnEliminarDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(BtnEditarDocente)))
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(TablaDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LogoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46))))
+                        .addGap(93, 93, 93)
+                        .addComponent(BtnAgregarDocente)
+                        .addGap(15, 15, 15)
+                        .addComponent(BtnEliminarDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(BtnEditarDocente)))
+                .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(Regresarmenup)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LogoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
         opcionDocentesPanelLayout.setVerticalGroup(
             opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(LogoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
+                        .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(LogoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, opcionDocentesPanelLayout.createSequentialGroup()
+                        .addComponent(Regresarmenup)
+                        .addGap(17, 17, 17)))
                 .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(TablaDocentes))
@@ -355,7 +390,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,6 +487,10 @@ public class OpcionDocentes extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_BtnEditarDocenteActionPerformed
 
+    private void RegresarmenupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegresarmenupMouseClicked
+        card.show(panelContainer, "menu principal"); 
+    }//GEN-LAST:event_RegresarmenupMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -497,11 +536,13 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private javax.swing.JTextField MostrarNombreCompletoD;
     private javax.swing.JTextField MostrarNumeroTelefonoD;
     private javax.swing.JTextField MostrarProyectoD;
+    private javax.swing.JButton Regresarmenup;
     private javax.swing.JScrollPane TablaDocentes;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
