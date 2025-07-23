@@ -15,12 +15,12 @@ public class AgregarDocente extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
 
-        txtNombre    = new JTextField(); txtNombre.setBounds(150, 20, 200, 25); add(txtNombre);
-        txtApPaterno = new JTextField(); txtApPaterno.setBounds(150, 60, 200, 25); add(txtApPaterno);
-        txtApMaterno = new JTextField(); txtApMaterno.setBounds(150, 100, 200, 25); add(txtApMaterno);
-        txtTelefono  = new JTextField(); txtTelefono.setBounds(150, 140, 200, 25); add(txtTelefono);
-        txtCorreo    = new JTextField(); txtCorreo.setBounds(150, 180, 200, 25); add(txtCorreo);
-        txtControl   = new JTextField(); txtControl.setBounds(150, 220, 200, 25); add(txtControl);
+        txtNombre    = new JTextField(); txtNombre.setBounds(150, 20, 200, 30); add(txtNombre);
+        txtApPaterno = new JTextField(); txtApPaterno.setBounds(150, 60, 200, 30); add(txtApPaterno);
+        txtApMaterno = new JTextField(); txtApMaterno.setBounds(150, 100, 200, 30); add(txtApMaterno);
+        txtTelefono  = new JTextField(); txtTelefono.setBounds(150, 140, 200, 30); add(txtTelefono);
+        txtCorreo    = new JTextField(); txtCorreo.setBounds(150, 180, 200, 30); add(txtCorreo);
+        txtControl   = new JTextField(); txtControl.setBounds(150, 220, 200, 30); add(txtControl);
 
         btnGuardar   = new JButton("Guardar"); btnGuardar.setBounds(150, 260, 100, 30); add(btnGuardar);
         btnGuardar.addActionListener(e -> guardar());

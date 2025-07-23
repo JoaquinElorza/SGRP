@@ -254,9 +254,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanelEmpresasMouseClicked
 
     private void jPanelDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelDocentesMouseClicked
-       Vista.OpcionDocentes ventanaDocentes = new Vista.OpcionDocentes();
-        ventanaDocentes.setVisible(true);
-        ventanaDocentes.setLocationRelativeTo(this);
+       OpcionDocentes opc = new OpcionDocentes();
+        opc.setVisible(true);
+        opc.setLocationRelativeTo(null);
+        dispose();
     }//GEN-LAST:event_jPanelDocentesMouseClicked
 
     public static void main(String args[]) {
