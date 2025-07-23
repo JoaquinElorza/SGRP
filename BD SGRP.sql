@@ -26,22 +26,18 @@ create table persona(
  fk_persona int,
  correo varchar(50),
  foreign key (fk_persona) references persona(id_persona));
-
-CREATE TABLE docente (
-    id_docente INT PRIMARY KEY AUTO_INCREMENT,
-    n_control VARCHAR(20) NOT NULL UNIQUE,
-    telefono VARCHAR(10),
-    correo VARCHAR(50),
-    fk_persona INT,
-    FOREIGN KEY (fk_persona) REFERENCES persona(id_persona)
-);
+ 
+  create table documentos(
+ id_documento int primary key auto_increment,
+ documento varchar(25));
  
  create table expediente_alumno(
  id_documentosAlumno int primary key auto_increment,
- documento varchar(25),
+ fk_documento int,
  estatus boolean,
  fk_alumno int,
- foreign key (fk_alumno) references alumno(id_alumno));
+ foreign key (fk_alumno) references alumno(id_alumno),
+ foreign key (fk_documento) references documentos(id_documento));
  
  create table soli_residencia(
  id_solicitudResidencia int primary key auto_increment,
@@ -53,3 +49,27 @@ CREATE TABLE docente (
  create table estatus_soli_residencia(
  id_estatus int primary key auto_increment,
  estatus varchar(25));
+ 
+ CREATE TABLE docente (
+    id_docente INT PRIMARY KEY AUTO_INCREMENT,
+    n_control VARCHAR(20) NOT NULL UNIQUE,
+    telefono VARCHAR(10),
+    correo VARCHAR(50),
+    fk_persona INT,
+    FOREIGN KEY (fk_persona) REFERENCES persona(id_persona)
+);
+
+CREATE TABLE empresa (
+  id_empresa INT PRIMARY KEY AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  contacto VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE proyecto (
+    id_proyecto INT AUTO_INCREMENT PRIMARY KEY,
+    fk_empresa INT NOT NULL,
+    nombre VARCHAR(150) NOT NULL,
+    descripcion TEXT,
+    estatus ENUM('Disponible', 'No disponible') DEFAULT 'Disponible',
+    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
+);

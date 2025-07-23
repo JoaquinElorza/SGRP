@@ -485,24 +485,24 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
-      int fila = tablaAlumnos.getSelectedRow();
-    if (fila == -1) return;
+        int fila = tablaAlumnos.getSelectedRow();
+      if (fila == -1) return;
 
-    String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-    try {
-        AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
+      String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+      try {
+          AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
 
-        lblControl.setText(alumnoTabla.getNumeroControl());
-        lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
-        lblTelefono.setText(alumnoTabla.getNumeroTelefono());
-        lblCorreo.setText(alumnoTabla.getCorreoElectronico());
-        
-        comboSoli.setSelectedIndex(DocumentoDao.comboSolicitud(lblControl.getText()));
-        
-        mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-    }
+          lblControl.setText(alumnoTabla.getNumeroControl());
+          lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
+          lblTelefono.setText(alumnoTabla.getNumeroTelefono());
+          lblCorreo.setText(alumnoTabla.getCorreoElectronico());
+
+          comboSoli.setSelectedIndex(DocumentoDao.comboSolicitud(lblControl.getText()));
+
+          mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+      } catch (SQLException ex) {
+          ex.printStackTrace();
+      }
     }//GEN-LAST:event_tablaAlumnosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed

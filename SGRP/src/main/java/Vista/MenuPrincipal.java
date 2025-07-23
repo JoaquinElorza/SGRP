@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import Vista.OpcionDocentes;
+import Vista.vistaProyectos;
+
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
@@ -16,14 +18,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
         card = (CardLayout) panelCambiante.getLayout();
         //this.setPreferredSize(new Dimension(626, 468));
         //setSize(626,470);
-
+        
+        vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
         opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
         AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
-
+        agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante, proyectos);
+        editarProyecto panelEditar = new editarProyecto(card, panelCambiante, proyectos);
+        
+        
+        
+        panelCambiante.add(panelAgregar, "panelAgregarProyecto");
         panelCambiante.add(panelPrincipal, "menu principal");
         panelCambiante.add(panelAlumnos, "panelAlumnos");
         panelCambiante.add(agregarAlumno, "Agregar alumno");
-
+        panelCambiante.add(proyectos, "panelProyectos");
+        panelCambiante.add(panelEditar, "panelEditarProyecto");
         //IMAGEN DE LOGO
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
         jPanel2.setOpaque(false);
@@ -63,6 +72,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         JPanelLogOut.setBorder(null);
         JPanelLogOut.setBackground(new Color(0, 0, 0, 0));
         this.setVisible(true);
+        
+        card.show(panelCambiante, "menu principal");
 
     }
 
@@ -126,6 +137,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jPanelProyectos.setBackground(new java.awt.Color(255, 255, 255));
         jPanelProyectos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelProyectos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelProyectosMouseClicked(evt);
+            }
+        });
         jPanelProyectos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanelDocentes.setBackground(new java.awt.Color(255, 255, 255));
@@ -138,8 +154,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanelDocentes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setText("Proyectos");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         jLabel4.setText("Docentes");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Empresas");
 
@@ -172,9 +198,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(230, 230, 230)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(jPanelEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
@@ -182,38 +205,42 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(130, 130, 130)
+                .addGap(146, 146, 146)
                 .addComponent(jLabel5)
-                .addGap(82, 82, 82)
+                .addGap(88, 88, 88)
                 .addComponent(jLabel3)
-                .addGap(74, 74, 74)
+                .addGap(92, 92, 92)
                 .addComponent(jLabel4))
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(260, 260, 260)
                 .addComponent(panelOpAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(280, 280, 280)
+                .addGap(288, 288, 288)
                 .addComponent(jLabel1))
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(8, 8, 8)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addGap(12, 12, 12)
                 .addComponent(panelOpAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addContainerGap())
         );
 
         panelCambiante.add(panelPrincipal, "card2");
@@ -260,6 +287,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         opc.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_jPanelDocentesMouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jPanelProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProyectosMouseClicked
+        // TODO add your handling code here:
+         card.show(panelCambiante, "panelProyectos");
+          
+    }//GEN-LAST:event_jPanelProyectosMouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+         card.show(panelCambiante, "panelProyectos");
+         
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
