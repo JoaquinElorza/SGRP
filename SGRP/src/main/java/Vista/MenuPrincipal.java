@@ -22,15 +22,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
         vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
         opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
         AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
-        agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante);
-
+        agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante, proyectos);
+        editarProyecto panelEditar = new editarProyecto(card, panelCambiante, proyectos);
+        
+        
         
         panelCambiante.add(panelAgregar, "panelAgregarProyecto");
         panelCambiante.add(panelPrincipal, "menu principal");
         panelCambiante.add(panelAlumnos, "panelAlumnos");
         panelCambiante.add(agregarAlumno, "Agregar alumno");
         panelCambiante.add(proyectos, "panelProyectos");
-
+        panelCambiante.add(panelEditar, "panelEditarProyecto");
         //IMAGEN DE LOGO
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
         jPanel2.setOpaque(false);
