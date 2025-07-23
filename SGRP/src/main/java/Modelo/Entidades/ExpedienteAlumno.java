@@ -1,37 +1,31 @@
 package Modelo.Entidades;
 
-/**
- *
- * @author Jobae
- */
 public class ExpedienteAlumno {
     
     String nombre;
-    String estatus;
+    boolean estatus;
     
-    public ExpedienteAlumno(String nombre, String estaus){
+    public ExpedienteAlumno(String nombre, boolean estatus){
         this.nombre = nombre;
         this.estatus = estatus;
+    }
+
+    public ExpedienteAlumno() {
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setEstatus(String estatus) {
-        this.estatus = estatus;
+    public boolean getEstatus() {
+        return estatus;
     }
-
-    
     
     public String getNombre() {
         return nombre;
     }
 
-    public String getEstatus() {
-        return estatus;
+    public void setEstatus(boolean estatus) {
+        this.estatus = estatus;
     }
-    
-    
-    
 }

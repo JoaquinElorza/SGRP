@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,19 +15,8 @@ import java.sql.SQLException;
  */
 public class DocumentoDao {
     
-    public static void asignarCombos(String nControl) throws SQLException{
-        String sql = "select documento, estatus from expediente_alumno join alumno\n" +
-                    "on id_alumno = id_documentosAlumno where n_control=?;";
-        
-        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nControl);
-            ResultSet rs = stmt.executeQuery();
-    }
-    
-}
-    
-    public static ExpedienteAlumno comboSolicitud(String nControl) throws SQLException{
-        String sql = "SELECT e.estatus\n" +
+    public static Integer comboSolicitud(String nControl) throws SQLException{
+        String sql = "SELECT e.id_estatus\n" +
                         "FROM alumno a\n" +
                         "JOIN soli_residencia sr ON a.id_alumno = sr.fk_alumno\n" +
                         "JOIN estatus_soli_residencia e ON sr.fk_estatus = e.id_estatus\n" +
@@ -36,12 +27,10 @@ public class DocumentoDao {
             ResultSet rs = stmt.executeQuery();
             
         if(rs.next()){
-           ExpedienteAlumno doc = new ExpedienteAlumno("Solicitud de residencia", rs.getString("estatus"));
-           return doc;
+           return rs.getInt("id_estatus");
         }
-       
     }
-        return null;
+        return 0;
     }
     
     public static void crearSoli(String nControl) throws SQLException{
@@ -67,7 +56,6 @@ public class DocumentoDao {
             
         }
     }
-    
     
     public static void actualizarEstatusSoli(String nControl, String nuevoStatus) throws SQLException {
     String sql1 = "SELECT id_estatus FROM estatus_soli_residencia WHERE estatus = ?;";
@@ -115,4 +103,55 @@ public class DocumentoDao {
     }
 }
     
+    public static List<ExpedienteAlumno> obtenerDocumentos(String nControl) throws SQLException {
+    List<ExpedienteAlumno> lista = new ArrayList<>();
+
+    String sql = "SELECT d.documento, ea.estatus " +
+                 "FROM documentos d " +
+                 "LEFT JOIN expediente_alumno ea ON d.id_documento = ea.fk_documento " +
+                 "LEFT JOIN alumno a ON ea.fk_alumno = a.id_alumno " +
+                 "WHERE a.n_control = ? OR a.n_control IS NULL;";
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, nControl);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String nombreDocumento = rs.getString("documento");
+            boolean estatus = rs.getBoolean("estatus");
+            boolean isNull = rs.wasNull(); // Detecta si estatus es NULL
+
+            ExpedienteAlumno ea;
+            if (isNull) {
+                ea = new ExpedienteAlumno(nombreDocumento, false); // No entregado
+            } else {
+                ea = new ExpedienteAlumno(nombreDocumento, estatus);
+            }
+
+            lista.add(ea);
+        }
+    }
+
+    return lista;
+}
+
+    public static void setEstadoDocumento(String nControl, boolean estado, String nombreDocumento) throws SQLException{
+        String sql = "UPDATE expediente_alumno ea\n" +
+                    "JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
+                    "JOIN documentos d ON ea.fk_documento = d.id_documento\n" +
+                    "SET ea.estatus = ?\n" +
+                    "WHERE a.n_control = ? AND d.documento = ?;";
+        
+         try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)){
+         
+                ps.setBoolean(1, estado);
+                ps.setString(2, nControl);
+                ps.setString(3, nombreDocumento);
+                ps.executeUpdate();
+         }   
+        
+    }
 }
