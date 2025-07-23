@@ -160,14 +160,24 @@
                               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                               <Component id="lblSolicitud" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnSubirDocumento" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSubirSoli" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="comboSoli" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnEiminarDocumento" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEiminarSoli" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="360" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnSubirDocumento" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnEliminarDocumento" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -188,10 +198,20 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblSolicitud" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="comboSoli" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnEiminarDocumento" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnSubirDocumento" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnEiminarSoli" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnSubirSoli" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="230" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                              <Component id="btnSubirDocumento" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnEliminarDocumento" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -225,20 +245,20 @@
                 <Property name="text" type="java.lang.String" value="Proyecto"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btnSubirDocumento">
+            <Component class="javax.swing.JButton" name="btnSubirSoli">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Subir"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSubirDocumentoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSubirSoliActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnEiminarDocumento">
+            <Component class="javax.swing.JButton" name="btnEiminarSoli">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEiminarDocumentoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEiminarSoliActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblSolicitud">
@@ -267,6 +287,41 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="tablaDocumentos">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                      <Table columnCount="2" rowCount="0">
+                        <Column editable="true" title="Documento" type="java.lang.String"/>
+                        <Column editable="true" title="Recibido" type="java.lang.String"/>
+                      </Table>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JButton" name="btnSubirDocumento">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Subir"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSubirDocumentoActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnEliminarDocumento">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Eliminar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarDocumentoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

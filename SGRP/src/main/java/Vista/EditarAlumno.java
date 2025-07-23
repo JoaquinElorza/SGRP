@@ -98,7 +98,7 @@ public class EditarAlumno extends JFrame {
         return;
     }
 
-    // ✅ Actualizar datos
+    // Actualizar datos
     AlumnoCarg alumno = new AlumnoCarg(nombre, apPaterno, apMaterno, numeroControl, correo, telefono);
     boolean ok = new AlumnoDAO().actualizarAlumno(alumno);
 

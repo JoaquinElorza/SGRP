@@ -6,23 +6,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Jobae
  */
 public class DocumentoDao {
-    
-    public static void asignarCombos(String nControl) throws SQLException{
-        String sql = "select documento, estatus from expediente_alumno join alumno\n" +
-                    "on id_alumno = id_documentosAlumno where n_control=?;";
-        
-        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nControl);
-            ResultSet rs = stmt.executeQuery();
-    }
-    
-}
     
     public static Integer comboSolicitud(String nControl) throws SQLException{
         String sql = "SELECT e.id_estatus\n" +
@@ -65,7 +56,6 @@ public class DocumentoDao {
             
         }
     }
-    
     
     public static void actualizarEstatusSoli(String nControl, String nuevoStatus) throws SQLException {
     String sql1 = "SELECT id_estatus FROM estatus_soli_residencia WHERE estatus = ?;";
@@ -113,4 +103,31 @@ public class DocumentoDao {
     }
 }
     
+    public static List<ExpedienteAlumno> obtenerDocumentos(String nControl) throws SQLException{
+        List<ExpedienteAlumno> lista = new ArrayList<>();
+        
+        String sql = "SELECT d.documento, ea.estatus\n" +
+                    "FROM alumno a\n" +
+                    "JOIN expediente_alumno ea ON a.id_alumno = ea.fk_alumno\n" +
+                    "JOIN documentos d ON ea.fk_documento = d.id_documento\n" +
+                    "WHERE a.n_control = ?;";
+        
+             try (Connection conn = Conexion.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql);) {
+
+             stmt.setString(1, nControl);
+             ResultSet rs = stmt.executeQuery();
+                 
+            while (rs.next()) {
+                ExpedienteAlumno ea = new ExpedienteAlumno(
+                rs.getString("documento"),
+                rs.getBoolean("estatus")
+                );
+                
+                lista.add(ea);
+            }
+            
+             }
+             return lista;
+    }
 }
