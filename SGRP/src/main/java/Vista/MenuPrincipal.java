@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import Vista.OpcionDocentes;
+import Vista.vistaProyectos;
+
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
@@ -16,13 +18,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         card = (CardLayout) panelCambiante.getLayout();
         //this.setPreferredSize(new Dimension(626, 468));
         //setSize(626,470);
-
+        
+        vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
         opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
         AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
+        agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante);
 
+        
+        panelCambiante.add(panelAgregar, "panelAgregarProyecto");
         panelCambiante.add(panelPrincipal, "menu principal");
         panelCambiante.add(panelAlumnos, "panelAlumnos");
         panelCambiante.add(agregarAlumno, "Agregar alumno");
+        panelCambiante.add(proyectos, "panelProyectos");
 
         //IMAGEN DE LOGO
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
@@ -63,6 +70,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         JPanelLogOut.setBorder(null);
         JPanelLogOut.setBackground(new Color(0, 0, 0, 0));
         this.setVisible(true);
+        
+        card.show(panelCambiante, "menu principal");
 
     }
 
@@ -126,6 +135,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jPanelProyectos.setBackground(new java.awt.Color(255, 255, 255));
         jPanelProyectos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelProyectos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelProyectosMouseClicked(evt);
+            }
+        });
         jPanelProyectos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanelDocentes.setBackground(new java.awt.Color(255, 255, 255));
@@ -138,8 +152,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanelDocentes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setText("Proyectos");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         jLabel4.setText("Docentes");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Empresas");
 
@@ -184,9 +208,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(130, 130, 130)
                 .addComponent(jLabel5)
-                .addGap(82, 82, 82)
+                .addGap(104, 104, 104)
                 .addComponent(jLabel3)
-                .addGap(74, 74, 74)
+                .addGap(88, 88, 88)
                 .addComponent(jLabel4))
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(260, 260, 260)
@@ -208,8 +232,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)))
                 .addGap(12, 12, 12)
                 .addComponent(panelOpAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -260,6 +285,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         opc.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_jPanelDocentesMouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jPanelProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProyectosMouseClicked
+        // TODO add your handling code here:
+         card.show(panelCambiante, "panelProyectos");
+          
+    }//GEN-LAST:event_jPanelProyectosMouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+         card.show(panelCambiante, "panelProyectos");
+         
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
