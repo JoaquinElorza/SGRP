@@ -242,9 +242,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_JPanelLogOutMouseClicked
 
     private void jPanelEmpresasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelEmpresasMouseClicked
-        Vista.Empresa.Empresa ventanaEmpresa = new Vista.Empresa.Empresa();
+        this.setVisible(false); // ocultar el menú principal temporalmente
+        Vista.Empresa.Empresa ventanaEmpresa = new Vista.Empresa.Empresa(this);
         ventanaEmpresa.setVisible(true);
-        ventanaEmpresa.setLocationRelativeTo(this); // centra la ventana
+        ventanaEmpresa.setLocationRelativeTo(this);
     }//GEN-LAST:event_jPanelEmpresasMouseClicked
 
     public static void main(String args[]) {
