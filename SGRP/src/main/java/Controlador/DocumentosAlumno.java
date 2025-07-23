@@ -3,8 +3,6 @@ package Controlador;
 import Modelo.DAO.CarpetaOculta;
 import java.awt.Component;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;

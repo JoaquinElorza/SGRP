@@ -4,6 +4,7 @@ import Controlador.AcomodarImagen;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import Vista.OpcionDocentes;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
@@ -129,6 +130,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jPanelDocentes.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDocentes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelDocentes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelDocentesMouseClicked(evt);
+            }
+        });
         jPanelDocentes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setText("Proyectos");
@@ -247,6 +253,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ventanaEmpresa.setVisible(true);
         ventanaEmpresa.setLocationRelativeTo(this);
     }//GEN-LAST:event_jPanelEmpresasMouseClicked
+
+    private void jPanelDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelDocentesMouseClicked
+       OpcionDocentes opc = new OpcionDocentes();
+        opc.setVisible(true);
+        opc.setLocationRelativeTo(null);
+        dispose();
+    }//GEN-LAST:event_jPanelDocentesMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

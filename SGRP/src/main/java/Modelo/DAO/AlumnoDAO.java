@@ -98,7 +98,6 @@ public class AlumnoDAO {
                 return alumno;
             }
         }
-
         return null;
     }
 

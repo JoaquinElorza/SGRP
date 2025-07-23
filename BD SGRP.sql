@@ -26,6 +26,15 @@ create table persona(
  fk_persona int,
  correo varchar(50),
  foreign key (fk_persona) references persona(id_persona));
+
+CREATE TABLE docente (
+    id_docente INT PRIMARY KEY AUTO_INCREMENT,
+    n_control VARCHAR(20) NOT NULL UNIQUE,
+    telefono VARCHAR(10),
+    correo VARCHAR(50),
+    fk_persona INT,
+    FOREIGN KEY (fk_persona) REFERENCES persona(id_persona)
+);
  
  create table expediente_alumno(
  id_documentosAlumno int primary key auto_increment,
