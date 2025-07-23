@@ -39,7 +39,7 @@ public class Empresa extends javax.swing.JFrame {
 
         for (EmpresaEntidad emp : lista) {
             Object[] fila = {
-                emp.getIdEmpresa(),
+                emp.getIdEmpresa(), // Se usará internamente, pero no se muestra
                 emp.getNombre(),
                 emp.getContacto()
             };
@@ -47,6 +47,11 @@ public class Empresa extends javax.swing.JFrame {
         }
 
         jTable1.setModel(modelo);
+
+        // 🔒 Ocultar columna ID visualmente
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setWidth(0);
     }
 
     public void recargarTabla() {
@@ -71,12 +76,11 @@ public class Empresa extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "ID", "Nombre", "Telefono"
+                "Nombre", "Telefono"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -173,20 +177,19 @@ public class Empresa extends javax.swing.JFrame {
             return;
         }
 
-        int id = Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
-        String nombre = jTable1.getValueAt(fila, 1).toString();
-        String contacto = jTable1.getValueAt(fila, 2).toString();
+        // ✅ Obtén el ID desde el modelo, no desde la vista
+        int id = Integer.parseInt(jTable1.getModel().getValueAt(fila, 0).toString()); // <- getModel()
+        String nombre = jTable1.getModel().getValueAt(fila, 1).toString();
+        String contacto = jTable1.getModel().getValueAt(fila, 2).toString();
 
         EmpresaEntidad empresa = new EmpresaEntidad();
         empresa.setIdEmpresa(id);
         empresa.setNombre(nombre);
         empresa.setContacto(contacto);
 
-        // ✅ Aquí pasamos los datos al constructor correcto
         Editar editarVentana = new Editar(empresa, this);
         editarVentana.setVisible(true);
         editarVentana.setLocationRelativeTo(this);
-
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -197,23 +200,21 @@ public class Empresa extends javax.swing.JFrame {
             return;
         }
 
-        int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de eliminar esta empresa?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Deseas quitar esta empresa?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (opcion != JOptionPane.YES_OPTION) {
             return;
         }
 
-        int id = Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
+        // ✅ Obtener ID oculto desde el modelo (columna 0)
+        int id = Integer.parseInt(jTable1.getModel().getValueAt(fila, 0).toString());
 
-        Controlador.EmpresaControlador controlador = new Controlador.EmpresaControlador();
-        boolean eliminado = controlador.eliminarEmpresa(id);
-
-        if (eliminado) {
+        EmpresaDAO dao = new EmpresaDAO();
+        if (dao.eliminar(id)) {
             JOptionPane.showMessageDialog(this, "Empresa eliminada correctamente.");
-            cargarTablaEmpresas(); // Refrescar tabla
+            recargarTabla(); // ✅ Recarga los datos desde la base
         } else {
-            JOptionPane.showMessageDialog(this, "Error al eliminar la empresa.");
+            JOptionPane.showMessageDialog(this, "Error al eliminar empresa.");
         }
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

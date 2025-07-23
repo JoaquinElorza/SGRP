@@ -9,7 +9,7 @@ import Vista.OpcionDocentes;
 public class MenuPrincipal extends javax.swing.JFrame {
 
     CardLayout card;
-    private final AcomodarImagen acomodarImagen = new AcomodarImagen();
+    private final AcomodarImagen acomodarImagen = new AcomodarImagen(); 
 
     public MenuPrincipal() {
         initComponents();
