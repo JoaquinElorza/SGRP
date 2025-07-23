@@ -1,15 +1,11 @@
 package Modelo.Entidades;
 
-/**
- *
- * @author Jobae
- */
 public class ExpedienteAlumno {
     
     String nombre;
-    Boolean estatus;
+    boolean estatus;
     
-    public ExpedienteAlumno(String nombre, Boolean estaus){
+    public ExpedienteAlumno(String nombre, boolean estatus){
         this.nombre = nombre;
         this.estatus = estatus;
     }
@@ -21,24 +17,15 @@ public class ExpedienteAlumno {
         this.nombre = nombre;
     }
 
-    public Boolean getEstatus() {
+    public boolean getEstatus() {
         return estatus;
     }
-
-
-
-    
     
     public String getNombre() {
         return nombre;
     }
 
-    public void setEstatus(Boolean estatus) {
+    public void setEstatus(boolean estatus) {
         this.estatus = estatus;
     }
-
-
-    
-    
-    
 }

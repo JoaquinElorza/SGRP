@@ -223,9 +223,21 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDocumentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDocumentosMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tablaDocumentos);
@@ -387,6 +399,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     
     public void mostrarDocumentosTabla(JTable tabla, String nControl) throws SQLException{
         DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+        modelo.setRowCount(0);
+
         try{
             ExpedienteAlumno ea = new ExpedienteAlumno();
             List<ExpedienteAlumno> lista = DocumentoDao.obtenerDocumentos(nControl);
@@ -394,9 +408,10 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             for(ExpedienteAlumno e : lista){
                 modelo.addRow(new Object[]{
                     e.getNombre(),
-                    e.getEstatus()
+                    e.getEstatus() ? "Si" : "No"
                 });
             }
+            
             tabla.setModel(modelo);
         }catch (SQLException e) {
         e.printStackTrace();
@@ -645,6 +660,12 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                     + tablaAlumnos.getValueAt(tablaDocumentos.getSelectedRow(),0).toString() +".pdf";
             Path ruta = Paths.get(rutaCadena);
             DocumentosAlumno.eliminarArchivo(ruta);
+            try {
+                DocumentoDao.setEstadoDocumento(lblControl.getText(), false,
+                    tablaDocumentos.getValueAt(tablaDocumentos.getSelectedRow(), 0).toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnEliminarDocumentoActionPerformed
 
@@ -656,9 +677,32 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }else{
         DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(),
                 tablaAlumnos.getValueAt(tablaAlumnos.getSelectedRow(),0).toString(),this);
+            try {
+                DocumentoDao.setEstadoDocumento(lblControl.getText(), true,
+                    tablaDocumentos.getValueAt(tablaDocumentos.getSelectedRow(), 0).toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     }//GEN-LAST:event_btnSubirDocumentoActionPerformed
 
+
+    private void tablaDocumentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocumentosMouseClicked
+            if (evt.getClickCount() == 2) {
+            int fila = tablaAlumnos.rowAtPoint(evt.getPoint());
+            int columna = tablaAlumnos.columnAtPoint(evt.getPoint());
+
+            if (columna == 0 && fila != -1) {
+                String nombreDocumento ="C:\\SGRP\\" + lblControl.getText() + "\\" +
+                        tablaAlumnos.getValueAt(fila, columna).toString() + ".pdf";
+                Path ruta = Paths.get(nombreDocumento);
+                CarpetaOculta.abrirPDF(ruta);
+            }
+        }
+    }//GEN-LAST:event_tablaDocumentosMouseClicked
+
+    
+    
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
          AlumnoDAO dao = new AlumnoDAO();
         List<AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
