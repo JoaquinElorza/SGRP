@@ -30,10 +30,10 @@ public class OpcionDocentes extends javax.swing.JFrame {
         this.panelContainer = container;
         this.setPreferredSize(new Dimension(900, 650));
         initComponents();
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel22);  
-         jPanel22.setOpaque(false);
-         jPanel22.setBorder(null);
-         jPanel22.setBackground(new Color(0,0,0,0));
+        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
+         JPanelLOGO.setOpaque(false);
+         JPanelLOGO.setBorder(null);
+         JPanelLOGO.setBackground(new Color(0,0,0,0));
          this.setVisible(true);
          
          
@@ -91,12 +91,13 @@ public class OpcionDocentes extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         btnEditarDocentes = new javax.swing.JButton();
-        jPanel22 = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JButton();
+        JPanelLOGO = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         opcionDocentesPanel.setBackground(new java.awt.Color(255, 255, 255));
+        opcionDocentesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablaDocentes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
         tablaDocentes.setToolTipText("");
@@ -126,6 +127,8 @@ public class OpcionDocentes extends javax.swing.JFrame {
         });
         tablaDocentes.setViewportView(tablaAlumnos);
 
+        opcionDocentesPanel.add(tablaDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 112, 475, 434));
+
         btnAgregarDocente.setBackground(new java.awt.Color(51, 153, 255));
         btnAgregarDocente.setText("Agregar");
         btnAgregarDocente.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +136,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 btnAgregarDocenteActionPerformed(evt);
             }
         });
+        opcionDocentesPanel.add(btnAgregarDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(217, 564, -1, -1));
 
         btnEliminarDocente.setBackground(new java.awt.Color(51, 153, 255));
         btnEliminarDocente.setText("Eliminar");
@@ -146,6 +150,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 btnEliminarDocenteActionPerformed(evt);
             }
         });
+        opcionDocentesPanel.add(btnEliminarDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(343, 564, 91, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
@@ -251,6 +256,8 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        opcionDocentesPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(501, 112, -1, 434));
+
         btnBuscarNumControl.setText("🔎 ");
         btnBuscarNumControl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -298,6 +305,8 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addGap(14, 14, 14))
         );
 
+        opcionDocentesPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 38, -1, -1));
+
         btnEditarDocentes.setBackground(new java.awt.Color(51, 153, 255));
         btnEditarDocentes.setText("Editar");
         btnEditarDocentes.addActionListener(new java.awt.event.ActionListener() {
@@ -305,17 +314,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 btnEditarDocentesActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
-        jPanel22.setLayout(jPanel22Layout);
-        jPanel22Layout.setHorizontalGroup(
-            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 114, Short.MAX_VALUE)
-        );
-        jPanel22Layout.setVerticalGroup(
-            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 94, Short.MAX_VALUE)
-        );
+        opcionDocentesPanel.add(btnEditarDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 564, 91, -1));
 
         btnRegresar.setText("ATRAS");
         btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -323,66 +322,18 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 btnRegresarMouseClicked(evt);
             }
         });
+        opcionDocentesPanel.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 65, -1, -1));
 
-        javax.swing.GroupLayout opcionDocentesPanelLayout = new javax.swing.GroupLayout(opcionDocentesPanel);
-        opcionDocentesPanel.setLayout(opcionDocentesPanelLayout);
-        opcionDocentesPanelLayout.setHorizontalGroup(
-            opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(btnEditarDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(64, 64, 64)
-                        .addComponent(btnAgregarDocente)
-                        .addGap(53, 53, 53)
-                        .addComponent(btnEliminarDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(tablaDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(btnRegresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
-        );
-        opcionDocentesPanelLayout.setVerticalGroup(
-            opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, opcionDocentesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(opcionDocentesPanelLayout.createSequentialGroup()
-                        .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, opcionDocentesPanelLayout.createSequentialGroup()
-                        .addComponent(btnRegresar)
-                        .addGap(24, 24, 24)))
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablaDocentes, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(opcionDocentesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarDocente)
-                    .addComponent(btnEditarDocentes)
-                    .addComponent(btnAgregarDocente))
-                .addContainerGap())
-        );
+        JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
+        JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        opcionDocentesPanel.add(JPanelLOGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(849, 6, 100, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -570,6 +521,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CorreoDoc1;
+    private javax.swing.JPanel JPanelLOGO;
     private javax.swing.JLabel ProyectoDoc;
     private javax.swing.JButton btnAgregarDocente;
     private javax.swing.JButton btnBuscarNumControl;
@@ -581,7 +533,6 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblControl;
     private javax.swing.JLabel lblCorreo;
