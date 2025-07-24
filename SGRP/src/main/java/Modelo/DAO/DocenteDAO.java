@@ -10,7 +10,7 @@ public class DocenteDAO {
 
     public boolean agregarDocente(DocenteCarg d) {
         String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, status) VALUES (?, ?, ?, 'A')";
-        String sqlDocente = "INSERT INTO docente (n_control, telefono, correo, fk_persona) VALUES (?, ?, ?, ?)";
+        String sqlDocente = "INSERT INTO docente (rfc, telefono, correo, fk_persona) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = Conexion.getConexion()) {
             conn.setAutoCommit(false);
@@ -25,7 +25,7 @@ public class DocenteDAO {
                 int idPersona = rs.next() ? rs.getInt(1) : -1;
 
                 try (PreparedStatement psDocente = conn.prepareStatement(sqlDocente)) {
-                    psDocente.setString(1, d.getNumeroControl());
+                    psDocente.setString(1, d.getRfc());
                     psDocente.setString(2, d.getTelefono());
                     psDocente.setString(3, d.getCorreo());
                     psDocente.setInt(4, idPersona);
@@ -47,7 +47,7 @@ public class DocenteDAO {
     }
 
     public List<DocenteCarg> obtenerTodos() {
-        String sql = "SELECT d.n_control, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
+        String sql = "SELECT d.rfc, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
                      "FROM docente d JOIN persona p ON d.fk_persona = p.id_persona WHERE p.status = 'A'";
         List<DocenteCarg> lista = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class DocenteDAO {
 
             while (rs.next()) {
                 DocenteCarg d = new DocenteCarg();
-                d.setNumeroControl(rs.getString("n_control"));
+                d.setRfc(rs.getString("rfc"));
                 d.setNombre(rs.getString("nombre"));
                 d.setApellidoPaterno(rs.getString("ap_paterno"));
                 d.setApellidoMaterno(rs.getString("ap_materno"));
@@ -73,20 +73,20 @@ public class DocenteDAO {
         return lista;
     }
 
-    public DocenteCarg consultarPorControl(String numeroControl) {
-        String sql = "SELECT d.n_control, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
+    public DocenteCarg consultarPorRFC(String rfc) {
+        String sql = "SELECT d.rfc, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
                      "FROM docente d JOIN persona p ON d.fk_persona = p.id_persona " +
-                     "WHERE d.n_control = ? AND p.status = 'A'";
+                     "WHERE d.rfc = ? AND p.status = 'A'";
 
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, numeroControl);
+            ps.setString(1, rfc);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 DocenteCarg d = new DocenteCarg();
-                d.setNumeroControl(rs.getString("n_control"));
+                d.setRfc(rs.getString("rfc"));
                 d.setNombre(rs.getString("nombre"));
                 d.setApellidoPaterno(rs.getString("ap_paterno"));
                 d.setApellidoMaterno(rs.getString("ap_materno"));
@@ -102,14 +102,14 @@ public class DocenteDAO {
         return null;
     }
 
-    public boolean eliminarDocente(String numeroControl) {
+    public boolean eliminarDocente(String rfc) {
         String sql = "UPDATE persona SET status = 'E' WHERE id_persona = " +
-                     "(SELECT fk_persona FROM docente WHERE n_control = ?)";
+                     "(SELECT fk_persona FROM docente WHERE rfc = ?)";
 
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, numeroControl);
+            ps.setString(1, rfc);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -117,77 +117,76 @@ public class DocenteDAO {
             return false;
         }
     }
-    
-    public boolean actualizarDocente(DocenteCarg docente, String numeroControlOriginal) {
-    String obtenerIdPersona = 
-        "SELECT d.fk_persona " +
-        "FROM docente d JOIN persona p ON d.fk_persona = p.id_persona " +
-        "WHERE d.n_control = ? AND p.status = 'A'";
 
-    String actualizarPersona = 
-        "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ? WHERE id_persona = ?";
+    public boolean actualizarDocente(DocenteCarg docente, String rfcOriginal) {
+        String obtenerIdPersona = 
+            "SELECT d.fk_persona FROM docente d JOIN persona p ON d.fk_persona = p.id_persona " +
+            "WHERE d.rfc = ? AND p.status = 'A'";
 
-    String actualizarDocente = 
-        "UPDATE docente SET n_control = ?, telefono = ?, correo = ? WHERE fk_persona = ?";
+        String actualizarPersona = 
+            "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ? WHERE id_persona = ?";
 
-    try (Connection conn = Conexion.getConexion();
-         PreparedStatement psBuscar = conn.prepareStatement(obtenerIdPersona)) {
+        String actualizarDocente = 
+            "UPDATE docente SET rfc = ?, telefono = ?, correo = ? WHERE fk_persona = ?";
 
-        conn.setAutoCommit(false);
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement psBuscar = conn.prepareStatement(obtenerIdPersona)) {
 
-        psBuscar.setString(1, numeroControlOriginal); // usamos el número original para localizar
-        ResultSet rs = psBuscar.executeQuery();
+            conn.setAutoCommit(false);
 
-        if (!rs.next()) {
-            JOptionPane.showMessageDialog(null, "⚠️ El docente no está activo o no existe.");
-            conn.rollback();
+            psBuscar.setString(1, rfcOriginal);
+            ResultSet rs = psBuscar.executeQuery();
+
+            if (!rs.next()) {
+                JOptionPane.showMessageDialog(null, "⚠️ El docente no está activo o no existe.");
+                conn.rollback();
+                return false;
+            }
+
+            int idPersona = rs.getInt("fk_persona");
+
+            try (PreparedStatement psPersona = conn.prepareStatement(actualizarPersona);
+                 PreparedStatement psDocente = conn.prepareStatement(actualizarDocente)) {
+
+                psPersona.setString(1, docente.getNombre());
+                psPersona.setString(2, docente.getApellidoPaterno());
+                psPersona.setString(3, docente.getApellidoMaterno());
+                psPersona.setInt(4, idPersona);
+                psPersona.executeUpdate();
+
+                psDocente.setString(1, docente.getRfc());
+                psDocente.setString(2, docente.getTelefono());
+                psDocente.setString(3, docente.getCorreo());
+                psDocente.setInt(4, idPersona);
+                psDocente.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
+    }
 
-        int idPersona = rs.getInt("fk_persona");
+    public boolean existeRFC(String rfc) {
+        String sql = "SELECT COUNT(*) FROM docente d JOIN persona p ON d.fk_persona = p.id_persona WHERE d.rfc = ? AND p.status = 'A'";
+        
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try (PreparedStatement psPersona = conn.prepareStatement(actualizarPersona);
-             PreparedStatement psDocente = conn.prepareStatement(actualizarDocente)) {
+            ps.setString(1, rfc);
+            ResultSet rs = ps.executeQuery();
 
-            psPersona.setString(1, docente.getNombre());
-            psPersona.setString(2, docente.getApellidoPaterno());
-            psPersona.setString(3, docente.getApellidoMaterno());
-            psPersona.setInt(4, idPersona);
-            psPersona.executeUpdate();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
 
-            psDocente.setString(1, docente.getNumeroControl());
-            psDocente.setString(2, docente.getTelefono());
-            psDocente.setString(3, docente.getCorreo());
-            psDocente.setInt(4, idPersona);
-            psDocente.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        conn.commit();
-        return true;
-
-    } catch (SQLException e) {
-        e.printStackTrace();
         return false;
     }
-}
-
-    public boolean existeNumeroControl(String numeroControl) {
-    String sql = "SELECT COUNT(*) FROM docente d JOIN persona p ON d.fk_persona = p.id_persona WHERE d.n_control = ? AND p.status = 'A'";
-    
-    try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setString(1, numeroControl);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
-        }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-    return false;
-}
 }

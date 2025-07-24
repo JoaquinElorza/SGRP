@@ -15,19 +15,22 @@ import javax.swing.JPanel;
  * @author emili
  */
 public class editarProyecto extends javax.swing.JPanel {
-      private final AcomodarImagen acomodarImagen = new AcomodarImagen();
+       private final AcomodarImagen acomodarImagen = new AcomodarImagen();
        CardLayout card;
        private JPanel panelContainer;
        private int idProyecto; 
+       private vistaProyectos panelProyectos;
+       private String estatusActual;
 
-    public editarProyecto(CardLayout layout, JPanel container) {
+      
+
+    public editarProyecto(CardLayout layout, JPanel container, vistaProyectos panelProyectos) {
         initComponents();
-        estatusBox.removeAllItems();
-        estatusBox.addItem("Disponible");
-        estatusBox.addItem("No disponible");
-
+       
+        //panelProyectos.mostrarProyectosEnTabla();
         this.card = layout;
         this.panelContainer = container;
+        this.panelProyectos = panelProyectos;
         
          acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
          JPanelLOGO.setOpaque(false);
@@ -74,20 +77,18 @@ public class editarProyecto extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         txtNombre = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
-        estatusBox = new javax.swing.JComboBox<>();
         empresasBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         JPanelLOGO = new javax.swing.JPanel();
         JPanelBack = new javax.swing.JPanel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        estatusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        estatusBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estatusBoxActionPerformed(evt);
-            }
-        });
+        txtDescripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtDescripcion.setToolTipText("");
 
         empresasBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,31 +96,44 @@ public class editarProyecto extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Nombre del Proyecto:");
+
+        jLabel2.setText("Empresa:");
+
+        jLabel3.setText("Descripcion:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                    .addComponent(estatusBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(empresasBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                        .addComponent(empresasBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(3, 3, 3)
                 .addComponent(empresasBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(3, 3, 3)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(estatusBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(70, 70, 70))
         );
 
         jButton1.setText("Actualizar");
@@ -149,19 +163,20 @@ public class editarProyecto extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                         .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(76, 76, 76))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 36, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(85, 85, 85))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(86, 86, 86))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,10 +186,10 @@ public class editarProyecto extends javax.swing.JPanel {
                     .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -190,36 +205,50 @@ public class editarProyecto extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      String nombre = txtNombre.getText().trim();
+    
+    
+    String nombre = txtNombre.getText().trim();
     String descripcion = txtDescripcion.getText().trim();
-    String estatus = estatusBox.getSelectedItem().toString();
-
     EmpresaItem empresaSeleccionada = (EmpresaItem) empresasBox.getSelectedItem();
+
     if (empresaSeleccionada == null || nombre.isEmpty()) {
         JOptionPane.showMessageDialog(this, "⚠️ Nombre y empresa son obligatorios.");
         return;
     }
 
-    int idEmpresa = empresaSeleccionada.getId();
+    // Validar si existe otro proyecto con ese nombre
+    Modelo.DAO.ProyectoDAO dao = new Modelo.DAO.ProyectoDAO();
+    boolean nombreDuplicado = dao.existeNombreProyectoConOtroId(nombre, idProyecto);
+    if (nombreDuplicado) {
+        JOptionPane.showMessageDialog(this, "❌ Ya existe otro proyecto con ese nombre.");
+        return;
+    }
 
+    // Continuar con la actualización
+    int idEmpresa = empresaSeleccionada.getId();
     Modelo.Entidades.Proyecto proyecto = new Modelo.Entidades.Proyecto();
     proyecto.setIdProyecto(idProyecto);
     proyecto.setNombre(nombre);
     proyecto.setDescripcion(descripcion);
-    proyecto.setEstatus(estatus);
     proyecto.setIdEmpresa(idEmpresa);
+    proyecto.setEstatus(estatusActual);
+    
 
-    Modelo.DAO.ProyectoDAO dao = new Modelo.DAO.ProyectoDAO();
     boolean actualizado = dao.actualizarProyecto(proyecto);
-
     if (actualizado) {
         JOptionPane.showMessageDialog(this, "✅ Proyecto actualizado correctamente.");
+
+        // Recargar tabla
+        if (panelProyectos != null) {
+            panelProyectos.mostrarProyectosEnTabla();
+        }
+
         card.show(panelContainer, "panelProyectos");
         ajustarVentana();
     } else {
         JOptionPane.showMessageDialog(this, "❌ Error al actualizar el proyecto.");
     }
-       
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
@@ -227,10 +256,6 @@ public class editarProyecto extends javax.swing.JPanel {
         card.show(panelContainer, "panelProyectos");
         ajustarVentana();
     }//GEN-LAST:event_JPanelBackMouseClicked
-
-    private void estatusBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estatusBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_estatusBoxActionPerformed
 
     private void none(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_none
         // TODO add your handling code here:
@@ -249,7 +274,8 @@ public class editarProyecto extends javax.swing.JPanel {
             this.idProyecto = id;
             txtNombre.setText(nombre);
             txtDescripcion.setText(descripcion);
-            estatusBox.setSelectedItem(estatus);
+            this.estatusActual = estatus; 
+            
 
             // Seleccionar empresa por nombre
             for (int i = 0; i < empresasBox.getItemCount(); i++) {
@@ -287,8 +313,10 @@ public class editarProyecto extends javax.swing.JPanel {
     private javax.swing.JPanel JPanelBack;
     private javax.swing.JPanel JPanelLOGO;
     private javax.swing.JComboBox<EmpresaItem> empresasBox;
-    private javax.swing.JComboBox<String> estatusBox;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField txtDescripcion;

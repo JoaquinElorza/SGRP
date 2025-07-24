@@ -25,10 +25,20 @@ public class Editar extends javax.swing.JFrame {
 
         EditarNombre.setText(empresa.getNombre());
         EditarContacto.setText(empresa.getContacto());
-        
+
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         jButton2.setIcon(new ImageIcon(imagenRedimensionada));
+
+        // Validar que solo se ingresen números y máximo 10 dígitos
+        EditarContacto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!Character.isDigit(c) || EditarContacto.getText().length() >= 10) {
+                    evt.consume();
+                }
+            }
+        });
     }
 
     public Editar() {
@@ -154,6 +164,27 @@ public class Editar extends javax.swing.JFrame {
             return;
         }
 
+        // Validar que el número telefónico contenga exactamente 10 dígitos
+        if (!nuevoContacto.matches("\\d{10}")) {
+            JOptionPane.showMessageDialog(this, "El número telefónico debe contener exactamente 10 dígitos.");
+            return;
+        }
+
+        Modelo.DAO.EmpresaDAO dao = new Modelo.DAO.EmpresaDAO();
+
+        // Validar nombre repetido (excepto el actual)
+        if (dao.existeNombreExcepto(nuevoNombre, empresa.getIdEmpresa())) {
+            JOptionPane.showMessageDialog(this, "Ya existe una empresa con ese nombre.");
+            return;
+        }
+
+        // Validar contacto repetido (excepto el actual)
+        if (dao.existeContactoExcepto(nuevoContacto, empresa.getIdEmpresa())) {
+            JOptionPane.showMessageDialog(this, "Ese número de teléfono ya está registrado.");
+            return;
+        }
+
+        // Llamar al controlador solo si pasa las validaciones
         Controlador.EmpresaControlador controlador = new Controlador.EmpresaControlador();
         boolean exito = controlador.actualizarEmpresa(empresa.getIdEmpresa(), nuevoNombre, nuevoContacto);
 

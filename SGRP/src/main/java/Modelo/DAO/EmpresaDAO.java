@@ -31,14 +31,14 @@ public class EmpresaDAO {
         }
     }
 
-    public List<Modelo.Entidades.EmpresaEntidad> listarEmpresas() {
-        List<Modelo.Entidades.EmpresaEntidad> lista = new ArrayList<>();
-        String sql = "SELECT * FROM empresa";
+    public List<EmpresaEntidad> listarEmpresas() {
+        List<EmpresaEntidad> lista = new ArrayList<>();
+        String sql = "SELECT * FROM empresa WHERE activo = true"; 
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Modelo.Entidades.EmpresaEntidad emp = new Modelo.Entidades.EmpresaEntidad();
+                EmpresaEntidad emp = new EmpresaEntidad();
                 emp.setIdEmpresa(rs.getInt("id_empresa"));
                 emp.setNombre(rs.getString("nombre"));
                 emp.setContacto(rs.getString("contacto"));
@@ -70,16 +70,72 @@ public class EmpresaDAO {
     }
 
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM empresa WHERE id_empresa = ?";
+        String sql = "UPDATE empresa SET activo = false WHERE id_empresa = ?";
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean existeNombre(String nombre) {
+        String sql = "SELECT COUNT(*) FROM empresa WHERE nombre = ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existeContacto(String contacto) {
+        String sql = "SELECT COUNT(*) FROM empresa WHERE contacto = ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, contacto);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existeNombreExcepto(String nombre, int idEmpresa) {
+        String sql = "SELECT COUNT(*) FROM empresa WHERE nombre = ? AND id_empresa != ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nombre);
+            stmt.setInt(2, idEmpresa);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existeContactoExcepto(String contacto, int idEmpresa) {
+        String sql = "SELECT COUNT(*) FROM empresa WHERE contacto = ? AND id_empresa != ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, contacto);
+            stmt.setInt(2, idEmpresa);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

@@ -90,4 +90,41 @@ public class ProyectoDAO {
 
         return lista;
     }
+    
+    public boolean existeNombreProyecto(String nombre) {
+    String sql = "SELECT COUNT(*) FROM proyecto WHERE nombre = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+    
+    
+    
+    
+    public boolean existeNombreProyectoConOtroId(String nombre, int idActual) {
+    String sql = "SELECT COUNT(*) FROM proyecto WHERE nombre = ? AND id_proyecto != ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre);
+        ps.setInt(2, idActual);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+    
+    
+    
 }

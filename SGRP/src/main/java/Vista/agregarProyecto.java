@@ -20,29 +20,14 @@ public class agregarProyecto extends javax.swing.JPanel {
     /**
      * Creates new form agregarProyecto
      */
-    public agregarProyecto(CardLayout layout, JPanel container) {
+    public agregarProyecto(CardLayout layout, JPanel container, vistaProyectos panelProyectos) {
         initComponents();
-        this.card = layout;
-        this.panelContainer = container;
-        
-        
-                empresasBox.removeAllItems();
-        String sql = "SELECT id_empresa, nombre FROM empresa";
-
-        try (java.sql.Connection conn = Utilidades.Conexion.getConexion();
-             java.sql.PreparedStatement ps = conn.prepareStatement(sql);
-             java.sql.ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                EmpresaItem item = new EmpresaItem(rs.getInt("id_empresa"), rs.getString("nombre"));
-                empresasBox.addItem(item);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
+           this.card = layout;
+            this.panelContainer = container;
+            this.panelProyectos = panelProyectos;
+            
+            cargarEmpresasEnCombo();
+     
          acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
          JPanelLOGO.setOpaque(false);
          JPanelLOGO.setBorder(null);
@@ -56,43 +41,59 @@ public class agregarProyecto extends javax.swing.JPanel {
          this.setVisible(true);
     }
     
-            private void agregarProyecto() {
-            String nombre = txtNombre.getText().trim();
-            String descripcion = txtDescripcion.getText().trim();
+private void agregarProyecto() {
+    String nombre = txtNombre.getText().trim();
+    String descripcion = txtDescripcion.getText().trim();
+    EmpresaItem empresaSeleccionada = (EmpresaItem) empresasBox.getSelectedItem();
 
-            EmpresaItem empresaSeleccionada = (EmpresaItem) empresasBox.getSelectedItem();
+    // Validaciones
+    if (nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "⚠️ El nombre del proyecto no puede estar vacío.");
+        return;
+    }
+    if (descripcion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "⚠️ La descripción no puede estar vacía.");
+        return;
+    }
+    if (empresaSeleccionada == null) {
+        JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar una empresa.");
+        return;
+    }
 
-            if (empresaSeleccionada == null) {
-                JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar una empresa.");
-                return;
-            }
+    // Validación: evitar nombre duplicado
+    ProyectoDAO dao = new ProyectoDAO();
+    boolean existe = dao.existeNombreProyecto(nombre);
+    if (existe) {
+        JOptionPane.showMessageDialog(this, "❌ Ya existe un proyecto con ese nombre.");
+        return;
+    }
 
-            int idEmpresa = empresaSeleccionada.getId();
+    // Insertar proyecto
+    Proyecto proyecto = new Proyecto();
+    proyecto.setNombre(nombre);
+    proyecto.setDescripcion(descripcion);
+    proyecto.setIdEmpresa(empresaSeleccionada.getId());
+    proyecto.setEstatus("Disponible");
 
-            Proyecto proyecto = new Proyecto();
-            proyecto.setNombre(nombre);
-            proyecto.setDescripcion(descripcion);
-            proyecto.setIdEmpresa(idEmpresa);
-            proyecto.setEstatus("Disponible"); // siempre disponible
+    boolean resultado = dao.agregarProyecto(proyecto);
+    if (resultado) {
+        JOptionPane.showMessageDialog(this, "✅ Proyecto agregado exitosamente.");
 
-            ProyectoDAO dao = new ProyectoDAO();
-            boolean resultado = dao.agregarProyecto(proyecto);
+        txtNombre.setText("");
+        txtDescripcion.setText("");
 
-            if (resultado) {
-            JOptionPane.showMessageDialog(this, "✅ Proyecto agregado exitosamente.");
-            txtNombre.setText("");
-            
-            txtDescripcion.setText("");
-
-            // Actualiza la tabla
-            //panelProyectos.cargarDatos();
-
-            // Regresar al panel anterior
-            card.show(panelContainer, "panelProyectos");
-            ajustarVentana();
+        // Actualizar tabla de proyectos
+        if (panelProyectos != null) {
+            panelProyectos.mostrarProyectosEnTabla();
         }
 
-        }
+        // Volver al panel de proyectos
+        card.show(panelContainer, "panelProyectos");
+        ajustarVentana();
+    } else {
+        JOptionPane.showMessageDialog(this, "❌ Error al agregar el proyecto.");
+    }
+}
 
 
     /**
@@ -109,6 +110,9 @@ public class agregarProyecto extends javax.swing.JPanel {
         txtNombre = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
         empresasBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         JPanelLOGO = new javax.swing.JPanel();
         JPanelBack = new javax.swing.JPanel();
@@ -116,9 +120,18 @@ public class agregarProyecto extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 157, 35));
-        jPanel2.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 157, 112));
-        jPanel2.add(empresasBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 157, 30));
+        jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 157, 35));
+        jPanel2.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 157, 112));
+        jPanel2.add(empresasBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 157, 30));
+
+        jLabel1.setText("Nombre del Proyecto:");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, -1));
+
+        jLabel2.setText("Empresa:");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
+
+        jLabel3.setText("Descripcion:");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
 
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -167,8 +180,8 @@ public class agregarProyecto extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap(31, Short.MAX_VALUE))
@@ -227,7 +240,20 @@ public class agregarProyecto extends javax.swing.JPanel {
 
        
        
-       
+       private void cargarEmpresasEnCombo() {
+    empresasBox.removeAllItems();
+    String sql = "SELECT id_empresa, nombre FROM empresa";
+    try (java.sql.Connection conn = Utilidades.Conexion.getConexion();
+         java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+         java.sql.ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            EmpresaItem item = new EmpresaItem(rs.getInt("id_empresa"), rs.getString("nombre"));
+            empresasBox.addItem(item);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -235,6 +261,9 @@ public class agregarProyecto extends javax.swing.JPanel {
     private javax.swing.JPanel JPanelLOGO;
     private javax.swing.JComboBox<EmpresaItem> empresasBox;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField txtDescripcion;
