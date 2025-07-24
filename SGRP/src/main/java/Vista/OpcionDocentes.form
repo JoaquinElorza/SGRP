@@ -23,13 +23,13 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="opcionDocentesPanel" alignment="0" pref="968" max="32767" attributes="0"/>
+          <Component id="opcionDocentesPanel" alignment="0" pref="944" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="opcionDocentesPanel" min="-2" max="-2" attributes="0"/>
+              <Component id="opcionDocentesPanel" min="-2" pref="599" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -72,9 +72,23 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="2" rowCount="0">
-                    <Column editable="true" title="Numero de  control" type="java.lang.String"/>
-                    <Column editable="true" title="Nombre" type="java.lang.String"/>
+                    <Column editable="true" title="RFC" type="java.lang.String"/>
+                    <Column editable="true" title="NOMBRE" type="java.lang.String"/>
                   </Table>
+                </Property>
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                  <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                  </TableColumnModel>
                 </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
@@ -196,7 +210,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtNombreCompleto" max="32767" attributes="0"/>
-                              <Component id="txtNumeroControl" max="32767" attributes="0"/>
+                              <Component id="txtRfcDoc" max="32767" attributes="0"/>
                               <Component id="txtTelefonoDoc" alignment="0" pref="268" max="32767" attributes="0"/>
                               <Component id="CorreoDoc1" alignment="0" max="32767" attributes="0"/>
                               <Component id="ProyectoDoc" alignment="0" pref="268" max="32767" attributes="0"/>
@@ -211,7 +225,7 @@
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="lblControl" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtNumeroControl" min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="txtRfcDoc" min="-2" pref="18" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -243,7 +257,7 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblControl">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Numero de  control"/>
+                    <Property name="text" type="java.lang.String" value="           RFC"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblNombreAlumno">
@@ -269,7 +283,7 @@
                     <Property name="text" type="java.lang.String" value="Correo electronico"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="txtNumeroControl">
+                <Component class="javax.swing.JLabel" name="txtRfcDoc">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
@@ -329,7 +343,7 @@
         <Container class="javax.swing.JPanel" name="jPanel3">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="90" y="38" width="-1" height="-1"/>
+              <AbsoluteConstraints x="130" y="40" width="160" height="-1"/>
             </Constraint>
           </Constraints>
 
@@ -338,30 +352,27 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                      <Component id="txtIngresarNumControl" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="txtIngresarRfc" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnBuscarNumControl" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="102" max="32767" attributes="0"/>
+                      <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="9" max="32767" attributes="0"/>
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="9" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnBuscarNumControl" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtIngresarNumControl" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtIngresarRfc" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
@@ -371,29 +382,19 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="btnBuscarNumControl">
               <Properties>
-                <Property name="text" type="java.lang.String" value="\ud83d\udd0e " containsInvalidXMLChars="true"/>
+                <Property name="text" type="java.lang.String" value="\ud83d\udd0d" containsInvalidXMLChars="true"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnBuscarNumControlMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarNumControlActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtIngresarNumControl">
+            <Component class="javax.swing.JTextField" name="txtIngresarRfc">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="INGRESA N&#xda;MERO DE CONTROL"/>
+                <Property name="text" type="java.lang.String" value="INGRESA EL RFC"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton1">
-              <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="ff" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="X"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MouseClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -439,7 +440,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="849" y="6" width="100" height="100"/>
+              <AbsoluteConstraints x="820" y="10" width="100" height="100"/>
             </Constraint>
           </Constraints>
 

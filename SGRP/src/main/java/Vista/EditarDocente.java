@@ -7,16 +7,16 @@ import javax.swing.*;
 
 public class EditarDocente extends JFrame {
 
-    private JTextField txtNombre, txtApPaterno, txtApMaterno, txtTelefono, txtCorreo, txtControl;
+    private JTextField txtNombre, txtApPaterno, txtApMaterno, txtTelefono, txtCorreo, txtRFC;
     private JButton btnGuardar;
-    private String numeroControlOriginal;
+    private String rfcOriginal;
 
     private OpcionDocentes padre;
 
     public EditarDocente(OpcionDocentes padre) {
         this.padre = padre;
         setTitle("Editar Docente");
-        setSize(435, 350); // ventana más ancha
+        setSize(435, 350);
         setLocationRelativeTo(null);
         setLayout(null);
 
@@ -27,14 +27,14 @@ public class EditarDocente extends JFrame {
         txtApMaterno = new JTextField(); txtApMaterno.setBounds(130, 100, 250, 30); txtApMaterno.setFont(fuente); add(txtApMaterno);
         txtTelefono  = new JTextField(); txtTelefono.setBounds(130, 140, 250, 30); txtTelefono.setFont(fuente); add(txtTelefono);
         txtCorreo    = new JTextField(); txtCorreo.setBounds(130, 180, 250, 30); txtCorreo.setFont(fuente); add(txtCorreo);
-        txtControl   = new JTextField(); txtControl.setBounds(130, 220, 250, 30); txtControl.setFont(fuente); add(txtControl);
+        txtRFC       = new JTextField(); txtRFC.setBounds(130, 220, 250, 30); txtRFC.setFont(fuente); add(txtRFC);
 
         btnGuardar   = new JButton("Guardar"); btnGuardar.setBounds(160, 270, 100, 30); add(btnGuardar);
         btnGuardar.addActionListener(e -> actualizar());
 
         JLabel[] labels = {
             new JLabel("Nombre"), new JLabel("Apellido Paterno"), new JLabel("Apellido Materno"),
-            new JLabel("Teléfono"), new JLabel("Correo electrónico"), new JLabel("Número de control")
+            new JLabel("Teléfono"), new JLabel("Correo electrónico"), new JLabel("RFC")
         };
 
         int y = 20;
@@ -46,10 +46,10 @@ public class EditarDocente extends JFrame {
         }
     }
 
-    public void cargarDatos(String numeroControl, String nombre, String apPaterno,
+    public void cargarDatos(String rfc, String nombre, String apPaterno,
                             String apMaterno, String telefono, String correo) {
-        numeroControlOriginal = numeroControl;
-        txtControl.setText(numeroControl);
+        rfcOriginal = rfc;
+        txtRFC.setText(rfc);
         txtNombre.setText(nombre);
         txtApPaterno.setText(apPaterno);
         txtApMaterno.setText(apMaterno);
@@ -58,15 +58,15 @@ public class EditarDocente extends JFrame {
     }
 
     public void actualizar() {
-        String nombre        = txtNombre.getText().trim();
-        String apPaterno     = txtApPaterno.getText().trim();
-        String apMaterno     = txtApMaterno.getText().trim();
-        String telefono      = txtTelefono.getText().trim();
-        String correo        = txtCorreo.getText().trim();
-        String numeroControl = txtControl.getText().trim();
+        String nombre   = txtNombre.getText().trim();
+        String apPaterno = txtApPaterno.getText().trim();
+        String apMaterno = txtApMaterno.getText().trim();
+        String telefono  = txtTelefono.getText().trim();
+        String correo    = txtCorreo.getText().trim();
+        String rfc       = txtRFC.getText().trim();
 
         if (nombre.isEmpty() || apPaterno.isEmpty() || apMaterno.isEmpty() ||
-            telefono.isEmpty() || correo.isEmpty() || numeroControl.isEmpty()) {
+            telefono.isEmpty() || correo.isEmpty() || rfc.isEmpty()) {
             JOptionPane.showMessageDialog(this, "⚠️ Todos los campos son obligatorios.");
             return;
         }
@@ -88,15 +88,20 @@ public class EditarDocente extends JFrame {
             return;
         }
 
-        DocenteDAO dao = new DocenteDAO();
-
-        if (!numeroControl.equals(numeroControlOriginal) && dao.existeNumeroControl(numeroControl)) {
-            JOptionPane.showMessageDialog(this, "⚠️ Ese número de control ya existe.");
+        if (!rfc.matches("^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$")) {
+            JOptionPane.showMessageDialog(this, "⚠️ RFC inválido. Verifica formato y estructura.");
             return;
         }
 
-        DocenteCarg d = new DocenteCarg(nombre, apPaterno, apMaterno, numeroControl, telefono, correo);
-        boolean ok = dao.actualizarDocente(d, numeroControlOriginal);
+        DocenteDAO dao = new DocenteDAO();
+
+        if (!rfc.equals(rfcOriginal) && dao.existeRFC(rfc)) {
+            JOptionPane.showMessageDialog(this, "⚠️ Ese RFC ya está registrado,contacte al administrador.");
+            return;
+        }
+
+        DocenteCarg d = new DocenteCarg(nombre, apPaterno, apMaterno, rfc, telefono, correo);
+        boolean ok = dao.actualizarDocente(d, rfcOriginal);
 
         if (ok) {
             JOptionPane.showMessageDialog(this, "✅ Docente actualizado correctamente.");

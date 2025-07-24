@@ -54,7 +54,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
         List<DocenteCarg> lista = new DocenteDAO().obtenerTodos();
         for (DocenteCarg d : lista) {
             String nombreCompleto = d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno();
-            modelo.addRow(new Object[]{d.getNumeroControl(), nombreCompleto});
+            modelo.addRow(new Object[]{d.getRfc(), nombreCompleto});
         }
     }
         
@@ -79,7 +79,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
         lblTelefono = new javax.swing.JLabel();
         lblProyecto = new javax.swing.JLabel();
         lblCorreo = new javax.swing.JLabel();
-        txtNumeroControl = new javax.swing.JLabel();
+        txtRfcDoc = new javax.swing.JLabel();
         txtNombreCompleto = new javax.swing.JLabel();
         txtTelefonoDoc = new javax.swing.JLabel();
         ProyectoDoc = new javax.swing.JLabel();
@@ -87,9 +87,8 @@ public class OpcionDocentes extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnBuscarNumControl = new javax.swing.JButton();
-        txtIngresarNumControl = new javax.swing.JTextField();
+        txtIngresarRfc = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         btnEditarDocentes = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         JPanelLOGO = new javax.swing.JPanel();
@@ -109,7 +108,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Numero de  control", "Nombre"
+                "RFC", "NOMBRE"
             }
         ) {
             Class[] types = new Class [] {
@@ -154,7 +153,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
-        lblControl.setText("Numero de  control");
+        lblControl.setText("           RFC");
 
         lblNombreAlumno.setText("Nombre completo");
 
@@ -165,7 +164,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
         lblCorreo.setText("Correo electronico");
 
-        txtNumeroControl.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtRfcDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         txtNombreCompleto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -196,7 +195,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNombreCompleto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNumeroControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtRfcDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtTelefonoDoc, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                     .addComponent(CorreoDoc1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ProyectoDoc, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
@@ -208,7 +207,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblControl)
-                    .addComponent(txtNumeroControl, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtRfcDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -258,22 +257,19 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
         opcionDocentesPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(501, 112, -1, 434));
 
-        btnBuscarNumControl.setText("🔎 ");
+        btnBuscarNumControl.setText("🔍");
         btnBuscarNumControl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnBuscarNumControlMouseClicked(evt);
             }
         });
-
-        jLabel2.setText("INGRESA NÚMERO DE CONTROL");
-
-        jButton1.setForeground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("X");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+        btnBuscarNumControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarNumControlActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("INGRESA EL RFC");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -281,31 +277,28 @@ public class OpcionDocentes extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addComponent(txtIngresarNumControl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtIngresarRfc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscarNumControl, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(38, 38, 38)
                 .addComponent(jLabel2)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarNumControl)
-                    .addComponent(txtIngresarNumControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(txtIngresarRfc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
         );
 
-        opcionDocentesPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 38, -1, -1));
+        opcionDocentesPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 160, -1));
 
         btnEditarDocentes.setBackground(new java.awt.Color(51, 153, 255));
         btnEditarDocentes.setText("Editar");
@@ -327,18 +320,18 @@ public class OpcionDocentes extends javax.swing.JFrame {
         JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
         JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        opcionDocentesPanel.add(JPanelLOGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(849, 6, 100, 100));
+        opcionDocentesPanel.add(JPanelLOGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 10, 100, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
+            .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 944, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -352,13 +345,13 @@ public class OpcionDocentes extends javax.swing.JFrame {
         int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
         String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
 
-        DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
+        DocenteCarg datos = new DocenteDAO().consultarPorRFC(numeroControl);
         if (datos == null) return;
 
         txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
         txtTelefonoDoc.setText(datos.getTelefono());
         CorreoDoc1.setText(datos.getCorreo());
-        txtNumeroControl.setText(datos.getNumeroControl());
+        txtRfcDoc.setText(datos.getRfc());
         ProyectoDoc.setText("En desarrollo");
 
     }//GEN-LAST:event_tablaAlumnosMouseClicked
@@ -366,7 +359,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
     txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
     txtTelefonoDoc.setText(datos.getTelefono());
     CorreoDoc1.setText(datos.getCorreo());
-    txtNumeroControl.setText(datos.getNumeroControl());
+    txtRfcDoc.setText(datos.getRfc());
     ProyectoDoc.setText("En desarrollo");
 }
     private void btnAgregarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDocenteActionPerformed
@@ -395,14 +388,14 @@ public class OpcionDocentes extends javax.swing.JFrame {
     int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
     String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
 
-    DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
+    DocenteCarg datos = new DocenteDAO().consultarPorRFC(numeroControl);
     if (datos == null) {
         JOptionPane.showMessageDialog(this, "❌ No se pudo cargar el docente.");
         return;
     }
 
     EditarDocente editar = new EditarDocente(this); 
-    editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
+    editar.cargarDatos(datos.getRfc(), datos.getNombre(), datos.getApellidoPaterno(),
                        datos.getApellidoMaterno(), datos.getTelefono(), datos.getCorreo());
     editar.setVisible(true);
     editar.setLocationRelativeTo(null);
@@ -416,22 +409,22 @@ public class OpcionDocentes extends javax.swing.JFrame {
         }
 
         int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-        String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
+        String rfc = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
         String nombre = txtNombreCompleto.getText();
 
         int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Deseas eliminar a " + nombre + " con número de control " + numeroControl + "?",
+            "¿Deseas eliminar a " + nombre + " con RFC " + rfc + "?",
             "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean eliminado = new DocenteDAO().eliminarDocente(numeroControl);
+            boolean eliminado = new DocenteDAO().eliminarDocente(rfc);
             if (eliminado) {
                 JOptionPane.showMessageDialog(this, "✅ Docente eliminado correctamente.");
                 actualizarTablaDocentes();
                 txtNombreCompleto.setText("");
                 txtTelefonoDoc.setText("");
-                ProyectoDoc.setText("");
-                txtNumeroControl.setText("");
+                CorreoDoc1.setText("");
+                txtRfcDoc.setText("");
                 ProyectoDoc.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al docente.");
@@ -440,28 +433,28 @@ public class OpcionDocentes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarDocenteMouseClicked
 
     private void btnBuscarNumControlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarNumControlMouseClicked
-        String input = txtIngresarNumControl.getText().trim();
+        String input = txtIngresarRfc.getText().trim();
 
-    if (input.equals("") || input.equals("Inserta número de control")) {
-        JOptionPane.showMessageDialog(this, "⚠️ Ingresa un número de control válido.");
+    if (input.equals("") || input.equals("Inserta RFC")) {
+        JOptionPane.showMessageDialog(this, "⚠️ Ingresa un RFC válido.");
         return;
     }
 
-    DocenteCarg d = new DocenteDAO().consultarPorControl(input);
+    DocenteCarg d = new DocenteDAO().consultarPorRFC(input);
     if (d == null) {
-        JOptionPane.showMessageDialog(this, "🔍 No se encontró ningún docente con ese número.");
+        JOptionPane.showMessageDialog(this, "Este RFC no existe");
         return;
     }
 
     // Mostrar datos en panel lateral
     txtNombreCompleto.setText(d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno());
     txtTelefonoDoc.setText(d.getTelefono());
-    ProyectoDoc.setText(d.getCorreo());
-    txtNumeroControl.setText(d.getNumeroControl());
+    CorreoDoc1.setText(d.getCorreo());
+    txtRfcDoc.setText(d.getRfc());
     ProyectoDoc.setText("Sin asignar");
 
     // Resaltar en tabla
-    seleccionarDocenteEnTabla(d.getNumeroControl());
+    seleccionarDocenteEnTabla(d.getRfc());
     }//GEN-LAST:event_btnBuscarNumControlMouseClicked
 
     private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
@@ -471,9 +464,9 @@ public class OpcionDocentes extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnRegresarMouseClicked
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        txtIngresarNumControl.setText("");
-    }//GEN-LAST:event_jButton1MouseClicked
+    private void btnBuscarNumControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarNumControlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarNumControlActionPerformed
     private void seleccionarDocenteEnTabla(String numeroControl) {
     for (int i = 0; i < tablaAlumnos.getRowCount(); i++) {
         String valor = tablaAlumnos.getValueAt(i, 0).toString();
@@ -528,7 +521,6 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarDocentes;
     private javax.swing.JButton btnEliminarDocente;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -542,9 +534,9 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private javax.swing.JPanel opcionDocentesPanel;
     public javax.swing.JTable tablaAlumnos;
     private javax.swing.JScrollPane tablaDocentes;
-    private javax.swing.JTextField txtIngresarNumControl;
+    private javax.swing.JTextField txtIngresarRfc;
     private javax.swing.JLabel txtNombreCompleto;
-    private javax.swing.JLabel txtNumeroControl;
+    private javax.swing.JLabel txtRfcDoc;
     private javax.swing.JLabel txtTelefonoDoc;
     // End of variables declaration//GEN-END:variables
 }
