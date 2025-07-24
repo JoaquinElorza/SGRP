@@ -2,6 +2,7 @@ package Vista;
 
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
+import Modelo.DAO.CarpetaOculta;
 import javax.swing.*;
 import java.awt.*;
 
@@ -104,7 +105,6 @@ public class EditarAlumno extends JFrame {
 
     if (ok) {
         JOptionPane.showMessageDialog(this, "✅ Alumno actualizado correctamente.");
-        
         dispose();
     } else {
         JOptionPane.showMessageDialog(this, "❌ Error al actualizar. Revisa los datos.");

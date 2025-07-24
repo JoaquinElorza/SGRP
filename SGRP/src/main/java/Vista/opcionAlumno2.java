@@ -515,6 +515,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         try {
             AlumnoDAO dao = new AlumnoDAO(); //objeto para los metodos de la clase
         AlumnoCarg datos = dao.consultarAlumno(nControl);
+        
         editar = new EditarAlumno();
         editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
                            datos.getApellidoMaterno(), datos.getNumeroTelefono(), datos.getCorreoElectronico());
