@@ -676,7 +676,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Debes seleccionar un documento.");
     }else{
         DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(),
-                tablaAlumnos.getValueAt(tablaAlumnos.getSelectedRow(),0).toString(),this);
+                tablaDocumentos.getValueAt(tablaDocumentos.getSelectedRow(),0).toString(),this);
             try {
                 DocumentoDao.setEstadoDocumento(lblControl.getText(), true,
                     tablaDocumentos.getValueAt(tablaDocumentos.getSelectedRow(), 0).toString());

@@ -137,21 +137,37 @@ public class DocumentoDao {
     return lista;
 }
 
-    public static void setEstadoDocumento(String nControl, boolean estado, String nombreDocumento) throws SQLException{
-        String sql = "UPDATE expediente_alumno ea\n" +
-                    "JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
-                    "JOIN documentos d ON ea.fk_documento = d.id_documento\n" +
-                    "SET ea.estatus = ?\n" +
-                    "WHERE a.n_control = ? AND d.documento = ?;";
-        
-         try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)){
-         
-                ps.setBoolean(1, estado);
-                ps.setString(2, nControl);
-                ps.setString(3, nombreDocumento);
-                ps.executeUpdate();
-         }   
-        
+public static void setEstadoDocumento(String nControl, boolean estado,
+        String nombreDocumento) throws SQLException {
+    String updateSql = "UPDATE expediente_alumno ea\n" +
+                       "JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
+                       "JOIN documentos d ON ea.fk_documento = d.id_documento\n" +
+                       "SET ea.estatus = ?\n" +
+                       "WHERE a.n_control = ? AND d.documento = ?;";
+    
+    String insertSql = "INSERT INTO expediente_alumno (fk_documento, estatus, fk_alumno)\n" +
+                       "SELECT d.id_documento, ?, a.id_alumno\n" +
+                       "FROM alumno a, documentos d\n" +
+                       "WHERE a.n_control = ? AND d.documento = ?;";
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+         PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+
+        // Intentamos actualizar primero
+        updateStmt.setBoolean(1, estado);
+        updateStmt.setString(2, nControl);
+        updateStmt.setString(3, nombreDocumento);
+        int rowsAffected = updateStmt.executeUpdate();
+
+        // Si no se actualizó ninguna fila, insertamos
+        if (rowsAffected == 0) {
+            insertStmt.setBoolean(1, estado);
+            insertStmt.setString(2, nControl);
+            insertStmt.setString(3, nombreDocumento);
+            insertStmt.executeUpdate();
+        }
     }
+}
+
 }

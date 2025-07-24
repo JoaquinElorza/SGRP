@@ -109,5 +109,20 @@ public class CarpetaOculta {
         }
     }
     
+    public static boolean renombrarCarpeta(String nControlA, String nControlB){
+        File oldNombre = new File (RUTA_BASE + "\\" + nControlA);
+        if(oldNombre.exists()){
+            File newNombre = new File(RUTA_BASE + "\\" + nControlB);
+            
+            if (oldNombre.renameTo(newNombre)) {
+                System.out.println("archivo renombrado");
+            } else {
+                System.out.println("error al renombrar");
+            }   
+        }
+        System.out.println("No se ha creado la carpeta para renombrarla");
+        return false;
+    }
+    
     }
 

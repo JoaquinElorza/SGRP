@@ -104,6 +104,7 @@ public class EditarAlumno extends JFrame {
 
     if (ok) {
         JOptionPane.showMessageDialog(this, "✅ Alumno actualizado correctamente.");
+        
         dispose();
     } else {
         JOptionPane.showMessageDialog(this, "❌ Error al actualizar. Revisa los datos.");
