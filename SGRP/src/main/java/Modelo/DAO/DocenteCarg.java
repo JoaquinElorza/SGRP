@@ -5,18 +5,18 @@ public class DocenteCarg {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private String numeroControl;
+    private String rfc;
     private String telefono;
     private String correo;
 
     public DocenteCarg() {}
 
     public DocenteCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
-                       String numeroControl, String telefono, String correo) {
+                       String rfc, String telefono, String correo) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
-        this.numeroControl = numeroControl;
+        this.rfc = rfc;
         this.telefono = telefono;
         this.correo = correo;
     }
@@ -53,12 +53,12 @@ public class DocenteCarg {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public String getNumeroControl() {
-        return numeroControl;
+    public String getRfc() {
+        return rfc;
     }
 
-    public void setNumeroControl(String numeroControl) {
-        this.numeroControl = numeroControl;
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
     }
 
     public String getTelefono() {
