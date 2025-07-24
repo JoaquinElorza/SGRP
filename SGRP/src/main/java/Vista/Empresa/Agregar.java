@@ -22,6 +22,8 @@ public class Agregar extends javax.swing.JFrame {
         initComponents();
         this.ventanaEmpresa = ventanaEmpresa;
 
+        getRootPane().setDefaultButton(jButton1);  
+
 // Imagen del botón regresar
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
@@ -38,12 +40,12 @@ public class Agregar extends javax.swing.JFrame {
         });
 
     }
+
     public Agregar() {
         initComponents();
         this.ventanaEmpresa = null;
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

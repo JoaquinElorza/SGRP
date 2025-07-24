@@ -22,6 +22,8 @@ public class Editar extends javax.swing.JFrame {
         initComponents();
         this.empresa = empresa;
         this.vistaEmpresa = vistaEmpresa;
+        
+        getRootPane().setDefaultButton(jButton1); 
 
         EditarNombre.setText(empresa.getNombre());
         EditarContacto.setText(empresa.getContacto());
