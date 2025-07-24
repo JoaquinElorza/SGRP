@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -11,42 +12,45 @@ import Modelo.DAO.DocenteCarg;
 import Modelo.DAO.DocenteDAO;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author yahir
  */
 public class OpcionDocentes extends javax.swing.JFrame {
- private final AcomodarImagen acomodarImagen = new AcomodarImagen();
-    
+
+    private final AcomodarImagen acomodarImagen = new AcomodarImagen();
+
     CardLayout card;
     private JPanel panelContainer;
-    public OpcionDocentes(JPanel container) {
-       
+    
+       public OpcionDocentes() {
+    }
+
+    public OpcionDocentes(CardLayout layout, JPanel container) {
+        this.card = layout;
         this.panelContainer = container;
         this.setPreferredSize(new Dimension(900, 650));
         initComponents();
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
-         JPanelLOGO.setOpaque(false);
-         JPanelLOGO.setBorder(null);
-         JPanelLOGO.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         
-    } 
-    
-    /**
-     * Creates new form OpcionDocentes
-     */
-    public OpcionDocentes() {
-        initComponents();
+        this.setLocationRelativeTo(null);
         actualizarTablaDocentes();
+
+        //Imagen Logo
+        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);
+        JPanelLOGO.setOpaque(false);
+        JPanelLOGO.setBorder(null);
+        JPanelLOGO.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+
     }
-    
+
     public void actualizarTablaDocentes() {
         DefaultTableModel modelo = (DefaultTableModel) tablaAlumnos.getModel();
         modelo.setRowCount(0);
@@ -57,7 +61,7 @@ public class OpcionDocentes extends javax.swing.JFrame {
             modelo.addRow(new Object[]{d.getNumeroControl(), nombreCompleto});
         }
     }
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,8 +97,6 @@ public class OpcionDocentes extends javax.swing.JFrame {
         btnEditarDocentes = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         JPanelLOGO = new javax.swing.JPanel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         opcionDocentesPanel.setBackground(new java.awt.Color(255, 255, 255));
         opcionDocentesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -325,12 +327,11 @@ public class OpcionDocentes extends javax.swing.JFrame {
         opcionDocentesPanel.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 65, -1, -1));
 
         JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        opcionDocentesPanel.add(JPanelLOGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(849, 6, 100, 100));
+        opcionDocentesPanel.add(JPanelLOGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 10, 100, 90));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
@@ -341,19 +342,21 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
+    private void tablaAlumnosMouseClicked(MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
         int filaVisual = tablaAlumnos.getSelectedRow();
-        if (filaVisual == -1) return;
+        if (filaVisual == -1) {
+            return;
+        }
 
         int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
         String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
 
         DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
-        if (datos == null) return;
+        if (datos == null) {
+            return;
+        }
 
         txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
         txtTelefonoDoc.setText(datos.getTelefono());
@@ -363,13 +366,13 @@ public class OpcionDocentes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tablaAlumnosMouseClicked
     public void actualizarPanelLateral(DocenteCarg datos) {
-    txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
-    txtTelefonoDoc.setText(datos.getTelefono());
-    CorreoDoc1.setText(datos.getCorreo());
-    txtNumeroControl.setText(datos.getNumeroControl());
-    ProyectoDoc.setText("En desarrollo");
-}
-    private void btnAgregarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDocenteActionPerformed
+        txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
+        txtTelefonoDoc.setText(datos.getTelefono());
+        CorreoDoc1.setText(datos.getCorreo());
+        txtNumeroControl.setText(datos.getNumeroControl());
+        ProyectoDoc.setText("En desarrollo");
+    }
+    private void btnAgregarDocenteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnAgregarDocenteActionPerformed
         AgregarDocente agregar = new AgregarDocente();
         agregar.setVisible(true);
         agregar.setLocationRelativeTo(null);
@@ -381,34 +384,34 @@ public class OpcionDocentes extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_btnAgregarDocenteActionPerformed
 
-    private void btnEliminarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocenteActionPerformed
-       
+    private void btnEliminarDocenteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocenteActionPerformed
+
     }//GEN-LAST:event_btnEliminarDocenteActionPerformed
 
-    private void btnEditarDocentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarDocentesActionPerformed
+    private void btnEditarDocentesActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnEditarDocentesActionPerformed
         int filaVisual = tablaAlumnos.getSelectedRow();
-    if (filaVisual == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para editar.");
-        return;
-    }
+        if (filaVisual == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para editar.");
+            return;
+        }
 
-    int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-    String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
+        int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
+        String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
 
-    DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
-    if (datos == null) {
-        JOptionPane.showMessageDialog(this, "❌ No se pudo cargar el docente.");
-        return;
-    }
+        DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
+        if (datos == null) {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo cargar el docente.");
+            return;
+        }
 
-    EditarDocente editar = new EditarDocente(this); 
-    editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
-                       datos.getApellidoMaterno(), datos.getTelefono(), datos.getCorreo());
-    editar.setVisible(true);
-    editar.setLocationRelativeTo(null);
+        EditarDocente editar = new EditarDocente(this);
+        editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
+                datos.getApellidoMaterno(), datos.getTelefono(), datos.getCorreo());
+        editar.setVisible(true);
+        editar.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnEditarDocentesActionPerformed
 
-    private void btnEliminarDocenteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarDocenteMouseClicked
+    private void btnEliminarDocenteMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnEliminarDocenteMouseClicked
         int filaVisual = tablaAlumnos.getSelectedRow();
         if (filaVisual == -1) {
             JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para eliminar.");
@@ -420,8 +423,8 @@ public class OpcionDocentes extends javax.swing.JFrame {
         String nombre = txtNombreCompleto.getText();
 
         int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Deseas eliminar a " + nombre + " con número de control " + numeroControl + "?",
-            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                "¿Deseas eliminar a " + nombre + " con número de control " + numeroControl + "?",
+                "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             boolean eliminado = new DocenteDAO().eliminarDocente(numeroControl);
@@ -439,51 +442,52 @@ public class OpcionDocentes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarDocenteMouseClicked
 
-    private void btnBuscarNumControlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarNumControlMouseClicked
+    private void btnBuscarNumControlMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnBuscarNumControlMouseClicked
         String input = txtIngresarNumControl.getText().trim();
 
-    if (input.equals("") || input.equals("Inserta número de control")) {
-        JOptionPane.showMessageDialog(this, "⚠️ Ingresa un número de control válido.");
-        return;
-    }
+        if (input.equals("") || input.equals("Inserta número de control")) {
+            JOptionPane.showMessageDialog(this, "⚠️ Ingresa un número de control válido.");
+            return;
+        }
 
-    DocenteCarg d = new DocenteDAO().consultarPorControl(input);
-    if (d == null) {
-        JOptionPane.showMessageDialog(this, "🔍 No se encontró ningún docente con ese número.");
-        return;
-    }
+        DocenteCarg d = new DocenteDAO().consultarPorControl(input);
+        if (d == null) {
+            JOptionPane.showMessageDialog(this, "🔍 No se encontró ningún docente con ese número.");
+            return;
+        }
 
-    // Mostrar datos en panel lateral
-    txtNombreCompleto.setText(d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno());
-    txtTelefonoDoc.setText(d.getTelefono());
-    ProyectoDoc.setText(d.getCorreo());
-    txtNumeroControl.setText(d.getNumeroControl());
-    ProyectoDoc.setText("Sin asignar");
+        // Mostrar datos en panel lateral
+        txtNombreCompleto.setText(d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno());
+        txtTelefonoDoc.setText(d.getTelefono());
+        ProyectoDoc.setText(d.getCorreo());
+        txtNumeroControl.setText(d.getNumeroControl());
+        ProyectoDoc.setText("Sin asignar");
 
-    // Resaltar en tabla
-    seleccionarDocenteEnTabla(d.getNumeroControl());
+        // Resaltar en tabla
+        seleccionarDocenteEnTabla(d.getNumeroControl());
     }//GEN-LAST:event_btnBuscarNumControlMouseClicked
 
-    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
+    private void btnRegresarMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
         MenuPrincipal menu = new MenuPrincipal();
         menu.setVisible(true);
         menu.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_btnRegresarMouseClicked
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void jButton1MouseClicked(MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         txtIngresarNumControl.setText("");
     }//GEN-LAST:event_jButton1MouseClicked
     private void seleccionarDocenteEnTabla(String numeroControl) {
-    for (int i = 0; i < tablaAlumnos.getRowCount(); i++) {
-        String valor = tablaAlumnos.getValueAt(i, 0).toString();
-        if (valor.equals(numeroControl)) {
-            tablaAlumnos.setRowSelectionInterval(i, i);
-            tablaAlumnos.scrollRectToVisible(tablaAlumnos.getCellRect(i, 0, true));
-            return;
+        for (int i = 0; i < tablaAlumnos.getRowCount(); i++) {
+            String valor = tablaAlumnos.getValueAt(i, 0).toString();
+            if (valor.equals(numeroControl)) {
+                tablaAlumnos.setRowSelectionInterval(i, i);
+                tablaAlumnos.scrollRectToVisible(tablaAlumnos.getCellRect(i, 0, true));
+                return;
+            }
         }
     }
-}
+
     /**
      * @param args the command line arguments
      */
@@ -509,6 +513,9 @@ public class OpcionDocentes extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(OpcionDocentes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -547,4 +554,8 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private javax.swing.JLabel txtNumeroControl;
     private javax.swing.JLabel txtTelefonoDoc;
     // End of variables declaration//GEN-END:variables
+
+    void setLocationRelativeTo(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

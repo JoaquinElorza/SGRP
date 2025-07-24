@@ -282,7 +282,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jPanelDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelDocentesMouseClicked
        OpcionDocentes opc = new OpcionDocentes();
         opc.setVisible(true);
-        opc.setLocationRelativeTo(null);
+        opc.setLocationRelativeTo(this);
         dispose();
     }//GEN-LAST:event_jPanelDocentesMouseClicked
 
