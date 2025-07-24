@@ -9,6 +9,7 @@ import Modelo.Entidades.EmpresaEntidad;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  *
@@ -19,10 +20,15 @@ public class Agregar extends javax.swing.JFrame {
     private Vista.Empresa.Empresa ventanaEmpresa;
 
     public Agregar(Vista.Empresa.Empresa ventanaEmpresa) {
+        setUndecorated(true);
+
         initComponents();
         this.ventanaEmpresa = ventanaEmpresa;
 
-        getRootPane().setDefaultButton(jButton1);  
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+        setLocationRelativeTo(null);
+
+        getRootPane().setDefaultButton(jButton1);
 
 // Imagen del botón regresar
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
