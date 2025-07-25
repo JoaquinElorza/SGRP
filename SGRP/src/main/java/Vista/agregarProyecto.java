@@ -240,7 +240,7 @@ private void agregarProyecto() {
 
        
        
-       private void cargarEmpresasEnCombo() {
+       public static void cargarEmpresasEnCombo() {
     empresasBox.removeAllItems();
     String sql = "SELECT id_empresa, nombre FROM empresa";
     try (java.sql.Connection conn = Utilidades.Conexion.getConexion();
@@ -259,7 +259,7 @@ private void agregarProyecto() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBack;
     private javax.swing.JPanel JPanelLOGO;
-    private javax.swing.JComboBox<EmpresaItem> empresasBox;
+    private static javax.swing.JComboBox<EmpresaItem> empresasBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

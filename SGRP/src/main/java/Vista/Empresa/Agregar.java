@@ -6,6 +6,7 @@ package Vista.Empresa;
 
 import Modelo.DAO.EmpresaDAO;
 import Modelo.Entidades.EmpresaEntidad;
+import Vista.agregarProyecto;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -172,6 +173,7 @@ public class Agregar extends javax.swing.JFrame {
 
         if (guardado) {
             JOptionPane.showMessageDialog(this, "Empresa guardada correctamente.");
+            agregarProyecto.cargarEmpresasEnCombo();
             this.dispose();
             ventanaEmpresa.recargarTabla(); // si estás usando referencia a la ventana anterior
         } else {
