@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import Vista.OpcionDocentes;
 import Vista.vistaProyectos;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 public class MenuPrincipal extends javax.swing.JFrame {
@@ -282,10 +284,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanelEmpresasMouseClicked
 
     private void jPanelDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelDocentesMouseClicked
-       OpcionDocentes opc = new OpcionDocentes();
-        opc.setVisible(true);
-        opc.setLocationRelativeTo(null);
-        dispose();
+       JFrame ventana = new JFrame("Gestión de Docentes");
+
+    // Usa la instancia de OpcionDocentes dentro de la ventana
+    CardLayout layout = new CardLayout(); // No uses panelCambiante aquí
+    JPanel container = new JPanel(layout);
+    OpcionDocentes vistaDocentes = new OpcionDocentes(layout, container);
+
+    container.add(vistaDocentes, "opcion docentes");
+    layout.show(container, "opcion docentes");
+
+    ventana.setContentPane(container);
+    ventana.setSize(1000, 650);
+    ventana.setResizable(false);
+    ventana.setExtendedState(JFrame.NORMAL);
+    ventana.setLocationRelativeTo(null);
+    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventana.setVisible(true);
     }//GEN-LAST:event_jPanelDocentesMouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked

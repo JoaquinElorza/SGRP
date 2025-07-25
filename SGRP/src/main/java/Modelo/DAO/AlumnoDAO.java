@@ -9,6 +9,7 @@ import Utilidades.Conexion;
 
 public class AlumnoDAO {
 
+    // Agrega un nuevo alumno y persona en transacción
     public boolean agregarAlumno(Alumno alumno) {
         Connection conn = null;
         PreparedStatement psPersona = null;
@@ -20,19 +21,25 @@ public class AlumnoDAO {
         try {
             conn = Conexion.getConexion();
 
-            String sqlVerificar = "SELECT COUNT(*) FROM alumno a JOIN persona p ON a.fk_persona = p.id_persona WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E') ;";
+            String sqlVerificar = 
+                "SELECT COUNT(*) FROM alumno a " +
+                "JOIN persona p ON a.fk_persona = p.id_persona " +
+                "WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E')";
             psVerificar = conn.prepareStatement(sqlVerificar);
             psVerificar.setString(1, alumno.getNumeroControl());
             rs = psVerificar.executeQuery();
 
             if (rs.next() && rs.getInt(1) > 0) {
-                JOptionPane.showMessageDialog(null, "⛔ Ya existe un alumno activo con ese número de control.");
+                JOptionPane.showMessageDialog(null,
+                    "⛔ Ya existe un alumno activo con ese número de control.");
                 return false;
             }
 
             conn.setAutoCommit(false);
 
-            String sqlPersona = "INSERT INTO persona (nombre, ap_paterno, ap_materno, status) VALUES (?, ?, ?, ?)";
+            String sqlPersona = 
+                "INSERT INTO persona (nombre, ap_paterno, ap_materno, status) " +
+                "VALUES (?, ?, ?, ?)";
             psPersona = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
             psPersona.setString(1, alumno.getNombre());
             psPersona.setString(2, alumno.getApellidoPaterno());
@@ -43,7 +50,9 @@ public class AlumnoDAO {
             rsId = psPersona.getGeneratedKeys();
             int idPersona = rsId.next() ? rsId.getInt(1) : -1;
 
-            String sqlAlumno = "INSERT INTO alumno (n_control, telefono, correo, fk_persona) VALUES (?, ?, ?, ?)";
+            String sqlAlumno = 
+                "INSERT INTO alumno (n_control, telefono, correo, fk_persona) " +
+                "VALUES (?, ?, ?, ?)";
             psAlumno = conn.prepareStatement(sqlAlumno);
             psAlumno.setString(1, alumno.getNumeroControl());
             psAlumno.setString(2, alumno.getTelefono());
@@ -76,14 +85,17 @@ public class AlumnoDAO {
         }
     }
 
+    // Consulta un alumno activo por número de control
     public AlumnoCarg consultarAlumno(String nControl) throws SQLException {
-        String sql = "SELECT a.n_control, a.telefono, a.correo, " +
-                     "p.nombre, p.ap_paterno, p.ap_materno " +
-                     "FROM alumno a " +
-                     "JOIN persona p ON a.fk_persona = p.id_persona " +
-                     "WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E') ;";
+        String sql = 
+            "SELECT a.n_control, a.telefono, a.correo, " +
+            "p.nombre, p.ap_paterno, p.ap_materno " +
+            "FROM alumno a " +
+            "JOIN persona p ON a.fk_persona = p.id_persona " +
+            "WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E')";
 
-        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nControl);
             ResultSet rs = stmt.executeQuery();
 
@@ -101,36 +113,59 @@ public class AlumnoDAO {
         return null;
     }
 
-    public boolean actualizarAlumno(AlumnoCarg alumno) {
-        String obtenerIdPersona = "SELECT fk_persona FROM alumno WHERE n_control = ?";
-        String actualizarPersona = "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ? WHERE id_persona = ?";
-        String actualizarAlumno = "UPDATE alumno SET n_control = ?, correo = ?, telefono = ? WHERE fk_persona = ?";
+    // Verifica existencia de número de control activo
+    public boolean existeNumeroControl(String numeroControl) {
+        String sql = 
+            "SELECT COUNT(*) FROM alumno a " +
+            "JOIN persona p ON a.fk_persona = p.id_persona " +
+            "WHERE a.n_control = ? AND (p.status IS NULL OR p.status <> 'E')";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, numeroControl);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Actualiza alumno/persona usando el control ORIGINAL en el WHERE
+    public boolean actualizarAlumno(AlumnoCarg alumno, String controlOriginal) {
+        String sqlBuscar = "SELECT fk_persona FROM alumno WHERE n_control = ?";
+        String sqlUpdPersona = 
+            "UPDATE persona SET nombre = ?, ap_paterno = ?, ap_materno = ? " +
+            "WHERE id_persona = ?";
+        String sqlUpdAlumno = 
+            "UPDATE alumno SET n_control = ?, correo = ?, telefono = ? " +
+            "WHERE fk_persona = ?";
 
         try (Connection conn = Conexion.getConexion();
-             PreparedStatement psBuscar = conn.prepareStatement(obtenerIdPersona)) {
+             PreparedStatement psBuscar = conn.prepareStatement(sqlBuscar)) {
 
             conn.setAutoCommit(false);
-
-            psBuscar.setString(1, alumno.getNumeroControl());
+            psBuscar.setString(1, controlOriginal);
             ResultSet rs = psBuscar.executeQuery();
+            if (!rs.next()) {
+                conn.rollback();
+                return false;
+            }
+            int idPersona = rs.getInt("fk_persona");
 
-            if (!rs.next()) return false;
-            int id_persona = rs.getInt("fk_persona");
+            try (PreparedStatement psP = conn.prepareStatement(sqlUpdPersona);
+                 PreparedStatement psA = conn.prepareStatement(sqlUpdAlumno)) {
 
-            try (PreparedStatement psPersona = conn.prepareStatement(actualizarPersona);
-                 PreparedStatement psAlumno = conn.prepareStatement(actualizarAlumno)) {
+                psP.setString(1, alumno.getNombre());
+                psP.setString(2, alumno.getApellidoPaterno());
+                psP.setString(3, alumno.getApellidoMaterno());
+                psP.setInt(4, idPersona);
+                psP.executeUpdate();
 
-                psPersona.setString(1, alumno.getNombre());
-                psPersona.setString(2, alumno.getApellidoPaterno());
-                psPersona.setString(3, alumno.getApellidoMaterno());
-                psPersona.setInt(4, id_persona);
-                psPersona.executeUpdate();
-
-                psAlumno.setString(1, alumno.getNumeroControl());
-                psAlumno.setString(2, alumno.getCorreoElectronico());
-                psAlumno.setString(3, alumno.getNumeroTelefono());
-                psAlumno.setInt(4, id_persona);
-                psAlumno.executeUpdate();
+                psA.setString(1, alumno.getNumeroControl());
+                psA.setString(2, alumno.getCorreoElectronico());
+                psA.setString(3, alumno.getNumeroTelefono());
+                psA.setInt(4, idPersona);
+                psA.executeUpdate();
             }
 
             conn.commit();
@@ -142,6 +177,12 @@ public class AlumnoDAO {
         }
     }
 
+    // Versión obsoleta o de conveniencia (sin control original)
+    public boolean actualizarAlumno(AlumnoCarg alumno) {
+        return actualizarAlumno(alumno, alumno.getNumeroControl());
+    }
+
+    // Marca persona como eliminada
     public boolean eliminarAlumno(int idPersona) {
         String sql = "UPDATE persona SET status = 'E' WHERE id_persona = ?";
         try (Connection conn = Conexion.getConexion();
@@ -155,31 +196,31 @@ public class AlumnoDAO {
             return false;
         }
     }
-    
-    
-    
- public int obtenerIdPersonaPorNumeroControl(String nControl) {
-    String sql = "SELECT fk_persona FROM alumno WHERE n_control = ?";
-    try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, nControl);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("fk_persona");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return -1; // No encontrado
-}
-    
 
+    // Obtiene id_persona dado un número de control
+    public int obtenerIdPersonaPorNumeroControl(String nControl) {
+        String sql = "SELECT fk_persona FROM alumno WHERE n_control = ?";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nControl);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("fk_persona");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    // Lista todos los alumnos activos
     public List<AlumnoCarg> obtenerTodosLosAlumnos() {
         List<AlumnoCarg> lista = new ArrayList<>();
-        String sql = "SELECT a.n_control, a.telefono, a.correo, p.nombre, p.ap_paterno, p.ap_materno " +
-                     "FROM alumno a " +
-                     "JOIN persona p ON a.fk_persona = p.id_persona " +
-                     "WHERE (p.status IS NULL OR p.status <> 'E') ;";
+        String sql = 
+            "SELECT a.n_control, a.telefono, a.correo, p.nombre, p.ap_paterno, p.ap_materno " +
+            "FROM alumno a " +
+            "JOIN persona p ON a.fk_persona = p.id_persona " +
+            "WHERE (p.status IS NULL OR p.status <> 'E')";
 
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql);

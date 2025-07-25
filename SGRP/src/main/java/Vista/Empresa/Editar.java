@@ -8,6 +8,7 @@ import Modelo.Entidades.EmpresaEntidad;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  *
@@ -19,9 +20,16 @@ public class Editar extends javax.swing.JFrame {
     private Empresa vistaEmpresa;
 
     public Editar(EmpresaEntidad empresa, Empresa vistaEmpresa) {
+        setUndecorated(true);
+
         initComponents();
         this.empresa = empresa;
         this.vistaEmpresa = vistaEmpresa;
+
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+        setLocationRelativeTo(null);
+
+        getRootPane().setDefaultButton(jButton1);
 
         EditarNombre.setText(empresa.getNombre());
         EditarContacto.setText(empresa.getContacto());
@@ -65,6 +73,7 @@ public class Editar extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
 
         EditarNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

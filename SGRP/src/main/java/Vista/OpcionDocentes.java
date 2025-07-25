@@ -1,9 +1,9 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Vista;
-import java.awt.CardLayout;
+
 import java.awt.Color;
 import javax.swing.JPanel;
 import Controlador.AcomodarImagen;
@@ -11,53 +11,47 @@ import Modelo.DAO.DocenteCarg;
 import Modelo.DAO.DocenteDAO;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author yahir
  */
-public class OpcionDocentes extends javax.swing.JFrame {
- private final AcomodarImagen acomodarImagen = new AcomodarImagen();
-    
-    CardLayout card;
-    private JPanel panelContainer;
-    public OpcionDocentes(JPanel container) {
-       
-        this.panelContainer = container;
-        this.setPreferredSize(new Dimension(900, 650));
-        initComponents();
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
-         JPanelLOGO.setOpaque(false);
-         JPanelLOGO.setBorder(null);
-         JPanelLOGO.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         
-    } 
-    
+public class OpcionDocentes extends javax.swing.JPanel {
+private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     /**
      * Creates new form OpcionDocentes
      */
-    public OpcionDocentes() {
+    CardLayout card;
+    private JPanel panelContainer;
+    public OpcionDocentes(CardLayout layout, JPanel container) {
+        this.card = layout;
+    this.panelContainer = container;
+    this.setPreferredSize(new Dimension(1000, 650));
         initComponents();
         actualizarTablaDocentes();
+    acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
+    JPanelLOGO.setOpaque(false);
+    JPanelLOGO.setBorder(null);
+    JPanelLOGO.setBackground(new Color(0,0,0,0));
     }
-    
     public void actualizarTablaDocentes() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaAlumnos.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tablaDocentex.getModel();
         modelo.setRowCount(0);
 
         List<DocenteCarg> lista = new DocenteDAO().obtenerTodos();
         for (DocenteCarg d : lista) {
             String nombreCompleto = d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno();
-            modelo.addRow(new Object[]{d.getNumeroControl(), nombreCompleto});
+            modelo.addRow(new Object[]{d.getRfc(), nombreCompleto});
         }
     }
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,49 +61,130 @@ public class OpcionDocentes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        opcionDocentesPanel = new javax.swing.JPanel();
-        tablaDocentes = new javax.swing.JScrollPane();
-        tablaAlumnos = new javax.swing.JTable();
-        btnAgregarDocente = new javax.swing.JButton();
-        btnEliminarDocente = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        JPanelLOGO = new javax.swing.JPanel();
+        btnRegresar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnBuscarNumControl = new javax.swing.JButton();
+        txtIngresarRfc = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        tablaDocentes = new javax.swing.JScrollPane();
+        tablaDocentex = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         lblControl = new javax.swing.JLabel();
         lblNombreAlumno = new javax.swing.JLabel();
         lblTelefono = new javax.swing.JLabel();
         lblProyecto = new javax.swing.JLabel();
         lblCorreo = new javax.swing.JLabel();
-        txtNumeroControl = new javax.swing.JLabel();
+        txtRfcDoc = new javax.swing.JLabel();
         txtNombreCompleto = new javax.swing.JLabel();
         txtTelefonoDoc = new javax.swing.JLabel();
         ProyectoDoc = new javax.swing.JLabel();
         CorreoDoc1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        btnBuscarNumControl = new javax.swing.JButton();
-        txtIngresarNumControl = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         btnEditarDocentes = new javax.swing.JButton();
-        btnRegresar = new javax.swing.JButton();
-        JPanelLOGO = new javax.swing.JPanel();
+        btnAgregarDocente = new javax.swing.JButton();
+        btnEliminarDocente = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1.setBackground(new java.awt.Color(242, 242, 242));
 
-        opcionDocentesPanel.setBackground(new java.awt.Color(255, 255, 255));
-        opcionDocentesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        tablaDocentes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
+        JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
+        JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnRegresar.setText("ATRAS");
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegresarMouseClicked(evt);
+            }
+        });
+
+        jPanel3.setBackground(new java.awt.Color(242, 242, 242));
+        jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        btnBuscarNumControl.setText("🔍");
+        btnBuscarNumControl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarNumControlMouseClicked(evt);
+            }
+        });
+        btnBuscarNumControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarNumControlActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("BUSCAR CON RFC");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(txtIngresarRfc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscarNumControl, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel2)
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscarNumControl)
+                    .addComponent(txtIngresarRfc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(btnRegresar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegresar))
+                .addContainerGap())
+        );
+
+        tablaDocentes.setBackground(new java.awt.Color(229, 231, 235));
+        tablaDocentes.setBorder(null);
         tablaDocentes.setToolTipText("");
         tablaDocentes.setAutoscrolls(true);
         tablaDocentes.setName(""); // NOI18N
 
-        tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDocentex.setForeground(new java.awt.Color(0, 0, 0));
+        tablaDocentex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Numero de  control", "Nombre"
+                "RFC", "NOMBRE"
             }
         ) {
             Class[] types = new Class [] {
@@ -120,26 +195,152 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaDocentex.setSelectionBackground(new java.awt.Color(0, 83, 188));
+        tablaDocentex.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tablaDocentex.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaAlumnosMouseClicked(evt);
+                tablaDocentexMouseClicked(evt);
             }
         });
-        tablaDocentes.setViewportView(tablaAlumnos);
+        tablaDocentes.setViewportView(tablaDocentex);
 
-        opcionDocentesPanel.add(tablaDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 112, 475, 434));
+        jPanel2.setBackground(new java.awt.Color(229, 231, 235));
 
-        btnAgregarDocente.setBackground(new java.awt.Color(51, 153, 255));
+        lblControl.setText("           RFC");
+
+        lblNombreAlumno.setText("Nombre completo");
+
+        lblTelefono.setText("Telefono");
+
+        lblProyecto.setText("Proyecto");
+
+        lblCorreo.setText("Correo electronico");
+
+        txtRfcDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtNombreCompleto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtTelefonoDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        ProyectoDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        CorreoDoc1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombreAlumno)
+                            .addComponent(lblControl)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(lblTelefono))
+                            .addComponent(lblCorreo)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(lblProyecto)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNombreCompleto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtRfcDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtTelefonoDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CorreoDoc1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ProyectoDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblControl)
+                    .addComponent(txtRfcDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombreCompleto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNombreAlumno))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblTelefono))
+                    .addComponent(txtTelefonoDoc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblCorreo)
+                    .addComponent(CorreoDoc1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ProyectoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProyecto))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("DATOS DEL DOCENTE");
+
+        jLabel3.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel3.setText("GITHUB");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(140, 140, 140)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(71, 71, 71)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 125, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(jLabel3)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+
+        btnEditarDocentes.setBackground(new java.awt.Color(0, 83, 188));
+        btnEditarDocentes.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarDocentes.setText("Editar");
+        btnEditarDocentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarDocentesActionPerformed(evt);
+            }
+        });
+
+        btnAgregarDocente.setBackground(new java.awt.Color(0, 83, 188));
+        btnAgregarDocente.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarDocente.setText("Agregar");
+        btnAgregarDocente.setActionCommand("");
         btnAgregarDocente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarDocenteActionPerformed(evt);
             }
         });
-        opcionDocentesPanel.add(btnAgregarDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(217, 564, -1, -1));
 
-        btnEliminarDocente.setBackground(new java.awt.Color(51, 153, 255));
+        btnEliminarDocente.setBackground(new java.awt.Color(0, 83, 188));
+        btnEliminarDocente.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarDocente.setText("Eliminar");
+        btnEliminarDocente.setActionCommand("");
         btnEliminarDocente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnEliminarDocenteMouseClicked(evt);
@@ -150,227 +351,162 @@ public class OpcionDocentes extends javax.swing.JFrame {
                 btnEliminarDocenteActionPerformed(evt);
             }
         });
-        opcionDocentesPanel.add(btnEliminarDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(343, 564, 91, -1));
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-
-        lblControl.setText("Numero de  control");
-
-        lblNombreAlumno.setText("Nombre completo");
-
-        lblTelefono.setText("Telefono");
-
-        lblProyecto.setForeground(new java.awt.Color(0, 102, 255));
-        lblProyecto.setText("Proyecto");
-
-        lblCorreo.setText("Correo electronico");
-
-        txtNumeroControl.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        txtNombreCompleto.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        txtTelefonoDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        ProyectoDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        CorreoDoc1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNombreAlumno)
-                            .addComponent(lblControl)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(lblTelefono))
-                            .addComponent(lblCorreo)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(lblProyecto)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombreCompleto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNumeroControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtTelefonoDoc, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-                    .addComponent(CorreoDoc1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ProyectoDoc, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblControl)
-                    .addComponent(txtNumeroControl, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombreCompleto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNombreAlumno))
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTelefono))
-                    .addComponent(txtTelefonoDoc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblCorreo)
-                    .addComponent(CorreoDoc1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ProyectoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProyecto))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("DATOS DEL DOCENTE");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(77, 77, 77)
+                .addComponent(btnEditarDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(btnAgregarDocente)
+                .addGap(54, 54, 54)
+                .addComponent(btnEliminarDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(581, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(13, 58, Short.MAX_VALUE)
+                    .addComponent(tablaDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(12, 12, 12)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 59, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        opcionDocentesPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(501, 112, -1, 434));
-
-        btnBuscarNumControl.setText("🔎 ");
-        btnBuscarNumControl.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnBuscarNumControlMouseClicked(evt);
-            }
-        });
-
-        jLabel2.setText("INGRESA NÚMERO DE CONTROL");
-
-        jButton1.setForeground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("X");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addComponent(txtIngresarNumControl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscarNumControl, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 452, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEditarDocentes)
+                    .addComponent(btnAgregarDocente)
+                    .addComponent(btnEliminarDocente))
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(102, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBuscarNumControl)
-                    .addComponent(txtIngresarNumControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(14, 14, 14))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 111, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(tablaDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 42, Short.MAX_VALUE)))
         );
 
-        opcionDocentesPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 38, -1, -1));
-
-        btnEditarDocentes.setBackground(new java.awt.Color(51, 153, 255));
-        btnEditarDocentes.setText("Editar");
-        btnEditarDocentes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarDocentesActionPerformed(evt);
-            }
-        });
-        opcionDocentesPanel.add(btnEditarDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 564, 91, -1));
-
-        btnRegresar.setText("ATRAS");
-        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegresarMouseClicked(evt);
-            }
-        });
-        opcionDocentesPanel.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 65, -1, -1));
-
-        JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        opcionDocentesPanel.add(JPanelLOGO, new org.netbeans.lib.awtextra.AbsoluteConstraints(849, 6, 100, 100));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
+            .addGap(0, 1030, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(opcionDocentesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGap(0, 587, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
-        int filaVisual = tablaAlumnos.getSelectedRow();
+    public void actualizarPanelLateral(DocenteCarg datos) {
+    txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
+    txtTelefonoDoc.setText(datos.getTelefono());
+    CorreoDoc1.setText(datos.getCorreo());
+    txtRfcDoc.setText(datos.getRfc());
+    ProyectoDoc.setText("En desarrollo");
+    }
+    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
+    }//GEN-LAST:event_btnRegresarMouseClicked
+
+    private void btnBuscarNumControlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarNumControlMouseClicked
+        String input = txtIngresarRfc.getText().trim();
+
+        if (input.equals("") || input.equals("Inserta RFC")) {
+            JOptionPane.showMessageDialog(this, "⚠️ Ingresa un RFC válido.");
+            return;
+        }
+
+        DocenteCarg d = new DocenteDAO().consultarPorRFC(input);
+        if (d == null) {
+            JOptionPane.showMessageDialog(this, "Este RFC no existe");
+            return;
+        }
+
+        // Mostrar datos en panel lateral
+        txtNombreCompleto.setText(d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno());
+        txtTelefonoDoc.setText(d.getTelefono());
+        CorreoDoc1.setText(d.getCorreo());
+        txtRfcDoc.setText(d.getRfc());
+        ProyectoDoc.setText("Sin asignar");
+
+        // Resaltar en tabla
+        seleccionarDocenteEnTabla(d.getRfc());
+    }//GEN-LAST:event_btnBuscarNumControlMouseClicked
+
+    private void seleccionarDocenteEnTabla(String numeroControl) {
+    for (int i = 0; i < tablaDocentex.getRowCount(); i++) {
+        String valor = tablaDocentex.getValueAt(i, 0).toString();
+        if (valor.equals(numeroControl)) {
+            tablaDocentex.setRowSelectionInterval(i, i);
+            tablaDocentex.scrollRectToVisible(tablaDocentex.getCellRect(i, 0, true));
+            return;
+        }
+        }
+        }
+    private void btnBuscarNumControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarNumControlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarNumControlActionPerformed
+
+    private void tablaDocentexMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocentexMouseClicked
+        int filaVisual = tablaDocentex.getSelectedRow();
         if (filaVisual == -1) return;
 
-        int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-        String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
+        int filaModelo = tablaDocentex.convertRowIndexToModel(filaVisual);
+        String seleccionRfc = tablaDocentex.getModel().getValueAt(filaModelo, 0).toString();
 
-        DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
+        DocenteCarg datos = new DocenteDAO().consultarPorRFC(seleccionRfc);
         if (datos == null) return;
 
         txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
         txtTelefonoDoc.setText(datos.getTelefono());
         CorreoDoc1.setText(datos.getCorreo());
-        txtNumeroControl.setText(datos.getNumeroControl());
-        ProyectoDoc.setText("En desarrollo");
+        txtRfcDoc.setText(datos.getRfc());
+        ProyectoDoc.setText("Sin asignar");
+    }//GEN-LAST:event_tablaDocentexMouseClicked
 
-    }//GEN-LAST:event_tablaAlumnosMouseClicked
-    public void actualizarPanelLateral(DocenteCarg datos) {
-    txtNombreCompleto.setText(datos.getNombre() + " " + datos.getApellidoPaterno() + " " + datos.getApellidoMaterno());
-    txtTelefonoDoc.setText(datos.getTelefono());
-    CorreoDoc1.setText(datos.getCorreo());
-    txtNumeroControl.setText(datos.getNumeroControl());
-    ProyectoDoc.setText("En desarrollo");
-}
+    private void btnEditarDocentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarDocentesActionPerformed
+       int filaVisual = tablaDocentex.getSelectedRow();
+        if (filaVisual == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para editar.");
+            return;
+        }
+
+        int filaModelo = tablaDocentex.convertRowIndexToModel(filaVisual);
+        String numeroControl = tablaDocentex.getModel().getValueAt(filaModelo, 0).toString();
+
+        DocenteCarg datos = new DocenteDAO().consultarPorRFC(numeroControl);
+        if (datos == null) {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo cargar el docente.");
+            return;
+        }
+
+        EditarDocente editar = new EditarDocente(this);
+        editar.cargarDatos(datos.getRfc(), datos.getNombre(), datos.getApellidoPaterno(),
+            datos.getApellidoMaterno(), datos.getTelefono(), datos.getCorreo());
+        editar.setVisible(true);
+        editar.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnEditarDocentesActionPerformed
+
     private void btnAgregarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDocenteActionPerformed
-        AgregarDocente agregar = new AgregarDocente();
+         AgregarDocente agregar = new AgregarDocente();
         agregar.setVisible(true);
         agregar.setLocationRelativeTo(null);
         agregar.addWindowListener(new WindowAdapter() {
@@ -381,57 +517,30 @@ public class OpcionDocentes extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_btnAgregarDocenteActionPerformed
 
-    private void btnEliminarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocenteActionPerformed
-       
-    }//GEN-LAST:event_btnEliminarDocenteActionPerformed
-
-    private void btnEditarDocentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarDocentesActionPerformed
-        int filaVisual = tablaAlumnos.getSelectedRow();
-    if (filaVisual == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para editar.");
-        return;
-    }
-
-    int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-    String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
-
-    DocenteCarg datos = new DocenteDAO().consultarPorControl(numeroControl);
-    if (datos == null) {
-        JOptionPane.showMessageDialog(this, "❌ No se pudo cargar el docente.");
-        return;
-    }
-
-    EditarDocente editar = new EditarDocente(this); 
-    editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
-                       datos.getApellidoMaterno(), datos.getTelefono(), datos.getCorreo());
-    editar.setVisible(true);
-    editar.setLocationRelativeTo(null);
-    }//GEN-LAST:event_btnEditarDocentesActionPerformed
-
     private void btnEliminarDocenteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarDocenteMouseClicked
-        int filaVisual = tablaAlumnos.getSelectedRow();
+        int filaVisual = tablaDocentex.getSelectedRow();
         if (filaVisual == -1) {
             JOptionPane.showMessageDialog(this, "⚠️ Selecciona un docente para eliminar.");
             return;
         }
 
-        int filaModelo = tablaAlumnos.convertRowIndexToModel(filaVisual);
-        String numeroControl = tablaAlumnos.getModel().getValueAt(filaModelo, 0).toString();
+        int filaModelo = tablaDocentex.convertRowIndexToModel(filaVisual);
+        String rfc = tablaDocentex.getModel().getValueAt(filaModelo, 0).toString();
         String nombre = txtNombreCompleto.getText();
 
         int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Deseas eliminar a " + nombre + " con número de control " + numeroControl + "?",
+            "¿Deseas eliminar a " + nombre + " con RFC " + rfc + "?",
             "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean eliminado = new DocenteDAO().eliminarDocente(numeroControl);
+            boolean eliminado = new DocenteDAO().eliminarDocente(rfc);
             if (eliminado) {
                 JOptionPane.showMessageDialog(this, "✅ Docente eliminado correctamente.");
                 actualizarTablaDocentes();
                 txtNombreCompleto.setText("");
                 txtTelefonoDoc.setText("");
-                ProyectoDoc.setText("");
-                txtNumeroControl.setText("");
+                CorreoDoc1.setText("");
+                txtRfcDoc.setText("");
                 ProyectoDoc.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al docente.");
@@ -439,85 +548,15 @@ public class OpcionDocentes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarDocenteMouseClicked
 
-    private void btnBuscarNumControlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarNumControlMouseClicked
-        String input = txtIngresarNumControl.getText().trim();
+    private void btnEliminarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocenteActionPerformed
 
-    if (input.equals("") || input.equals("Inserta número de control")) {
-        JOptionPane.showMessageDialog(this, "⚠️ Ingresa un número de control válido.");
-        return;
-    }
-
-    DocenteCarg d = new DocenteDAO().consultarPorControl(input);
-    if (d == null) {
-        JOptionPane.showMessageDialog(this, "🔍 No se encontró ningún docente con ese número.");
-        return;
-    }
-
-    // Mostrar datos en panel lateral
-    txtNombreCompleto.setText(d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno());
-    txtTelefonoDoc.setText(d.getTelefono());
-    ProyectoDoc.setText(d.getCorreo());
-    txtNumeroControl.setText(d.getNumeroControl());
-    ProyectoDoc.setText("Sin asignar");
-
-    // Resaltar en tabla
-    seleccionarDocenteEnTabla(d.getNumeroControl());
-    }//GEN-LAST:event_btnBuscarNumControlMouseClicked
-
-    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
-        MenuPrincipal menu = new MenuPrincipal();
-        menu.setVisible(true);
-        menu.setLocationRelativeTo(null);
-        dispose();
-    }//GEN-LAST:event_btnRegresarMouseClicked
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        txtIngresarNumControl.setText("");
-    }//GEN-LAST:event_jButton1MouseClicked
-    private void seleccionarDocenteEnTabla(String numeroControl) {
-    for (int i = 0; i < tablaAlumnos.getRowCount(); i++) {
-        String valor = tablaAlumnos.getValueAt(i, 0).toString();
-        if (valor.equals(numeroControl)) {
-            tablaAlumnos.setRowSelectionInterval(i, i);
-            tablaAlumnos.scrollRectToVisible(tablaAlumnos.getCellRect(i, 0, true));
-            return;
-        }
-    }
-}
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OpcionDocentes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OpcionDocentes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OpcionDocentes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OpcionDocentes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new OpcionDocentes().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_btnEliminarDocenteActionPerformed
+    private void ajustarVentana() {
+    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (ventana instanceof javax.swing.JFrame) {
+        ((javax.swing.JFrame) ventana).pack();
+        ventana.setLocationRelativeTo(null);
+    }}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CorreoDoc1;
@@ -528,23 +567,24 @@ public class OpcionDocentes extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarDocentes;
     private javax.swing.JButton btnEliminarDocente;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel lblControl;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblNombreAlumno;
     private javax.swing.JLabel lblProyecto;
     private javax.swing.JLabel lblTelefono;
-    private javax.swing.JPanel opcionDocentesPanel;
-    public javax.swing.JTable tablaAlumnos;
     private javax.swing.JScrollPane tablaDocentes;
-    private javax.swing.JTextField txtIngresarNumControl;
+    public javax.swing.JTable tablaDocentex;
+    private javax.swing.JTextField txtIngresarRfc;
     private javax.swing.JLabel txtNombreCompleto;
-    private javax.swing.JLabel txtNumeroControl;
+    private javax.swing.JLabel txtRfcDoc;
     private javax.swing.JLabel txtTelefonoDoc;
     // End of variables declaration//GEN-END:variables
 }

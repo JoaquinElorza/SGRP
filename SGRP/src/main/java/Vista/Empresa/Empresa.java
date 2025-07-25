@@ -6,11 +6,13 @@ package Vista.Empresa;
 
 import Modelo.DAO.EmpresaDAO;
 import Modelo.Entidades.EmpresaEntidad;
+import java.awt.Color;
 import java.awt.Image;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  *
@@ -21,10 +23,16 @@ public class Empresa extends javax.swing.JFrame {
     private Vista.MenuPrincipal ventanaMenu;
 
     public Empresa(Vista.MenuPrincipal ventanaMenu) {
+        setUndecorated(true);
+
         initComponents();
         this.ventanaMenu = ventanaMenu;
+
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+        setLocationRelativeTo(null);
         cargarTablaEmpresas();
 
+        // Botón de regreso
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         jButton4.setIcon(new ImageIcon(imagenRedimensionada));
@@ -47,6 +55,14 @@ public class Empresa extends javax.swing.JFrame {
         }
 
         jTable1.setModel(modelo);
+
+        jTable1.setShowGrid(false); // Oculta líneas internas
+        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0)); // Elimina el espacio entre celdas
+
+        jTable1.setBackground(Color.WHITE);
+        jTable1.setForeground(Color.BLACK);
+        jTable1.setRowHeight(30);
+        jTable1.setSelectionBackground(new Color(100, 150, 255));
 
         // 🔒 Ocultar columna ID visualmente
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
@@ -71,6 +87,7 @@ public class Empresa extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -162,13 +179,6 @@ public class Empresa extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Agregar ventanaAgregar = new Agregar(this);
-        ventanaAgregar.setVisible(true);
-        ventanaAgregar.setLocationRelativeTo(this); // Centrar
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         int fila = jTable1.getSelectedRow();
@@ -221,6 +231,12 @@ public class Empresa extends javax.swing.JFrame {
         this.dispose(); // Cierra esta ventana
         ventanaMenu.setVisible(true); // Vuelve a mostrar el menú principal
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Agregar ventanaAgregar = new Agregar(this);
+        ventanaAgregar.setVisible(true);
+        ventanaAgregar.setLocationRelativeTo(this); // Centrar
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
