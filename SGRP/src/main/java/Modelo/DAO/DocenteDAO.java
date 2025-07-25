@@ -45,6 +45,7 @@ public class DocenteDAO {
             return false;
         }
     }
+    
 
     public List<DocenteCarg> obtenerTodos() {
         String sql = "SELECT d.rfc, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
@@ -117,6 +118,38 @@ public class DocenteDAO {
             return false;
         }
     }
+    public List<DocenteCarg> consultarPorRFCParcial(String rfcParcial) {
+    String sql = "SELECT d.rfc, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
+                 "FROM docente d JOIN persona p ON d.fk_persona = p.id_persona " +
+                 "WHERE d.rfc LIKE ? AND p.status = 'A'";
+    List<DocenteCarg> lista = new ArrayList<>();
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, rfcParcial + "%"); // 👈 RFC parcial
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            DocenteCarg d = new DocenteCarg();
+            d.setRfc(rs.getString("rfc"));
+            d.setNombre(rs.getString("nombre"));
+            d.setApellidoPaterno(rs.getString("ap_paterno"));
+            d.setApellidoMaterno(rs.getString("ap_materno"));
+            d.setTelefono(rs.getString("telefono"));
+            d.setCorreo(rs.getString("correo"));
+            lista.add(d);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return lista;
+}
+    public List<DocenteCarg> consultarTodos() {
+    return obtenerTodos();
+}
 
     public boolean actualizarDocente(DocenteCarg docente, String rfcOriginal) {
         String obtenerIdPersona = 

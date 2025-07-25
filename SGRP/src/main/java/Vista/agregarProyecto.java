@@ -6,6 +6,9 @@ import Modelo.Entidades.Proyecto;
 import Modelo.DAO.ProyectoDAO;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -41,6 +44,13 @@ public class agregarProyecto extends javax.swing.JPanel {
          this.setVisible(true);
     }
     
+    public agregarProyecto() {
+    initComponents();
+    this.card = new CardLayout(); // puedes dejarlo dummy
+    this.panelContainer = new JPanel(card);
+    this.panelProyectos = null; // no se usará en modo ventana
+    cargarEmpresasEnCombo();
+}
 private void agregarProyecto() {
     String nombre = txtNombre.getText().trim();
     String descripcion = txtDescripcion.getText().trim();
@@ -74,25 +84,31 @@ private void agregarProyecto() {
     proyecto.setDescripcion(descripcion);
     proyecto.setIdEmpresa(empresaSeleccionada.getId());
     proyecto.setEstatus("Disponible");
+boolean resultado = dao.agregarProyecto(proyecto);
+if (resultado) {
+    JOptionPane.showMessageDialog(this, "✅ Proyecto agregado exitosamente.");
+    txtNombre.setText("");
+    txtDescripcion.setText("");
 
-    boolean resultado = dao.agregarProyecto(proyecto);
-    if (resultado) {
-        JOptionPane.showMessageDialog(this, "✅ Proyecto agregado exitosamente.");
+    // Actualizar tabla de proyectos si fue embebido
+    if (panelProyectos != null) {
+        panelProyectos.mostrarProyectosEnTabla();
+    }
 
-        txtNombre.setText("");
-        txtDescripcion.setText("");
-
-        // Actualizar tabla de proyectos
-        if (panelProyectos != null) {
-            panelProyectos.mostrarProyectosEnTabla();
-        }
-
-        // Volver al panel de proyectos
+    // Verificar si se abrió como ventana externa o desde CardLayout
+    java.awt.Window ventana = SwingUtilities.getWindowAncestor(this);
+    if (ventana instanceof JFrame && panelProyectos == null) {
+        ventana.dispose(); // ✅ Cierra la ventana si es externa
+    } else {
+        // ✅ Cambia al panel de proyectos si está embebido
         card.show(panelContainer, "panelProyectos");
         ajustarVentana();
-    } else {
-        JOptionPane.showMessageDialog(this, "❌ Error al agregar el proyecto.");
     }
+
+} else {
+    JOptionPane.showMessageDialog(this, "❌ Error al agregar el proyecto.");
+}
+    
 }
 
 
@@ -207,9 +223,9 @@ private void agregarProyecto() {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
-        // TODO add your handling code here:
-        card.show(panelContainer, "panelProyectos");
-        ajustarVentana();
+
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
 
     }//GEN-LAST:event_JPanelBackMouseClicked
        private void ajustarVentana() {
@@ -240,7 +256,7 @@ private void agregarProyecto() {
 
        
        
-       private void cargarEmpresasEnCombo() {
+       public static void cargarEmpresasEnCombo() {
     empresasBox.removeAllItems();
     String sql = "SELECT id_empresa, nombre FROM empresa";
     try (java.sql.Connection conn = Utilidades.Conexion.getConexion();
@@ -262,7 +278,7 @@ private void agregarProyecto() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBack;
     private javax.swing.JPanel JPanelLOGO;
-    private javax.swing.JComboBox<EmpresaItem> empresasBox;
+    private static javax.swing.JComboBox<EmpresaItem> empresasBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

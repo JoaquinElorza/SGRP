@@ -12,13 +12,18 @@ import Modelo.Entidades.Proyecto;
 import Utilidades.Conexion;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -318,12 +323,20 @@ public class vistaProyectos extends javax.swing.JPanel {
     }//GEN-LAST:event_panelProyectosMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        
-        card.show(panelContainer, "panelAgregarProyecto");
-        
-        
+        JFrame ventanaAgregar = new JFrame("Agregar Proyecto");
+    agregarProyecto panelAgregar = new agregarProyecto();
+    ventanaAgregar.setContentPane(panelAgregar);
+    ventanaAgregar.setSize(400, 450); 
+    ventanaAgregar.setLocationRelativeTo(null);
+    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventanaAgregar.setVisible(true);
 
+    ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosed(java.awt.event.WindowEvent e) {
+            mostrarProyectosEnTabla();
+        }
+    });
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -374,10 +387,8 @@ public class vistaProyectos extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
-        // TODO add your handling code here:
-        card.show(panelContainer, "menu principal");
-        ajustarVentana();
-
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackMouseClicked
 
     private void tablaProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMouseClicked

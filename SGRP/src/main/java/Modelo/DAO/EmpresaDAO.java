@@ -16,12 +16,15 @@ import java.sql.ResultSet;
 public class EmpresaDAO {
 
     public boolean insertarEmpresa(EmpresaEntidad empresa) {
-        String sql = "INSERT INTO empresa(nombre, contacto) VALUES (?, ?)";
+        String sql = "INSERT INTO empresa(nombre, contacto, correo, rfc, direccion) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, empresa.getNombre());
             ps.setString(2, empresa.getContacto());
+            ps.setString(3, empresa.getCorreo());
+            ps.setString(4, empresa.getRfc());
+            ps.setString(5, empresa.getDireccion());
             ps.executeUpdate();
             return true;
 
@@ -33,7 +36,7 @@ public class EmpresaDAO {
 
     public List<EmpresaEntidad> listarEmpresas() {
         List<EmpresaEntidad> lista = new ArrayList<>();
-        String sql = "SELECT * FROM empresa WHERE activo = true"; 
+        String sql = "SELECT * FROM empresa WHERE activo = true";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
@@ -42,6 +45,10 @@ public class EmpresaDAO {
                 emp.setIdEmpresa(rs.getInt("id_empresa"));
                 emp.setNombre(rs.getString("nombre"));
                 emp.setContacto(rs.getString("contacto"));
+                emp.setCorreo(rs.getString("correo"));
+                emp.setRfc(rs.getString("rfc"));
+                emp.setDireccion(rs.getString("direccion"));
+
                 lista.add(emp);
             }
 
@@ -53,13 +60,16 @@ public class EmpresaDAO {
     }
 
     public boolean actualizarEmpresa(EmpresaEntidad empresa) {
-        String sql = "UPDATE empresa SET nombre = ?, contacto = ? WHERE id_empresa = ?";
+        String sql = "UPDATE empresa SET nombre = ?, contacto = ?, correo = ?, rfc = ?, direccion = ? WHERE id_empresa = ?";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, empresa.getNombre());
             ps.setString(2, empresa.getContacto());
-            ps.setInt(3, empresa.getIdEmpresa());
+            ps.setString(3, empresa.getCorreo());
+            ps.setString(4, empresa.getRfc());
+            ps.setString(5, empresa.getDireccion());
+            ps.setInt(6, empresa.getIdEmpresa());
 
             return ps.executeUpdate() > 0;
 
@@ -127,6 +137,35 @@ public class EmpresaDAO {
         String sql = "SELECT COUNT(*) FROM empresa WHERE contacto = ? AND id_empresa != ?";
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, contacto);
+            stmt.setInt(2, idEmpresa);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existeRfc(String rfc) {
+        String sql = "SELECT COUNT(*) FROM empresa WHERE rfc = ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, rfc);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existeRfcExcepto(String rfc, int idEmpresa) {
+        String sql = "SELECT COUNT(*) FROM empresa WHERE rfc = ? AND id_empresa != ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, rfc);
             stmt.setInt(2, idEmpresa);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class DocumentoDao {
     
-    public static Integer comboSolicitud(String nControl) throws SQLException{
+    public static Integer comboSolicitud(String nControl, JComboBox combo) throws SQLException{
         String sql = "SELECT e.id_estatus\n" +
                         "FROM alumno a\n" +
                         "JOIN soli_residencia sr ON a.id_alumno = sr.fk_alumno\n" +
@@ -27,6 +28,9 @@ public class DocumentoDao {
             ResultSet rs = stmt.executeQuery();
             
         if(rs.next()){
+            if(rs.getInt("id_estatus")==0){
+               combo.setSelectedIndex(0);
+           }
            return rs.getInt("id_estatus");
         }
     }
@@ -57,14 +61,14 @@ public class DocumentoDao {
         }
     }
     
-    public static void actualizarEstatusSoli(String nControl, String nuevoStatus) throws SQLException {
+public static void actualizarEstatusSoli(String nControl, String nuevoStatus) throws SQLException {
     String sql1 = "SELECT id_estatus FROM estatus_soli_residencia WHERE estatus = ?;";
     String sql2 = "SELECT id_alumno FROM alumno WHERE n_control = ?;";
-    String sql3 = "UPDATE soli_residencia SET fk_estatus = ? WHERE fk_alumno = ?;";
+    String sqlCheck = "SELECT COUNT(*) FROM soli_residencia WHERE fk_alumno = ?;";
+    String sqlUpdate = "UPDATE soli_residencia SET fk_estatus = ? WHERE fk_alumno = ?;";
 
     try (Connection conn = Conexion.getConexion()) {
-
-        // Obtener id_estatus a partir del nombre del estatus
+        // Obtener id_estatus
         int id_estatus;
         try (PreparedStatement ps1 = conn.prepareStatement(sql1)) {
             ps1.setString(1, nuevoStatus);
@@ -77,7 +81,7 @@ public class DocumentoDao {
             }
         }
 
-        // Obtener id_alumno a partir del nControl
+        // Obtener id_alumno
         int id_alumno;
         try (PreparedStatement ps2 = conn.prepareStatement(sql2)) {
             ps2.setString(1, nControl);
@@ -90,11 +94,26 @@ public class DocumentoDao {
             }
         }
 
-        // Actualizar fk_estatus en soli_residencia
-        try (PreparedStatement ps3 = conn.prepareStatement(sql3)) {
-            ps3.setInt(1, id_estatus);
-            ps3.setInt(2, id_alumno);
-            ps3.executeUpdate();
+        // Verificar si ya existe una solicitud para ese alumno
+        boolean existeSolicitud = false;
+        try (PreparedStatement psCheck = conn.prepareStatement(sqlCheck)) {
+            psCheck.setInt(1, id_alumno);
+            try (ResultSet rsCheck = psCheck.executeQuery()) {
+                if (rsCheck.next()) {
+                    existeSolicitud = rsCheck.getInt(1) > 0;
+                }
+            }
+        }
+
+        if (existeSolicitud) {
+            // Actualizar estatus si ya existe
+            try (PreparedStatement psUpdate = conn.prepareStatement(sqlUpdate)) {
+                psUpdate.setInt(1, id_estatus);
+                psUpdate.setInt(2, id_alumno);
+                psUpdate.executeUpdate();
+            }
+        } else {
+            crearSoli(nControl);
         }
 
     } catch (SQLException e) {
@@ -106,11 +125,14 @@ public class DocumentoDao {
     public static List<ExpedienteAlumno> obtenerDocumentos(String nControl) throws SQLException {
     List<ExpedienteAlumno> lista = new ArrayList<>();
 
-    String sql = "SELECT d.documento, ea.estatus " +
-                 "FROM documentos d " +
-                 "LEFT JOIN expediente_alumno ea ON d.id_documento = ea.fk_documento " +
-                 "LEFT JOIN alumno a ON ea.fk_alumno = a.id_alumno " +
-                 "WHERE a.n_control = ? OR a.n_control IS NULL;";
+    String sql = "SELECT d.documento, ea.estatus\n" +
+                    "FROM documentos d\n" +
+                    "LEFT JOIN (\n" +
+                    "    SELECT ea.fk_documento, ea.estatus\n" +
+                    "    FROM expediente_alumno ea\n" +
+                    "    JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
+                    "    WHERE a.n_control = ?\n" +
+                    ") AS ea ON d.id_documento = ea.fk_documento;";
 
     try (Connection conn = Conexion.getConexion();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -137,21 +159,37 @@ public class DocumentoDao {
     return lista;
 }
 
-    public static void setEstadoDocumento(String nControl, boolean estado, String nombreDocumento) throws SQLException{
-        String sql = "UPDATE expediente_alumno ea\n" +
-                    "JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
-                    "JOIN documentos d ON ea.fk_documento = d.id_documento\n" +
-                    "SET ea.estatus = ?\n" +
-                    "WHERE a.n_control = ? AND d.documento = ?;";
-        
-         try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)){
-         
-                ps.setBoolean(1, estado);
-                ps.setString(2, nControl);
-                ps.setString(3, nombreDocumento);
-                ps.executeUpdate();
-         }   
-        
+public static void setEstadoDocumento(String nControl, boolean estado,
+        String nombreDocumento) throws SQLException {
+    String updateSql = "UPDATE expediente_alumno ea\n" +
+                       "JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
+                       "JOIN documentos d ON ea.fk_documento = d.id_documento\n" +
+                       "SET ea.estatus = ?\n" +
+                       "WHERE a.n_control = ? AND d.documento = ?;";
+    
+    String insertSql = "INSERT INTO expediente_alumno (fk_documento, estatus, fk_alumno)\n" +
+                       "SELECT d.id_documento, ?, a.id_alumno\n" +
+                       "FROM alumno a, documentos d\n" +
+                       "WHERE a.n_control = ? AND d.documento = ?;";
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+         PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+
+        // Intentamos actualizar primero
+        updateStmt.setBoolean(1, estado);
+        updateStmt.setString(2, nControl);
+        updateStmt.setString(3, nombreDocumento);
+        int rowsAffected = updateStmt.executeUpdate();
+
+        // Si no se actualizó ninguna fila, insertamos
+        if (rowsAffected == 0) {
+            insertStmt.setBoolean(1, estado);
+            insertStmt.setString(2, nControl);
+            insertStmt.setString(3, nombreDocumento);
+            insertStmt.executeUpdate();
+        }
     }
+}
+
 }

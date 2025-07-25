@@ -12,6 +12,9 @@ import Controlador.AcomodarImagen;
 import Controlador.Placeholder;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Window;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 
 public class AgregarAlumno extends javax.swing.JPanel {
@@ -53,6 +56,9 @@ public class AgregarAlumno extends javax.swing.JPanel {
         
         
     }
+    public AgregarAlumno() {
+    initComponents(); 
+}
 
     private void limpiarCampos() {
         tf_nControl.setText("");
@@ -268,7 +274,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
         return true;
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         if (!validarCampos()) return;
+      if (!validarCampos()) return;
 
     String numeroControl = tf_nControl.getText().trim();
     String nombre        = tf_Nombre.getText().trim();
@@ -278,7 +284,6 @@ public class AgregarAlumno extends javax.swing.JPanel {
     String telefono      = tf_Telefono.getText().trim();
     String proyecto      = "Sin asignar";
 
-    // 🧠 Validaciones adicionales
     if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
         !apellidoP.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") ||
         !apellidoM.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
@@ -294,12 +299,20 @@ public class AgregarAlumno extends javax.swing.JPanel {
     }
 
     AlumnoContr controlador = new AlumnoContr();
-    boolean exito = controlador.agregarAlumnoManual(nombre, apellidoP, apellidoM,
-                                                    numeroControl, correo, telefono);
+    boolean exito = controlador.agregarAlumnoManual(
+        nombre, apellidoP, apellidoM, numeroControl, correo, telefono
+    );
 
     if (exito) {
         JOptionPane.showMessageDialog(this, "✅ Alumno agregado correctamente.");
-        panelAlumno2.actualizarTabla();
+
+        // ✅ Cierra la ventana que contiene este panel
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana instanceof JFrame) {
+            ventana.dispose();
+        }
+
+        panelAlumno2.actualizarTabla(); // Si es null no pasará nada
         limpiarCampos();
         card.show(panelContainer, "panelAlumnos");
     }
@@ -318,10 +331,8 @@ public class AgregarAlumno extends javax.swing.JPanel {
     }//GEN-LAST:event_tf_MaternoActionPerformed
 
     private void JPanelBack2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBack2MouseClicked
-        // TODO add your handling code here:
-        card.show(panelContainer, "panelAlumnos"); 
-        ajustarVentana();
-        
+         Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBack2MouseClicked
     
     private void ajustarVentana() {

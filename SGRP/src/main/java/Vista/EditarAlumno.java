@@ -2,6 +2,7 @@ package Vista;
 
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
+import Modelo.DAO.CarpetaOculta;
 import javax.swing.*;
 import java.awt.*;
 

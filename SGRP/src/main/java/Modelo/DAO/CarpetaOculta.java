@@ -36,14 +36,26 @@ public class CarpetaOculta {
     }
 
 
+    public static String getExtension(File file) {
+        String nombre = file.getName();
+        int i = nombre.lastIndexOf('.');
+        if (i > 0 && i < nombre.length() - 1) {
+            return nombre.substring(i + 1).toLowerCase(); // "pdf", "jpg", etc.
+        } else {
+            return ""; // No tiene extensión
+        }
+    }
+    
+    
     // Copiar un archivo PDF a la carpeta del alumno
     public static boolean copiarArchivoPDF(File archivoOriginal, String numeroControl,
             String nuevoNombre, Component parentComponent) {
- 
-        if (!archivoOriginal.getName().toLowerCase().endsWith(".pdf")) {
-            System.out.println("El archivo debe ser .PDF");
+
+        String ext ="." + getExtension(archivoOriginal);
+        if(ext.equals("")){
+            System.out.println("formato de archivo invalido");
             return false;
-        }
+        }else{
 
         // Crear carpeta del alumno si no existe
         File carpetaAlumno = new File(RUTA_BASE + "\\" + numeroControl);
@@ -53,13 +65,13 @@ public class CarpetaOculta {
 
         // Definir ruta destino
         Path origen = archivoOriginal.toPath();
-        nuevoNombre+=".pdf";
+        nuevoNombre+=ext;
         Path destino = Paths.get(carpetaAlumno.getAbsolutePath(), nuevoNombre);
 
             if (Files.exists(destino)) {
         int opcion = JOptionPane.showConfirmDialog(
             parentComponent,
-            "Ya existe un archivo llamado \"" + nuevoNombre + "\".\n¿Deseas reemplazarlo?",
+            "Ya has subido ese documento \\.\n¿Deseas reemplazarlo?",
             "Archivo existente",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE
@@ -81,18 +93,35 @@ public class CarpetaOculta {
             return false;
         }
     }
-    
-    public static void abrirPDF(Path archivo) {
-        try {
-            if (Files.exists(archivo)) {
-                Desktop.getDesktop().open(archivo.toFile());
-            } else {
-                JOptionPane.showMessageDialog(null, "No se ha subido este documento o ha sido eliminado");
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "No se pudo abrir el archivo: " + e.getMessage());
-        }
     }
+    
+    public static void abrirPDF(String nombreSinExtension, String carpeta) {
+           File directorio = new File(carpeta);
+
+           if (directorio.exists() && directorio.isDirectory()) {
+               File[] archivos = directorio.listFiles();
+
+               if (archivos != null) {
+                   for (File archivo : archivos) {
+                       // Compara el nombre del archivo sin la extensión
+                       String nombreArchivo = archivo.getName();
+                       int punto = nombreArchivo.lastIndexOf('.');
+                       if (punto > 0) {
+                           String nombreSinExt = nombreArchivo.substring(0, punto);
+                           if (nombreSinExt.equals(nombreSinExtension)) {
+                               try {
+                                   Desktop.getDesktop().open(archivo);
+                                   return;
+                               } catch (Exception e) {
+                                   e.printStackTrace();
+                                   System.out.println("No se pudo abrir el archivo.");
+                                   return;
+                               }
+                           }
+                       }
+                   }
+               }
+    }}
     
     public static boolean eliminarArchivo(Path archivo) {
         try {
@@ -107,6 +136,21 @@ public class CarpetaOculta {
             JOptionPane.showMessageDialog(null, "No se pudo eliminar el archivo: " + e.getMessage());
             return false;
         }
+    }
+    
+    public static boolean renombrarCarpeta(String nControlA, String nControlB){
+        File oldNombre = new File (RUTA_BASE + "\\" + nControlA);
+        if(oldNombre.exists()){
+            File newNombre = new File(RUTA_BASE + "\\" + nControlB);
+            
+            if (oldNombre.renameTo(newNombre)) {
+                System.out.println("archivo renombrado");
+            } else {
+                System.out.println("error al renombrar");
+            }   
+        }
+        System.out.println("No se ha creado la carpeta para renombrarla");
+        return false;
     }
     
     }
