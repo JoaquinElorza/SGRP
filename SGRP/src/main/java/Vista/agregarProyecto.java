@@ -254,7 +254,10 @@ private void agregarProyecto() {
         e.printStackTrace();
     }
 }
-   
+       
+   public void recargarEmpresas() {
+    cargarEmpresasEnCombo();
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBack;
