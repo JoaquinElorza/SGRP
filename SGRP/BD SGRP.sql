@@ -52,7 +52,7 @@ create table persona(
  
  CREATE TABLE docente (
     id_docente INT PRIMARY KEY AUTO_INCREMENT,
-    n_control VARCHAR(20) NOT NULL UNIQUE,
+    rfc VARCHAR(20) NOT NULL UNIQUE,
     telefono VARCHAR(10),
     correo VARCHAR(50),
     fk_persona INT,
@@ -62,7 +62,8 @@ create table persona(
 CREATE TABLE empresa (
   id_empresa INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
-  contacto VARCHAR(15) NOT NULL
+  contacto VARCHAR(15) NOT NULL,
+  activo boolean default true
 );
 
 CREATE TABLE proyecto (
@@ -73,3 +74,8 @@ CREATE TABLE proyecto (
     estatus ENUM('Disponible', 'No disponible') DEFAULT 'Disponible',
     FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
 );
+
+INSERT INTO documentos (documento) VALUES ('Carga academica');
+INSERT INTO documentos (documento) VALUES ('Carta de presentacion');
+INSERT INTO documentos (documento) VALUES ('Carta de aceptacion');
+INSERT INTO documentos (documento) VALUES ('Carta de liberacion');
