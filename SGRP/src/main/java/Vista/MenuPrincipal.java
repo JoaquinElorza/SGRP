@@ -16,10 +16,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private final AcomodarImagen acomodarImagen = new AcomodarImagen(); 
 
     public MenuPrincipal() {
+        this.setUndecorated(true);
         initComponents();
         card = (CardLayout) panelCambiante.getLayout();
         //this.setPreferredSize(new Dimension(626, 468));
         //setSize(626,470);
+        this.setLocationRelativeTo(null); 
+        this.setResizable(false); 
+        this.setVisible(true);
         
         vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
         opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
@@ -89,6 +93,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         JPanelLogOut = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanelProyectos = new javax.swing.JPanel();
         jPanelDocentes = new javax.swing.JPanel();
@@ -118,7 +124,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 jLabel2MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, -1, 20));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, 20));
 
         JPanelLogOut.setBackground(new java.awt.Color(255, 255, 255));
         JPanelLogOut.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -128,7 +134,36 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
         JPanelLogOut.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(JPanelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 30, 30));
+        jPanel1.add(JPanelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 30, 30));
+
+        jPanel3.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel3MouseClicked(evt);
+            }
+        });
+
+        jLabel6.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel6.setText("—");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 30, 20));
 
         jLabel1.setText("Alumno");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -284,10 +319,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanelEmpresasMouseClicked
 
     private void jPanelDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelDocentesMouseClicked
-       JFrame ventana = new JFrame("Gestión de Docentes");
-
-    // Usa la instancia de OpcionDocentes dentro de la ventana
-    CardLayout layout = new CardLayout(); // No uses panelCambiante aquí
+        JFrame ventana = new JFrame("Gestión de Docentes");
+        ventana.setUndecorated(true);
+    CardLayout layout = new CardLayout(); 
     JPanel container = new JPanel(layout);
     OpcionDocentes vistaDocentes = new OpcionDocentes(layout, container);
 
@@ -319,6 +353,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
          card.show(panelCambiante, "panelProyectos");
          
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+        this.setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_jPanel3MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -359,8 +397,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanelDocentes;
     private javax.swing.JPanel jPanelEmpresas;
