@@ -42,15 +42,19 @@ public class Empresa extends javax.swing.JFrame {
         EmpresaDAO dao = new EmpresaDAO();
         List<EmpresaEntidad> lista = dao.listarEmpresas();
 
-        String[] columnas = {"ID", "Nombre", "Contacto"};
+        String[] columnas = {"ID", "Nombre", "Contacto", "Correo", "RFC", "Dirección"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
 
         for (EmpresaEntidad emp : lista) {
             Object[] fila = {
-                emp.getIdEmpresa(), // Se usará internamente, pero no se muestra
+                emp.getIdEmpresa(),
                 emp.getNombre(),
-                emp.getContacto()
+                emp.getContacto(),
+                emp.getCorreo(),
+                emp.getRfc(),
+                emp.getDireccion()
             };
+
             modelo.addRow(fila);
         }
 
@@ -93,11 +97,14 @@ public class Empresa extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Telefono"
+                "Nombre", "Telefono", "Direccion ", "Correo", "RFC"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -191,11 +198,17 @@ public class Empresa extends javax.swing.JFrame {
         int id = Integer.parseInt(jTable1.getModel().getValueAt(fila, 0).toString()); // <- getModel()
         String nombre = jTable1.getModel().getValueAt(fila, 1).toString();
         String contacto = jTable1.getModel().getValueAt(fila, 2).toString();
+        String correo = jTable1.getModel().getValueAt(fila, 3).toString();
+        String rfc = jTable1.getModel().getValueAt(fila, 4).toString();
+        String direccion = jTable1.getModel().getValueAt(fila, 5).toString();
 
         EmpresaEntidad empresa = new EmpresaEntidad();
         empresa.setIdEmpresa(id);
         empresa.setNombre(nombre);
         empresa.setContacto(contacto);
+        empresa.setCorreo(correo);
+        empresa.setRfc(rfc);
+        empresa.setDireccion(direccion);
 
         Editar editarVentana = new Editar(empresa, this);
         editarVentana.setVisible(true);

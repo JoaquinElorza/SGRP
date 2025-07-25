@@ -11,6 +11,9 @@ public class EmpresaEntidad {
     private int idEmpresa;
     private String nombre;
     private String contacto;
+    private String correo;
+    private String rfc;
+    private String direccion;
 
     public EmpresaEntidad() {
     }
@@ -48,5 +51,29 @@ public class EmpresaEntidad {
 
     public void setContacto(String contacto) {
         this.contacto = contacto;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 }
