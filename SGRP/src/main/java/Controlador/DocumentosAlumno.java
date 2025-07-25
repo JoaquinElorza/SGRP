@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class DocumentosAlumno {
    
     public static void subirDocumentoAlumno(String nControl, String nuevoNombre,
-            Component parentComponent){
+            Component parentComponent) throws SQLException{
         CarpetaOculta.crearCarpetaBaseOculta();
         JFileChooser chooser = new JFileChooser();
      //   chooser.setFileFilter(new FileNameExtensionFilter("PDF", "pdf"));
@@ -30,6 +30,7 @@ public class DocumentosAlumno {
                     nuevoNombre, parentComponent); 
             if (exito) {
                 JOptionPane.showMessageDialog(null, "Documento subido exitosamente.");
+                DocumentoDao.actualizarEstatusSoli(nControl, "Recibida");
             } else {
                 System.out.println("Hubo un error al subir el documento.");
             }
@@ -52,7 +53,8 @@ public class DocumentosAlumno {
     }
     
     
-    public static void eliminarArchivo(String nombreSinExtension, Path directorio, String nControl) throws SQLException{
+    public static void eliminarArchivo(String nombreSinExtension, Path directorio,
+            String nControl) throws SQLException{
         
          try (DirectoryStream<Path> stream = Files.newDirectoryStream(directorio)) {
         boolean encontrado = false;

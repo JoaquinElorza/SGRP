@@ -49,22 +49,6 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel1" min="-2" pref="626" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
-                      <Component id="jPanelEmpresas" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
-                      <Component id="jPanelProyectos" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
-                      <Component id="jPanelDocentes" min="-2" pref="100" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <EmptySpace min="260" pref="260" max="-2" attributes="0"/>
                       <Component id="panelOpAlumno" min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
@@ -75,6 +59,33 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="234" max="-2" attributes="0"/>
                       <Component id="jPanel2" min="-2" pref="150" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
+                              <Component id="jPanelEmpresas" min="-2" pref="100" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jPanelProyectos" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
+                              <Component id="jPanelDocentes" min="-2" pref="100" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -269,7 +280,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Proyectos"/>
+                <Property name="text" type="java.lang.String" value="Banco de Proyectos"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel3MouseClicked"/>
