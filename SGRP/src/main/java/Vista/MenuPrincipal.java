@@ -190,7 +190,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jPanelDocentes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setText("Proyectos");
+        jLabel3.setText("Banco de Proyectos");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
@@ -235,20 +235,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jPanelEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jPanelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(jLabel5)
-                .addGap(88, 88, 88)
-                .addComponent(jLabel3)
-                .addGap(92, 92, 92)
-                .addComponent(jLabel4))
-            .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(260, 260, 260)
                 .addComponent(panelOpAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelPrincipalLayout.createSequentialGroup()
@@ -257,6 +243,25 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(234, 234, 234)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelPrincipalLayout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(jPanelEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelPrincipalLayout.createSequentialGroup()
+                        .addGap(146, 146, 146)
+                        .addComponent(jLabel5)))
+                .addGap(36, 36, 36)
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelPrincipalLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jPanelDocentes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelPrincipalLayout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(jLabel4))))
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,9 +304,22 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void panelOpAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelOpAlumnoMouseClicked
-        // TODO add your handling code here:
-        card.show(panelCambiante, "panelAlumnos");
-        this.pack();
+          JFrame ventana = new JFrame("panelAlumnos");
+        ventana.setUndecorated(true);
+    CardLayout layout = new CardLayout(); 
+    JPanel container = new JPanel(layout);
+    opcionAlumno2 vistaDocentes = new opcionAlumno2(layout, container);
+
+    container.add(vistaDocentes, "panelAlumnos");
+    layout.show(container, "panelAlumnos");
+
+    ventana.setContentPane(container);
+    ventana.setSize(1000, 650);
+    ventana.setResizable(false);
+    ventana.setExtendedState(JFrame.NORMAL);
+    ventana.setLocationRelativeTo(null);
+    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventana.setVisible(true);
     }//GEN-LAST:event_panelOpAlumnoMouseClicked
 
     private void JPanelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelLogOutMouseClicked
@@ -343,9 +361,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jPanelProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelProyectosMouseClicked
-        // TODO add your handling code here:
-         card.show(panelCambiante, "panelProyectos");
-          
+         JFrame ventana = new JFrame("panelProyectos");
+        ventana.setUndecorated(true);
+    CardLayout layout = new CardLayout(); 
+    JPanel container = new JPanel(layout);
+    vistaProyectos vistasProy = new vistaProyectos(layout, container);
+
+    container.add(vistasProy, "panelProyectos");
+    layout.show(container, "panelProyectos");
+
+    ventana.setContentPane(container);
+    ventana.setSize(900, 650);
+    ventana.setResizable(false);
+    ventana.setExtendedState(JFrame.NORMAL);
+    ventana.setLocationRelativeTo(null);
+    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventana.setVisible(true);
+    
     }//GEN-LAST:event_jPanelProyectosMouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked

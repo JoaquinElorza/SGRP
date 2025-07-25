@@ -19,6 +19,7 @@ import Utilidades.Conexion;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,8 +30,10 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -118,7 +121,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         JPanelBack = new javax.swing.JPanel();
         JPanelImport = new javax.swing.JPanel();
         JPanelImport1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnAgregarAlumno = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         opcionSoli.setLabel("Solicitud de residencia");
@@ -320,11 +323,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                         .addComponent(btnEliminarDocumento))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        panelAlumnos.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(538, 167, -1, -1));
+        panelAlumnos.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(538, 167, -1, 440));
 
         jPanel2.setBackground(new java.awt.Color(255, 102, 0));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -363,7 +366,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelAlumnos.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 904, -1));
+        panelAlumnos.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 1000, -1));
 
         JPanelImport.setBackground(new java.awt.Color(255, 255, 255));
         JPanelImport.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -380,14 +383,14 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         JPanelImport1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         panelAlumnos.add(JPanelImport1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 35, 35));
 
-        jButton1.setBackground(new java.awt.Color(51, 153, 255));
-        jButton1.setText("Agregar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarAlumno.setBackground(new java.awt.Color(51, 153, 255));
+        btnAgregarAlumno.setText("Agregar");
+        btnAgregarAlumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAgregarAlumnoActionPerformed(evt);
             }
         });
-        panelAlumnos.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(116, 515, -1, -1));
+        panelAlumnos.add(btnAgregarAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(116, 515, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(51, 153, 255));
         jButton2.setText("Eliminar");
@@ -565,10 +568,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_lblactualizarMouseClicked
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
-        // TODO add your handling code here:
-         card.show(panelContainer, "menu principal");
-         ajustarVentana(); 
-          
+       Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose(); 
     }//GEN-LAST:event_JPanelBackMouseClicked
 
     private void JPanelImport1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelImport1MouseClicked
@@ -583,12 +584,23 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_JPanelImport1MouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
+    JFrame ventanaAgregar = new JFrame("Agregar Alumno");
+    AgregarAlumno panelAgregar = new AgregarAlumno();
+    ventanaAgregar.setContentPane(panelAgregar);
+    ventanaAgregar.setSize(325, 630); // Ajusta el tamaño según tu diseño
+    ventanaAgregar.setLocationRelativeTo(null); // Centrar en pantalla
+    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierre sin terminar la app
+    ventanaAgregar.setVisible(true);
 
-        card.show(panelContainer, "Agregar alumno");
-        ajustarVentana(); 
-         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    // Al cerrar, actualizar tabla
+    ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosed(java.awt.event.WindowEvent e) {
+            actualizarTablaAlumnos(tablaAlumnos);
+        }
+    });
+    }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -793,11 +805,11 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JPanel JPanelImport1;
     private javax.swing.JPanel JPanelLOGO;
     private javax.swing.JLabel LbLimportar;
+    private javax.swing.JButton btnAgregarAlumno;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminarDocumento;
     private javax.swing.JButton btnSubirDocumento;
     private javax.swing.JComboBox<String> comboSoli;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -5,18 +5,25 @@
 package Vista;
 
 import Controlador.AcomodarImagen;
+import Modelo.DAO.AlumnoDAO;
 import Modelo.DAO.ProyectoDAO;
+import Modelo.Entidades.Alumno;
 import Modelo.Entidades.Proyecto;
 import Utilidades.Conexion;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,6 +35,7 @@ public class vistaProyectos extends javax.swing.JPanel {
         private JPanel panelContainer;
         private JPanel panelCambiante;
         private editarProyecto editarPanel;
+        private List<Alumno> listaAlumnos;
         
 
     
@@ -38,6 +46,7 @@ public class vistaProyectos extends javax.swing.JPanel {
      */
     public vistaProyectos(CardLayout layout, JPanel container) {
         initComponents();
+        cargarAlumnosDisponibles();
         mostrarProyectosEnTabla();
         this.card = layout;
         this.panelContainer = container;
@@ -50,19 +59,7 @@ public class vistaProyectos extends javax.swing.JPanel {
          JPanelBack.setBorder(null);
          JPanelBack.setBackground(new Color(0,0,0,0));
          this.setVisible(true);
-        
-       // vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
-        //agregarProyecto agregar = new agregarProyecto(card, panelCambiante, proyectos);
-         
-         //panelContainer.add(agregar, "panelAgregarProyecto");
-        //panelCambiante.add(proyectos, "panelProyectos");
-        
-        /**acomodarImagen.configurarPanelConImagen("/img/itoaxaca.png", panelProyectos);
-        panelProyectos.setOpaque(false);
-        panelProyectos.setBorder(null);
-        panelProyectos.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-        */
+       
          acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
          JPanelLOGO.setOpaque(false);
          JPanelLOGO.setBorder(null);
@@ -130,6 +127,7 @@ public class vistaProyectos extends javax.swing.JPanel {
         lblDescripcion = new javax.swing.JLabel();
         lblEmpresa = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        comboAlumnos = new javax.swing.JComboBox<>();
 
         panelProyectos.setBackground(new java.awt.Color(255, 255, 255));
         panelProyectos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -226,6 +224,11 @@ public class vistaProyectos extends javax.swing.JPanel {
         lblEmpresa.setText("Empresa:");
 
         jButton4.setText("Asignar Alumno");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -234,15 +237,21 @@ public class vistaProyectos extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDescripcion)
-                    .addComponent(lblEmpresa))
-                .addContainerGap(202, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDescripcion)
+                            .addComponent(lblEmpresa))
+                        .addContainerGap(202, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblNombreProyecto)
+                        .addGap(73, 73, 73))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(lblNombreProyecto))
-                .addGap(70, 70, 70))
+                .addGap(17, 17, 17)
+                .addComponent(comboAlumnos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,9 +262,11 @@ public class vistaProyectos extends javax.swing.JPanel {
                 .addComponent(lblDescripcion)
                 .addGap(45, 45, 45)
                 .addComponent(lblEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(comboAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout panelProyectosLayout = new javax.swing.GroupLayout(panelProyectos);
@@ -312,14 +323,27 @@ public class vistaProyectos extends javax.swing.JPanel {
     }//GEN-LAST:event_panelProyectosMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        card.show(panelContainer, "panelAgregarProyecto");
-        
+        JFrame ventanaAgregar = new JFrame("Agregar Proyecto");
+    agregarProyecto panelAgregar = new agregarProyecto();
+    ventanaAgregar.setContentPane(panelAgregar);
+    ventanaAgregar.setSize(400, 450); 
+    ventanaAgregar.setLocationRelativeTo(null);
+    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventanaAgregar.setVisible(true);
 
+    ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosed(java.awt.event.WindowEvent e) {
+            mostrarProyectosEnTabla();
+        }
+    });
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     int fila = tablaProyectos.getSelectedRow();
+    
+        
+        
+        int fila = tablaProyectos.getSelectedRow();
 
     if (fila == -1) {
         JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar un proyecto para editar.");
@@ -363,10 +387,8 @@ public class vistaProyectos extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
-        // TODO add your handling code here:
-        card.show(panelContainer, "menu principal");
-        ajustarVentana();
-
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackMouseClicked
 
     private void tablaProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMouseClicked
@@ -386,6 +408,36 @@ public class vistaProyectos extends javax.swing.JPanel {
             lblDescripcion.setText("📝 " + descripcion);
             lblEmpresa.setText("🏢 " + empresa);
     }//GEN-LAST:event_tablaProyectosMousePressed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+           int fila = tablaProyectos.getSelectedRow(); // 🔧 NECESARIO
+            int indexAlumno = comboAlumnos.getSelectedIndex();
+
+            if (fila == -1 || indexAlumno == -1) {
+                JOptionPane.showMessageDialog(null, "Selecciona un proyecto y un alumno.");
+                return;
+            }
+
+            String nombre = tablaProyectos.getValueAt(fila, 0).toString();
+            String descripcion = tablaProyectos.getValueAt(fila, 1).toString();
+            int idProyecto = obtenerIdProyectoDesdeBD(nombre, descripcion); // 🚨 Usa el método que ya tienes
+
+            Alumno alumno = listaAlumnos.get(indexAlumno);
+
+            boolean exito = ProyectoDAO.asignarProyectoAAlumno(idProyecto, alumno.getIdPersona());
+
+            if (exito) {
+                ProyectoDAO.cambiarEstatus(idProyecto, "No disponible");
+                mostrarProyectosEnTabla(); // ✅ Usas este, no `mostrarProyectos()`
+                cargarAlumnosDisponibles(); // 🔄 Recarga combo
+                JOptionPane.showMessageDialog(null, "Proyecto asignado con éxito.");
+            } else {
+                JOptionPane.showMessageDialog(null, "El alumno ya tiene un proyecto.");
+            }
+
+    
+    }//GEN-LAST:event_jButton4ActionPerformed
         public int obtenerIdPorNombreYDescripcion(String nombre, String descripcion) {
             String sql = "SELECT id_proyecto FROM proyecto WHERE nombre = ? AND descripcion = ? LIMIT 1";
             try (Connection conn = Conexion.getConexion();
@@ -472,12 +524,28 @@ public class vistaProyectos extends javax.swing.JPanel {
    
         
         
+  private void cargarAlumnosDisponibles() {
+    listaAlumnos = AlumnoDAO.obtenerAlumnosSinProyecto();
+    comboAlumnos.removeAllItems();
+
+    for (Alumno a : listaAlumnos) {
+        String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
+        comboAlumnos.addItem(nombreCompleto);
+    }
+
+    if (listaAlumnos.isEmpty()) {
+        comboAlumnos.addItem("Sin alumnos disponibles");
+    }
+
+}
+
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBack;
     private javax.swing.JPanel JPanelLOGO;
+    private javax.swing.JComboBox<String> comboAlumnos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

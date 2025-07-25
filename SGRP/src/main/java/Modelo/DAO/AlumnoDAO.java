@@ -243,4 +243,38 @@ public class AlumnoDAO {
 
         return lista;
     }
+    
+        public static List<Alumno> obtenerAlumnosSinProyecto() {
+           List<Alumno> lista = new ArrayList<>();
+           try (Connection con = Conexion.getConexion()) {
+               String sql = "SELECT a.*, p.nombre, p.ap_paterno, p.ap_materno " +
+                            "FROM alumno a " +
+                            "JOIN persona p ON a.fk_persona = p.id_persona " +
+                            "WHERE a.fk_proyecto IS NULL";
+               PreparedStatement pst = con.prepareStatement(sql);
+               ResultSet rs = pst.executeQuery();
+
+               while (rs.next()) {
+                   Alumno a = new Alumno();
+                   a.setIdPersona(rs.getInt("fk_persona"));  // o usa setIdAlumno según tu modelo
+                   a.setNombre(rs.getString("nombre"));
+                   a.setApellidoPaterno(rs.getString("ap_paterno"));
+                   a.setApellidoMaterno(rs.getString("ap_materno"));
+                   lista.add(a);
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+           return lista;
+       }
+
+
+    
+    
+    
+    
+    
+    
+    
+    
 }
