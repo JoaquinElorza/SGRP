@@ -14,8 +14,9 @@ public class AgregarDocente extends JFrame {
 
     public AgregarDocente() {
         setTitle("Agregar Docente");
-        setUndecorated(true); // 🔧 Sin barra superior
-        setType(Type.UTILITY); // ✅ Permite minimizar
+        setUndecorated(true);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        setType(Type.UTILITY); 
         setSize(400, 350);
         setLocationRelativeTo(null);
         setLayout(null);
