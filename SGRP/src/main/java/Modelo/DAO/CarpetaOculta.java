@@ -17,6 +17,7 @@ public class CarpetaOculta {
     private static final String RUTA_BASE = "C:\\SGRP";
 
     // Crea la carpeta base oculta si no existe
+  
     public static void crearCarpetaBaseOculta() {
         File carpeta = new File(RUTA_BASE);
         if (!carpeta.exists()) {
@@ -36,6 +37,7 @@ public class CarpetaOculta {
     }
 
 
+    
     public static String getExtension(File file) {
         String nombre = file.getName();
         int i = nombre.lastIndexOf('.');
@@ -138,13 +140,14 @@ public class CarpetaOculta {
         }
     }
     
-    public static boolean renombrarCarpeta(String nControlA, String nControlB){
+ /*   public static boolean renombrarCarpeta(String nControlA, String nControlB){
         File oldNombre = new File (RUTA_BASE + "\\" + nControlA);
         if(oldNombre.exists()){
             File newNombre = new File(RUTA_BASE + "\\" + nControlB);
             
             if (oldNombre.renameTo(newNombre)) {
                 System.out.println("archivo renombrado");
+                return true;
             } else {
                 System.out.println("error al renombrar");
             }   
@@ -152,6 +155,7 @@ public class CarpetaOculta {
         System.out.println("No se ha creado la carpeta para renombrarla");
         return false;
     }
+*/
     
     }
 

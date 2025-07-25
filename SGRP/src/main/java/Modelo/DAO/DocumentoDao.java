@@ -61,7 +61,8 @@ public class DocumentoDao {
         }
     }
     
-public static void actualizarEstatusSoli(String nControl, String nuevoStatus) throws SQLException {
+public static void actualizarEstatusSoli(String nControl,
+        String nuevoStatus) throws SQLException {
     String sql1 = "SELECT id_estatus FROM estatus_soli_residencia WHERE estatus = ?;";
     String sql2 = "SELECT id_alumno FROM alumno WHERE n_control = ?;";
     String sqlCheck = "SELECT COUNT(*) FROM soli_residencia WHERE fk_alumno = ?;";
@@ -192,4 +193,51 @@ public static void setEstadoDocumento(String nControl, boolean estado,
     }
 }
 
+
+public static void eliminarSolicitudSoli(String nControl) throws SQLException {
+    String sqlGetAlumno = "SELECT id_alumno FROM alumno WHERE n_control = ?;";
+    String sqlCheck = "SELECT COUNT(*) FROM soli_residencia WHERE fk_alumno = ?;";
+    String sqlDelete = "DELETE FROM soli_residencia WHERE fk_alumno = ?;";
+
+    try (Connection conn = Conexion.getConexion()) {
+        // Obtener id_alumno a partir del número de control
+        int id_alumno;
+        try (PreparedStatement psAlumno = conn.prepareStatement(sqlGetAlumno)) {
+            psAlumno.setString(1, nControl);
+            try (ResultSet rs = psAlumno.executeQuery()) {
+                if (rs.next()) {
+                    id_alumno = rs.getInt("id_alumno");
+                } else {
+                    throw new SQLException("Alumno no encontrado con nControl: " + nControl);
+                }
+            }
+        }
+
+        // Verificar si existe la solicitud
+        boolean existeSolicitud = false;
+        try (PreparedStatement psCheck = conn.prepareStatement(sqlCheck)) {
+            psCheck.setInt(1, id_alumno);
+            try (ResultSet rsCheck = psCheck.executeQuery()) {
+                if (rsCheck.next()) {
+                    existeSolicitud = rsCheck.getInt(1) > 0;
+                }
+            }
+        }
+
+        // Eliminar si existe
+        if (existeSolicitud) {
+            try (PreparedStatement psDelete = conn.prepareStatement(sqlDelete)) {
+                psDelete.setInt(1, id_alumno);
+                psDelete.executeUpdate();
+                System.out.println("Solicitud eliminada correctamente.");
+            }
+        } else {
+            System.out.println("No existe solicitud que eliminar para este alumno.");
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw e;
+    }
+}
 }

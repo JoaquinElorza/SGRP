@@ -663,6 +663,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                Path directorio = Paths.get("C:\\SGRP\\" + lblControl.getText());
                 try {
                     DocumentosAlumno.eliminarArchivo("Solicitud de residencia", directorio, lblControl.getText());
+                    DocumentoDao.eliminarSolicitudSoli(lblControl.getText());
                     mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
