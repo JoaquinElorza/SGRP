@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.Desktop;
 
 
+
 public class CarpetaOculta {
 
     private static final String RUTA_BASE = "C:\\SGRP";
@@ -54,7 +55,8 @@ public class CarpetaOculta {
             String nuevoNombre, Component parentComponent) {
 
         String ext ="." + getExtension(archivoOriginal);
-        if(ext.equals("")){
+        
+        if(!ext.equals(".pdf") || !ext.equals(".png") || !ext.equals(".jpg")  ){
             System.out.println("formato de archivo invalido");
             return false;
         }else{
