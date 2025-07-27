@@ -21,7 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -30,6 +29,9 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -46,7 +48,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private EditarAlumno editar;
     
     static List<ExpedienteAlumno> lista;
-    static ExpedienteAlumno ea;
     
     public opcionAlumno2() {}
 
@@ -86,6 +87,36 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     } 
    
      
+public String seleccionObligatoria(JFrame parent) {
+    JDialog dialogo = new JDialog(parent, "Selecciona una opción", true); // true = modal
+    dialogo.setUndecorated(true);
+    
+    JComboBox<String> combo = new JComboBox<>(new String[]{"Recibida", "Enviada a firmar",
+        "Firmada y sellada", "Entregada al alumno"});
+    
+    JButton aceptar = new JButton("Aceptar");
+
+    final String[] seleccion = new String[1];
+
+    aceptar.addActionListener(e -> {
+        if (combo.getSelectedIndex() != -1) {
+            seleccion[0] = combo.getSelectedItem().toString();
+            dialogo.dispose();
+        } else {
+            JOptionPane.showMessageDialog(dialogo, "Debes seleccionar una opción");
+        }
+    });
+
+    JPanel panel = new JPanel();
+    panel.add(combo);
+    panel.add(aceptar);
+    dialogo.add(panel);
+    dialogo.pack();
+    dialogo.setLocationRelativeTo(parent);
+    dialogo.setVisible(true); // aquí se bloquea hasta que se cierre
+
+    return seleccion[0];
+}
 
      
     public void actualizarTabla() {
@@ -418,10 +449,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                     e.getEstatus() ? "Si" : "No"
                 });
             }
-            
             tabla.setModel(modelo);
-            //
-            
             tabla.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
@@ -430,22 +458,15 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         JLabel label = (JLabel) super.getTableCellRendererComponent(
             table, value, isSelected, hasFocus, row, column);
 
-        // Usamos HTML para aplicar subrayado y color azul
         label.setText("<html><u><font color='blue'>" + value + "</font></u></html>");
-
-
-
         return label;
     }
 });
-            
-            //
+
         }catch (SQLException e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, "Error al mostrar documentos.");
-    }
-        
-    }
+    }}
     
     private void lblAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAtrasMouseClicked
         card.show(panelContainer, "menu principal");
@@ -525,7 +546,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
           lblTelefono.setText(alumnoTabla.getNumeroTelefono());
           lblCorreo.setText(alumnoTabla.getCorreoElectronico());
 
-          comboSoli.setSelectedIndex(DocumentoDao.comboSolicitud(lblControl.getText(), comboSoli));
+          comboSoli.setSelectedIndex((int)DocumentoDao.comboSolicitud(lblControl.getText()));
 
           mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
       } catch (SQLException ex) {
@@ -649,14 +670,20 @@ public class opcionAlumno2 extends javax.swing.JPanel {
 
     private void comboSoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSoliActionPerformed
         try {
-            if(comboSoli.getSelectedIndex()==0 & DocumentosAlumno.archivoYaSubido(lblControl.getText())){
-                JOptionPane.showMessageDialog(this, "No puedes seleccionar ese estatus, la solicitud ya ha sido subida");
-                return;
+            boolean yaSubido = DocumentosAlumno.archivoYaSubido(lblControl.getText());
+            if(!yaSubido){
+             //   JOptionPane.showMessageDialog(this, "Primero debe subir la solicitud");
+                comboSoli.setSelectedIndex(0);
+            }else if(comboSoli.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "No puedes seleccionar ese estatus,"
+                        + "la solicitud ya ha sido subida");
+                comboSoli.setSelectedIndex((int)DocumentoDao.comboSolicitud(
+                lblControl.getText()));
+            }else{
+                DocumentoDao.actualizarEstatusSoli(lblControl.getText(),
+                comboSoli.getSelectedItem().toString());
             }
-            DocumentoDao.actualizarEstatusSoli(lblControl.getText(), comboSoli.getSelectedItem().toString());
-        } catch (SQLException ex) {
-            Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (SQLException | IOException ex) {
             Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_comboSoliActionPerformed
@@ -675,12 +702,14 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                Path directorio = Paths.get("C:\\SGRP\\" + lblControl.getText());
                 try {
                     DocumentosAlumno.eliminarArchivo("Solicitud de residencia", directorio, lblControl.getText());
-                    DocumentoDao.eliminarSolicitudSoli(lblControl.getText());
+                 //   DocumentoDao.eliminarSolicitudSoli(lblControl.getText());
                     mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+                    DocumentoDao.actualizarEstatusSoli(lblControl.getText(), "No recibida");
+                    comboSoli.setSelectedItem("No recibida");
                 } catch (SQLException ex) {
                     Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
                 }
-               comboSoli.setSelectedIndex(0);
+                comboSoli.setSelectedItem("No recibida");
             });
             menuDocumentos.add(sol);
                //hasta aqui
@@ -691,6 +720,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 Path directorio = Paths.get("C:\\SGRP\\" + lblControl.getText());
                 try {
                     DocumentosAlumno.eliminarArchivo(e.getNombre(), directorio, lblControl.getText());
+                    DocumentoDao.setEstadoDocumento(lblControl.getText(), false, e.getNombre());
                     mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
@@ -712,24 +742,33 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             JMenuItem sol = new JMenuItem("Solicitud de residencia");
             sol.addActionListener(evtB -> {
                 try {
-                    DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(), 
-                            "Solicitud de residencia" , this);
+                    if(DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(), 
+                            "Solicitud de residencia" , this)){
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                        String seleccion =  seleccionObligatoria(frame);
+                        DocumentoDao.actualizarEstatusSoli(lblControl.getText(),seleccion);
+                        comboSoli.setSelectedItem(seleccion);
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
             menuDocumentos.add(sol);
-            //hasta aqui xd
+            //hasta aqui
             
             for(ExpedienteAlumno e : lista){
                 JMenuItem item = new JMenuItem(e.getNombre());    
                 item.addActionListener(evtB -> {
                     try {
-                        DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(), e.getNombre() , this);
+                        if(DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(),
+                                e.getNombre() , this)){
+                            DocumentoDao.setEstadoDocumento(lblControl.getText(), true,
+                                    e.getNombre());
+                            mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());   
+                        }
                     } catch (SQLException ex) {
                         Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                
                 });
                 menuDocumentos.add(item);
             }

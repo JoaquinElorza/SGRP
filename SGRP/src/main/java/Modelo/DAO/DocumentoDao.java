@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
  */
 public class DocumentoDao {
     
-    public static Integer comboSolicitud(String nControl, JComboBox combo) throws SQLException{
+    public static Integer comboSolicitud(String nControl) throws SQLException{
         String sql = "SELECT e.id_estatus\n" +
                         "FROM alumno a\n" +
                         "JOIN soli_residencia sr ON a.id_alumno = sr.fk_alumno\n" +
@@ -29,7 +29,7 @@ public class DocumentoDao {
             
         if(rs.next()){
             if(rs.getInt("id_estatus")==0){
-               combo.setSelectedIndex(0);
+               return 0;
            }
            return rs.getInt("id_estatus");
         }

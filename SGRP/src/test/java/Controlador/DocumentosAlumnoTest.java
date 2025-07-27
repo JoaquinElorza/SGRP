@@ -3,6 +3,7 @@ package Controlador;
 import java.awt.Component;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,7 @@ public class DocumentosAlumnoTest {
      * Test of subirDocumentoAlumno method, of class DocumentosAlumno.
      */
     @Test
-    public void testSubirDocumentoAlumno() {
+    public void testSubirDocumentoAlumno() throws SQLException {
         System.out.println("subirDocumentoAlumno");
         String nControl = "22222222";
         String nuevoNombre = "testSubirDocumento";

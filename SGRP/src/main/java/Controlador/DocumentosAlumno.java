@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 
 public class DocumentosAlumno {
    
-    public static void subirDocumentoAlumno(String nControl, String nuevoNombre,
+    public static boolean subirDocumentoAlumno(String nControl, String nuevoNombre,
             Component parentComponent) throws SQLException{
         CarpetaOculta.crearCarpetaBaseOculta();
         JFileChooser chooser = new JFileChooser();
@@ -30,12 +30,13 @@ public class DocumentosAlumno {
                     nuevoNombre, parentComponent); 
             if (exito) {
                 JOptionPane.showMessageDialog(null, "Documento subido exitosamente.");
-                DocumentoDao.actualizarEstatusSoli(nControl, "Recibida");
+                return true;
             } else {
                 System.out.println("Hubo un error al subir el documento.");
+                return false;
             }
         }
-
+return false;
     }
 
     public static boolean archivoYaSubido(String nControl) throws IOException{

@@ -73,7 +73,7 @@ public class CarpetaOculta {
             if (Files.exists(destino)) {
         int opcion = JOptionPane.showConfirmDialog(
             parentComponent,
-            "Ya has subido ese documento \\.\n¿Deseas reemplazarlo?",
+            "Ya has subido ese documento\n¿Deseas reemplazarlo?",
             "Archivo existente",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE
