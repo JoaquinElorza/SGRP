@@ -57,12 +57,13 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         this.setPreferredSize(new Dimension(905, 539));
         initComponents();
         actualizarTablaAlumnos(tablaAlumnos);
+        
 
         if(comboSoli.getSelectedIndex()!=0){
             lblSolicitud.setForeground(Color.blue);
         }
         
-        
+        lblNoSubido.setVisible(false);
         //Imagen Logo
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
          JPanelLOGO.setOpaque(false);
@@ -147,9 +148,11 @@ public String seleccionObligatoria(JFrame parent) {
         tablaDocumentos = new javax.swing.JTable();
         btnSubirDocumento = new javax.swing.JButton();
         btnEliminarDocumento = new javax.swing.JButton();
+        lblNoSubido = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         JPanelLOGO = new javax.swing.JPanel();
         JPanelBack = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         JPanelImport = new javax.swing.JPanel();
         JPanelImport1 = new javax.swing.JPanel();
         btnAgregarAlumno = new javax.swing.JButton();
@@ -248,6 +251,14 @@ public String seleccionObligatoria(JFrame parent) {
         });
 
         comboSoli.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No recibida", "Recibida", "Enviada a firmar", "Firmada y sellada", "Entregada al alumno" }));
+        comboSoli.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                comboSoliMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                comboSoliMouseExited(evt);
+            }
+        });
         comboSoli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboSoliActionPerformed(evt);
@@ -303,10 +314,21 @@ public String seleccionObligatoria(JFrame parent) {
             }
         });
 
+        lblNoSubido.setForeground(new java.awt.Color(204, 0, 51));
+        lblNoSubido.setText("Primero debe subir la solicitud");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSubirDocumento)
+                    .addComponent(btnEliminarDocumento))
+                .addGap(8, 8, 8))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -318,16 +340,10 @@ public String seleccionObligatoria(JFrame parent) {
                         .addComponent(lblProyecto))
                     .addComponent(lblSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(80, 80, 80)
-                .addComponent(comboSoli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 7, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSubirDocumento)
-                    .addComponent(btnEliminarDocumento))
-                .addGap(8, 8, 8))
+                    .addComponent(lblNoSubido)
+                    .addComponent(comboSoli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,7 +358,9 @@ public String seleccionObligatoria(JFrame parent) {
                 .addComponent(lblProyecto)
                 .addGap(20, 20, 20)
                 .addComponent(lblCorreo)
-                .addGap(42, 42, 42)
+                .addGap(20, 20, 20)
+                .addComponent(lblNoSubido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboSoli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -355,12 +373,12 @@ public String seleccionObligatoria(JFrame parent) {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         panelAlumnos.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(538, 167, -1, 440));
 
-        jPanel2.setBackground(new java.awt.Color(255, 102, 0));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
@@ -376,6 +394,9 @@ public String seleccionObligatoria(JFrame parent) {
         });
         JPanelBack.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setText("GESTIÓN DE ALUMNOS");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -383,7 +404,9 @@ public String seleccionObligatoria(JFrame parent) {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(296, 296, 296)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
                 .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -392,8 +415,13 @@ public String seleccionObligatoria(JFrame parent) {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -748,6 +776,8 @@ public String seleccionObligatoria(JFrame parent) {
                         String seleccion =  seleccionObligatoria(frame);
                         DocumentoDao.actualizarEstatusSoli(lblControl.getText(),seleccion);
                         comboSoli.setSelectedItem(seleccion);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Solo puede subir imagenes y PDF");
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
@@ -765,8 +795,11 @@ public String seleccionObligatoria(JFrame parent) {
                             DocumentoDao.setEstadoDocumento(lblControl.getText(), true,
                                     e.getNombre());
                             mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());   
-                        }
-                    } catch (SQLException ex) {
+                        }else{
+                        JOptionPane.showMessageDialog(null, "Solo puede subir imagenes y PDF");
+                    }
+                    }
+                    catch (SQLException ex) {
                         Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
@@ -810,6 +843,20 @@ public String seleccionObligatoria(JFrame parent) {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel1MouseClicked
 
+    private void comboSoliMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSoliMouseEntered
+        try {
+            if(!DocumentosAlumno.archivoYaSubido(lblControl.getText())){
+                lblNoSubido.setVisible(true);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_comboSoliMouseEntered
+
+    private void comboSoliMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSoliMouseExited
+        lblNoSubido.setVisible(false);
+    }//GEN-LAST:event_comboSoliMouseExited
+
     
     
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
@@ -852,12 +899,14 @@ public String seleccionObligatoria(JFrame parent) {
     private javax.swing.JButton btnSubirDocumento;
     private javax.swing.JComboBox<String> comboSoli;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblControl;
     private javax.swing.JLabel lblCorreo;
+    private javax.swing.JLabel lblNoSubido;
     private javax.swing.JLabel lblNombreAlumno;
     private javax.swing.JLabel lblProyecto;
     private javax.swing.JLabel lblSolicitud;

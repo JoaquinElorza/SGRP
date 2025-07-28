@@ -6,6 +6,8 @@ import Modelo.Entidades.Proyecto;
 import Modelo.DAO.ProyectoDAO;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,23 +27,15 @@ public class agregarProyecto extends javax.swing.JPanel {
      */
     public agregarProyecto(CardLayout layout, JPanel container, vistaProyectos panelProyectos) {
         initComponents();
-           this.card = layout;
-            this.panelContainer = container;
-            this.panelProyectos = panelProyectos;
+        jPanel1.setPreferredSize(new Dimension(284, 520));
+        this.setPreferredSize(jPanel1.getPreferredSize());
+        this.card = layout;
+        this.panelContainer = container;
+        this.panelProyectos = panelProyectos;
             
             cargarEmpresasEnCombo();
      
-         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
-         JPanelLOGO.setOpaque(false);
-         JPanelLOGO.setBorder(null);
-         JPanelLOGO.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-        
-         acomodarImagen.configurarPanelConImagen("/img/backbutton.png", JPanelBack);  
-         JPanelBack.setOpaque(false);
-         JPanelBack.setBorder(null);
-         JPanelBack.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
+       
     }
     
     public agregarProyecto() {
@@ -130,8 +124,7 @@ if (resultado) {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        JPanelLOGO = new javax.swing.JPanel();
-        JPanelBack = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -155,52 +148,36 @@ if (resultado) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, -1, -1));
 
-        JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        JPanelBack.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelBack.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        JPanelBack.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JPanelBackMouseClicked(evt);
+        jButton4.setText("Atras");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
-        JPanelBack.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 27, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(jButton1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4))
+                .addGap(14, 14, 14))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -222,12 +199,11 @@ if (resultado) {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
-
-        Window ventana = SwingUtilities.getWindowAncestor(this);
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+         Window ventana = SwingUtilities.getWindowAncestor(this);
         if (ventana != null) ventana.dispose();
-
-    }//GEN-LAST:event_JPanelBackMouseClicked
+    }//GEN-LAST:event_jButton4ActionPerformed
        private void ajustarVentana() {
     java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
     if (ventana instanceof javax.swing.JFrame) {
@@ -276,10 +252,9 @@ if (resultado) {
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel JPanelBack;
-    private javax.swing.JPanel JPanelLOGO;
     private static javax.swing.JComboBox<EmpresaItem> empresasBox;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
