@@ -163,7 +163,29 @@ public class ProyectoDAO {
     }
 }
 
-
+        public static Proyecto obtenerProyectoPorId(int id) {
+            String sql = "SELECT * FROM proyecto WHERE id_proyecto = ?";
+            try (Connection conn = Conexion.getConexion();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    Proyecto p = new Proyecto();
+                    p.setIdProyecto(id);
+                    p.setNombre(rs.getString("nombre"));
+                    p.setDescripcion(rs.getString("descripcion"));
+                    p.setEstatus(rs.getString("estatus"));
+                    p.setIdEmpresa(rs.getInt("id_empresa"));
+                    return p;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    
+    
+    
     
     
     

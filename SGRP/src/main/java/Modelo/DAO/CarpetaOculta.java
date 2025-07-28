@@ -56,7 +56,9 @@ public class CarpetaOculta {
 
         String ext ="." + getExtension(archivoOriginal);
         
-        if(!ext.equals(".pdf") || !ext.equals(".png") || !ext.equals(".jpg")  ){
+        if(!ext.equalsIgnoreCase(".PDF") &&
+           !ext.equalsIgnoreCase(".PNG") &&
+           !ext.equalsIgnoreCase(".JPG")){
             System.out.println("formato de archivo invalido");
             return false;
         }else{

@@ -11,10 +11,12 @@ import Modelo.DAO.DocenteCarg;
 import Modelo.DAO.DocenteDAO;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -48,6 +50,13 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     JPanelLOGO.setOpaque(false);
     JPanelLOGO.setBorder(null);
     JPanelLOGO.setBackground(new Color(0,0,0,0));
+    ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
+        Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        JPanelBack.setIcon(new ImageIcon(imagenRedimensionada));
+        JPanelBack.setBorderPainted(false);         // sin borde
+        JPanelBack.setContentAreaFilled(false);     // sin fondo gris
+        JPanelBack.setFocusPainted(false);          // sin borde de enfoque
+        JPanelBack.setOpaque(false); 
     }
     public void actualizarTablaDocentes() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDocentex.getModel();
@@ -72,10 +81,11 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         JPanelLOGO = new javax.swing.JPanel();
-        btnRegresar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         txtIngresarRfc = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        JPanelBack = new javax.swing.JButton();
         tablaDocentes = new javax.swing.JScrollPane();
         tablaDocentex = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -97,20 +107,13 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
         jPanel1.setBackground(new java.awt.Color(242, 242, 242));
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBackground(new java.awt.Color(0, 153, 255));
 
         JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
         JPanelLOGO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         JPanelLOGO.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnRegresar.setText("ATRAS");
-        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegresarMouseClicked(evt);
-            }
-        });
-
-        jPanel3.setBackground(new java.awt.Color(242, 242, 242));
+        jPanel3.setBackground(new java.awt.Color(229, 231, 235));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel2.setText("BUSCAR CON RFC");
@@ -138,29 +141,45 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel3.setText("GESTIÓN DE DOCENTES");
+
+        JPanelBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/backbutton.png"))); // NOI18N
+        JPanelBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JPanelBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(31, 31, 31)
+                .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(77, 77, 77)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRegresar)
-                .addContainerGap())
+                .addGap(36, 36, 36))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JPanelLOGO, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(JPanelLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnRegresar)))
+                        .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tablaDocentes.setBackground(new java.awt.Color(229, 231, 235));
@@ -401,12 +420,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     CorreoDoc1.setText(datos.getCorreo());
     txtRfcDoc.setText(datos.getRfc());
     ProyectoDoc.setText("En desarrollo");
-    }
-    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
-        Window ventana = SwingUtilities.getWindowAncestor(this);
-        if (ventana != null) ventana.dispose();
-    }//GEN-LAST:event_btnRegresarMouseClicked
-    private void filtrarRFC() {
+    }    private void filtrarRFC() {
     String input = txtIngresarRfc.getText().trim().toUpperCase();
 
     if (input.isEmpty()) {
@@ -552,6 +566,11 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     private void btnEliminarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocenteActionPerformed
 
     }//GEN-LAST:event_btnEliminarDocenteActionPerformed
+
+    private void JPanelBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JPanelBackActionPerformed
+         Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
+    }//GEN-LAST:event_JPanelBackActionPerformed
     private void ajustarVentana() {
     java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
     if (ventana instanceof javax.swing.JFrame) {
@@ -561,14 +580,15 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CorreoDoc1;
+    private javax.swing.JButton JPanelBack;
     private javax.swing.JPanel JPanelLOGO;
     private javax.swing.JLabel ProyectoDoc;
     private javax.swing.JButton btnAgregarDocente;
     private javax.swing.JButton btnEditarDocentes;
     private javax.swing.JButton btnEliminarDocente;
-    private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
