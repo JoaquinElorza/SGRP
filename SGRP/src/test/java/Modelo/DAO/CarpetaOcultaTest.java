@@ -21,7 +21,7 @@ public class CarpetaOcultaTest {
     
     
     public CarpetaOcultaTest() {
-    }
+    } 
     
     @BeforeAll
     public static void setUpClass() {

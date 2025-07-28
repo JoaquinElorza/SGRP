@@ -12,18 +12,27 @@ import Modelo.Entidades.Proyecto;
 import Utilidades.Conexion;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -46,7 +55,14 @@ public class vistaProyectos extends javax.swing.JPanel {
      */
     public vistaProyectos(CardLayout layout, JPanel container) {
         initComponents();
-        cargarAlumnosDisponibles();
+        txtAreaDescripcion.setLineWrap(true);
+        txtAreaDescripcion.setWrapStyleWord(true);
+        txtAreaDescripcion.setEditable(false);
+        txtAreaDescripcion.setOpaque(false);
+        txtAreaDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        
+        
+   
         mostrarProyectosEnTabla();
         this.card = layout;
         this.panelContainer = container;
@@ -78,11 +94,10 @@ public class vistaProyectos extends javax.swing.JPanel {
             for (Proyecto p : lista) {
                 String nombreEmpresa = obtenerNombreEmpresa(p.getIdEmpresa());
                 modelo.addRow(new Object[]{
-                    p.getNombre(),
-                    p.getDescripcion(),
-                    p.getEstatus(),
-                    nombreEmpresa
-                });
+                p.getNombre(),
+                p.getEstatus(),
+                nombreEmpresa
+            });
             }
 
             // Verificación rápida
@@ -126,8 +141,13 @@ public class vistaProyectos extends javax.swing.JPanel {
         lblNombreProyecto = new javax.swing.JLabel();
         lblDescripcion = new javax.swing.JLabel();
         lblEmpresa = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaDescripcion = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        comboAlumnos = new javax.swing.JComboBox<>();
+        btnVerArchivo = new javax.swing.JButton();
+        comboArchivos = new javax.swing.JComboBox<>();
 
         panelProyectos.setBackground(new java.awt.Color(255, 255, 255));
         panelProyectos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -177,13 +197,13 @@ public class vistaProyectos extends javax.swing.JPanel {
 
         tablaProyectos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Nombre", "Descripcion", "Estatus", "Empresa"
+                "Nombre", "Estatus", "Empresa"
             }
         ));
         tablaProyectos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -217,57 +237,51 @@ public class vistaProyectos extends javax.swing.JPanel {
             }
         });
 
-        lblNombreProyecto.setText("Nombre del Proyecto");
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblNombreProyecto.setText("nameproyecto");
+        jPanel2.add(lblNombreProyecto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, -1, -1));
 
         lblDescripcion.setText("Descripcion:");
+        jPanel2.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 82, -1, -1));
 
-        lblEmpresa.setText("Empresa:");
+        lblEmpresa.setText("empresa");
+        jPanel2.add(lblEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, -1, -1));
 
-        jButton4.setText("Asignar Alumno");
+        txtAreaDescripcion.setColumns(20);
+        txtAreaDescripcion.setRows(5);
+        jScrollPane1.setViewportView(txtAreaDescripcion);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 250, 210));
+
+        jLabel1.setText("Empresa:");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+
+        jLabel2.setText("Nombre del Proyecto:");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, -1, -1));
+
+        jButton4.setText("Subir Documento");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, -1, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDescripcion)
-                            .addComponent(lblEmpresa))
-                        .addContainerGap(202, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblNombreProyecto)
-                        .addGap(73, 73, 73))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(comboAlumnos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblNombreProyecto)
-                .addGap(18, 18, 18)
-                .addComponent(lblDescripcion)
-                .addGap(45, 45, 45)
-                .addComponent(lblEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(comboAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
-        );
+        btnVerArchivo.setText("Ver Documento ");
+        btnVerArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerArchivoActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnVerArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 120, -1));
+
+        comboArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboArchivosActionPerformed(evt);
+            }
+        });
+        jPanel2.add(comboArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 170, -1));
 
         javax.swing.GroupLayout panelProyectosLayout = new javax.swing.GroupLayout(panelProyectos);
         panelProyectos.setLayout(panelProyectosLayout);
@@ -284,37 +298,38 @@ public class vistaProyectos extends javax.swing.JPanel {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)))
-                .addGap(46, 46, 46)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         panelProyectosLayout.setVerticalGroup(
             panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProyectosLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelProyectosLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jButton2)
+                            .addComponent(jButton1)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 6, Short.MAX_VALUE)
-                .addComponent(panelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(panelProyectos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelProyectos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -325,6 +340,11 @@ public class vistaProyectos extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFrame ventanaAgregar = new JFrame("Agregar Proyecto");
     agregarProyecto panelAgregar = new agregarProyecto();
+    
+    ventanaAgregar.setContentPane(panelAgregar);
+    ventanaAgregar.pack(); // <- Esto ajusta el tamaño al contenido
+    ventanaAgregar.setLocationRelativeTo(null); // centrado
+    ventanaAgregar.setVisible(true);
     ventanaAgregar.setContentPane(panelAgregar);
     ventanaAgregar.setSize(400, 450); 
     ventanaAgregar.setLocationRelativeTo(null);
@@ -353,8 +373,8 @@ public class vistaProyectos extends javax.swing.JPanel {
     // Suponiendo que tienes las columnas: Nombre, Descripción, Estatus, Empresa
         Object nombreObj = tablaProyectos.getValueAt(fila, 0);
         Object descripcionObj = tablaProyectos.getValueAt(fila, 1);
-        Object estatusObj = tablaProyectos.getValueAt(fila, 2);
-        Object empresaObj = tablaProyectos.getValueAt(fila, 3);
+        Object estatusObj = tablaProyectos.getValueAt(fila, 1);
+        Object empresaObj = tablaProyectos.getValueAt(fila, 2);
 
         if (nombreObj == null || descripcionObj == null || estatusObj == null || empresaObj == null) {
             JOptionPane.showMessageDialog(this, "❌ El proyecto seleccionado tiene datos incompletos.");
@@ -367,7 +387,7 @@ public class vistaProyectos extends javax.swing.JPanel {
         String empresa = empresaObj.toString();
 
     // 🔍 Aquí necesitas obtener el ID del proyecto (ej. desde BD)
-    int id = obtenerIdProyectoDesdeBD(nombre, descripcion); // ← te ayudo a implementarlo si no lo tienes
+    int id = obtenerIdProyectoDesdeBD(nombre, descripcion,estatus); // ← te ayudo a implementarlo si no lo tienes
 
     // Abrir el panel de edición
     vistaProyectos estaVista = this; // 👈 hace referencia a sí mismo
@@ -396,48 +416,38 @@ public class vistaProyectos extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaProyectosMouseClicked
 
     private void tablaProyectosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMousePressed
-        // TODO add your handling code here:
-        int fila = tablaProyectos.getSelectedRow();
+             int fila = tablaProyectos.getSelectedRow();
             if (fila == -1) return;
 
             String nombre = tablaProyectos.getValueAt(fila, 0).toString();
-            String descripcion = tablaProyectos.getValueAt(fila, 1).toString();
-            String empresa = tablaProyectos.getValueAt(fila, 3).toString();  // columna 3 = Empresa
+            String estatus = tablaProyectos.getValueAt(fila, 1).toString();  // ahora columna 1
+            String empresa = tablaProyectos.getValueAt(fila, 2).toString();  // ahora columna 2
 
-            lblNombreProyecto.setText("📌 " + nombre);
-            lblDescripcion.setText("📝 " + descripcion);
+            lblNombreProyecto.setText("📝 " + nombre);
             lblEmpresa.setText("🏢 " + empresa);
+
+            int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
+            String descripcion = obtenerDescripcionProyecto(idProyecto);
+            txtAreaDescripcion.setText(descripcion);
+
+            cargarArchivosDelProyecto(idProyecto);
     }//GEN-LAST:event_tablaProyectosMousePressed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-           int fila = tablaProyectos.getSelectedRow(); // 🔧 NECESARIO
-            int indexAlumno = comboAlumnos.getSelectedIndex();
-
-            if (fila == -1 || indexAlumno == -1) {
-                JOptionPane.showMessageDialog(null, "Selecciona un proyecto y un alumno.");
-                return;
-            }
-
-            String nombre = tablaProyectos.getValueAt(fila, 0).toString();
-            String descripcion = tablaProyectos.getValueAt(fila, 1).toString();
-            int idProyecto = obtenerIdProyectoDesdeBD(nombre, descripcion); // 🚨 Usa el método que ya tienes
-
-            Alumno alumno = listaAlumnos.get(indexAlumno);
-
-            boolean exito = ProyectoDAO.asignarProyectoAAlumno(idProyecto, alumno.getIdPersona());
-
-            if (exito) {
-                ProyectoDAO.cambiarEstatus(idProyecto, "No disponible");
-                mostrarProyectosEnTabla(); // ✅ Usas este, no `mostrarProyectos()`
-                cargarAlumnosDisponibles(); // 🔄 Recarga combo
-                JOptionPane.showMessageDialog(null, "Proyecto asignado con éxito.");
-            } else {
-                JOptionPane.showMessageDialog(null, "El alumno ya tiene un proyecto.");
-            }
-
-    
+         btnSubirPDFActionPerformed(evt);
+        
+            
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnVerArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerArchivoActionPerformed
+        // TODO add your handling code here:
+          abrirArchivoSeleccionado();
+    }//GEN-LAST:event_btnVerArchivoActionPerformed
+
+    private void comboArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboArchivosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboArchivosActionPerformed
         public int obtenerIdPorNombreYDescripcion(String nombre, String descripcion) {
             String sql = "SELECT id_proyecto FROM proyecto WHERE nombre = ? AND descripcion = ? LIMIT 1";
             try (Connection conn = Conexion.getConexion();
@@ -454,28 +464,31 @@ public class vistaProyectos extends javax.swing.JPanel {
             return -1;
         }
 
-        
-        private int obtenerIdProyectoDesdeBD(String nombre, String descripcion) {
-    String sql = "SELECT id_proyecto FROM proyecto WHERE nombre = ? AND descripcion = ? LIMIT 1";
+        private int obtenerIdProyectoDesdeBD(String nombre, String estatus, String empresa) {
+            String sql = """
+                SELECT p.id_proyecto
+                FROM proyecto p
+                JOIN empresa e ON p.fk_empresa = e.id_empresa
+                WHERE p.nombre = ? AND p.estatus = ? AND e.nombre = ?
+                LIMIT 1
+            """;
 
-    try (Connection conn = Utilidades.Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (Connection conn = Conexion.getConexion();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, nombre);
+                ps.setString(2, estatus);
+                ps.setString(3, empresa);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("id_proyecto");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-        ps.setString(1, nombre);
-        ps.setString(2, descripcion);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            return rs.getInt("id_proyecto");
+            return -1;
         }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-    return -1; // si no se encuentra
-}
-        
+    
         
         
    
@@ -493,9 +506,9 @@ public class vistaProyectos extends javax.swing.JPanel {
 
     if (confirmacion == JOptionPane.YES_OPTION) {
         String nombre = tablaProyectos.getValueAt(filaSeleccionada, 0).toString();
-        String descripcion = tablaProyectos.getValueAt(filaSeleccionada, 1).toString();
-
-        int idProyecto = obtenerIdProyectoDesdeBD(nombre, descripcion);
+        String estatus = tablaProyectos.getValueAt(filaSeleccionada, 1).toString();
+        String empresa = tablaProyectos.getValueAt(filaSeleccionada, 2).toString();
+        int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
         Modelo.DAO.ProyectoDAO dao = new Modelo.DAO.ProyectoDAO();
         boolean eliminado = dao.eliminarProyecto(idProyecto);
 
@@ -522,22 +535,166 @@ public class vistaProyectos extends javax.swing.JPanel {
     }
 }
    
+    private void btnSubirPDFActionPerformed(java.awt.event.ActionEvent evt) {
+                    int fila = tablaProyectos.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(this, "⚠️ Selecciona un proyecto para subir un archivo.");
+                return;
+            }
+
+            String nombre = tablaProyectos.getValueAt(fila, 0).toString();
+            String estatus = tablaProyectos.getValueAt(fila, 1).toString();
+            String empresa = tablaProyectos.getValueAt(fila, 2).toString();
+            int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
+
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Selecciona el archivo de la propuesta");
+
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter(
+                "Documentos (PDF, Word, Excel, Imágenes)", 
+                "pdf", "doc", "docx", "xls", "xlsx", "png", "jpg", "jpeg", "bmp"
+            );
+            chooser.setFileFilter(filtro);
+
+            int seleccion = chooser.showOpenDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                File archivoOriginal = chooser.getSelectedFile();
+
+                // Crear carpeta por proyecto
+                File carpeta = new File("DocumentosProyectos/proyecto_" + idProyecto);
+                if (!carpeta.exists()) carpeta.mkdirs();
+
+                // Guardar con nombre original (o renombrar si lo deseas)
+                File destino = new File(carpeta, archivoOriginal.getName());
+
+                try {
+                    Files.copy(archivoOriginal.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    JOptionPane.showMessageDialog(this, "✅ Archivo cargado correctamente.");
+
+                    // 🔄 ACTUALIZAR EL COMBOBOX AUTOMÁTICAMENTE
+                    cargarArchivosDelProyecto(idProyecto);
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "❌ Error al guardar el archivo.");
+                }
+            }
+       }
+
+    
+    private void abrirPropuestaPDF() {
+            int fila = tablaProyectos.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(this, "Selecciona un proyecto.");
+                return;
+            }
+
+            String nombre = tablaProyectos.getValueAt(fila, 0).toString();
+            String estatus = tablaProyectos.getValueAt(fila, 1).toString();
+            String empresa = tablaProyectos.getValueAt(fila, 2).toString();
+            int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
+
+            File carpeta = new File("DocumentosProyectos/proyecto_" + idProyecto);
+            File[] archivos = carpeta.listFiles();
+
+            if (archivos == null || archivos.length == 0) {
+                JOptionPane.showMessageDialog(this, "❌ No hay archivos disponibles para este proyecto.");
+                return;
+            }
+
+            // 🧠 Ordenar por fecha de modificación (de más nuevo a más viejo)
+            Arrays.sort(archivos, (a, b) -> Long.compare(b.lastModified(), a.lastModified()));
+
+            File archivoMasReciente = archivos[0]; // ✅ este es el más nuevo
+
+            try {
+                Desktop.getDesktop().open(archivoMasReciente);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "❌ Error al abrir el archivo más reciente.");
+            }
+        }
         
+    
+    
+    
+            private void cargarArchivosDelProyecto(int idProyecto) {
+            comboArchivos.removeAllItems();
+
+            File carpeta = new File("DocumentosProyectos/proyecto_" + idProyecto);
+            if (!carpeta.exists() || carpeta.listFiles() == null) {
+                comboArchivos.addItem("Sin archivos");
+                comboArchivos.setEnabled(false);
+                btnVerArchivo.setEnabled(false);
+                return;
+            }
+
+            File[] archivos = carpeta.listFiles();
+            if (archivos.length == 0) {
+                comboArchivos.addItem("Sin archivos");
+                comboArchivos.setEnabled(false);
+                btnVerArchivo.setEnabled(false);
+            } else {
+                Arrays.sort(archivos); // opcional: orden alfabético
+                for (File archivo : archivos) {
+                    comboArchivos.addItem(archivo.getName());
+                }
+                comboArchivos.setEnabled(true);
+                btnVerArchivo.setEnabled(true);
+            }
+        }
+            
+            private void abrirArchivoSeleccionado() {
+            int fila = tablaProyectos.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(this, "Selecciona un proyecto.");
+                return;
+            }
+
+            String archivoSeleccionado = (String) comboArchivos.getSelectedItem();
+            if (archivoSeleccionado == null || archivoSeleccionado.equals("Sin archivos")) {
+                JOptionPane.showMessageDialog(this, "No hay archivo seleccionado.");
+                return;
+            }
+
+            String nombre = tablaProyectos.getValueAt(fila, 0).toString();
+            String estatus = tablaProyectos.getValueAt(fila, 1).toString();
+            String empresa = tablaProyectos.getValueAt(fila, 2).toString();
+            int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
+
+            File archivo = new File("DocumentosProyectos/proyecto_" + idProyecto + "/" + archivoSeleccionado);
+            if (archivo.exists()) {
+                try {
+                    Desktop.getDesktop().open(archivo);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "❌ Error al abrir el archivo.");
+                    e.printStackTrace();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ Archivo no encontrado.");
+            }
+        }
+            
+            
+            private String obtenerDescripcionProyecto(int idProyecto) {
+                String descripcion = "Sin descripción disponible.";
+                String sql = "SELECT descripcion FROM proyecto WHERE id_proyecto = ?";
+                try (Connection conn = Conexion.getConexion();
+                     PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setInt(1, idProyecto);
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        descripcion = rs.getString("descripcion");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return descripcion;
+            }
+
+
+
         
-  private void cargarAlumnosDisponibles() {
-    listaAlumnos = AlumnoDAO.obtenerAlumnosSinProyecto();
-    comboAlumnos.removeAllItems();
-
-    for (Alumno a : listaAlumnos) {
-        String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
-        comboAlumnos.addItem(nombreCompleto);
-    }
-
-    if (listaAlumnos.isEmpty()) {
-        comboAlumnos.addItem("Sin alumnos disponibles");
-    }
-
-}
 
 
 
@@ -545,18 +702,23 @@ public class vistaProyectos extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBack;
     private javax.swing.JPanel JPanelLOGO;
-    private javax.swing.JComboBox<String> comboAlumnos;
+    private javax.swing.JButton btnVerArchivo;
+    private javax.swing.JComboBox<String> comboArchivos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblEmpresa;
     private javax.swing.JLabel lblNombreProyecto;
     private javax.swing.JPanel panelProyectos;
     private javax.swing.JTable tablaProyectos;
+    private javax.swing.JTextArea txtAreaDescripcion;
     // End of variables declaration//GEN-END:variables
 }
