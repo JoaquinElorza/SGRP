@@ -48,9 +48,9 @@ public class Empresa extends javax.swing.JFrame {
         ImageIcon logoOriginal = new ImageIcon(getClass().getResource("/img/ITOlogo.png"));
         Image logoEscalado = logoOriginal.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         jButton5.setIcon(new ImageIcon(logoEscalado));
-        jButton5.setText(""); // quitar texto si hay
+        jButton5.setText(""); 
         jButton5.setBorder(null); // opcional: quitar bordes
-        jButton5.setContentAreaFilled(false); // para que no tenga fondo
+        jButton5.setContentAreaFilled(false); 
 
     }
 
@@ -76,22 +76,22 @@ public class Empresa extends javax.swing.JFrame {
 
         jTable1.setModel(modelo);
 
-        jTable1.setShowGrid(false); // Oculta líneas internas
-        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0)); // Elimina el espacio entre celdas
+        jTable1.setShowGrid(false); 
+        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
 
         jTable1.setBackground(Color.WHITE);
         jTable1.setForeground(Color.BLACK);
         jTable1.setRowHeight(30);
         jTable1.setSelectionBackground(new Color(100, 150, 255));
 
-        // 🔒 Ocultar columna ID visualmente
+       
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setWidth(0);
     }
 
     public void recargarTabla() {
-        cargarTablaEmpresas(); // reutiliza el método que ya tienes
+        cargarTablaEmpresas(); 
     }
 
     @SuppressWarnings("unchecked")
@@ -107,6 +107,7 @@ public class Empresa extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -151,7 +152,7 @@ public class Empresa extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(255, 102, 0));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 255));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/backbutton.png"))); // NOI18N
@@ -164,6 +165,9 @@ public class Empresa extends javax.swing.JFrame {
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ITOlogo.png"))); // NOI18N
         jButton5.setText("\n");
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setText("EMPRESAS");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -172,6 +176,8 @@ public class Empresa extends javax.swing.JFrame {
                 .addGap(78, 78, 78)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(195, 195, 195)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66))
         );
@@ -180,7 +186,9 @@ public class Empresa extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -240,7 +248,6 @@ public class Empresa extends javax.swing.JFrame {
             return;
         }
 
-        // ✅ Obtén el ID desde el modelo, no desde la vista
         int id = Integer.parseInt(jTable1.getModel().getValueAt(fila, 0).toString()); // <- getModel()
         String nombre = jTable1.getModel().getValueAt(fila, 1).toString();
         String contacto = jTable1.getModel().getValueAt(fila, 2).toString();
@@ -314,6 +321,7 @@ public class Empresa extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
