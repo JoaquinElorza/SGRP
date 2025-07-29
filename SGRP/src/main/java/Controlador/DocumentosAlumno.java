@@ -12,6 +12,13 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import java.util.List;
+import java.util.Map;
+
 
 public class DocumentosAlumno {
    
@@ -40,8 +47,11 @@ return false;
     }
 
     public static boolean archivoYaSubido(String nControl) throws IOException{
+        File carpeta = new File("C:\\SGRP\\" + nControl);
+        if(carpeta.exists() && carpeta.isDirectory()){
         Path directorio = Paths.get("C:\\SGRP\\" + nControl);
-         try (DirectoryStream<Path> stream = Files.newDirectoryStream(directorio)) {
+        
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directorio)) {
 
         for (Path archivo : stream) {
             String nombreArchivo = archivo.getFileName().toString();
@@ -50,6 +60,7 @@ return false;
             }
         }
     }
+        }
          return false;
     }
     
@@ -98,4 +109,34 @@ return false;
     }
     }
     
+    public static void generarPDFPendientes(Map<String, List<String>> data) throws Exception {
+    String escritorio = System.getProperty("user.home") + File.separator + "Desktop";
+    String ruta = escritorio + File.separator + "documentos_pendientes.pdf";
+    PdfWriter writer = new PdfWriter(ruta);
+
+        
+        
+    PdfDocument pdf = new PdfDocument(writer);
+    Document document = new Document(pdf);
+
+    for (Map.Entry<String, List<String>> entry : data.entrySet()) {
+        String nControl = entry.getKey();
+        List<String> docs = entry.getValue();
+
+        // Escribir el encabezado del alumno
+        document.add(new Paragraph("Alumno: " + nControl)
+                        .setFontSize(14));
+
+        // Agregar lista de documentos
+        for (String doc : docs) {
+            document.add(new Paragraph("• " + doc));
+        }
+
+        document.add(new Paragraph("\n")); // Espacio entre alumnos
+    }
+
+    document.close();
+    System.out.println("PDF generado correctamente.");
+}
+
 }

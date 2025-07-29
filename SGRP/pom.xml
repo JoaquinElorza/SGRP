@@ -24,6 +24,15 @@
             <version>RELEASE250</version>
         </dependency>
 
+        <!-- para crear pdfs-->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+
+
         <!-- Conector JDBC para MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -64,9 +73,18 @@
             <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
-        
-        
-        
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>9.2.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>9.2.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
