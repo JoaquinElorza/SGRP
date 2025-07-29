@@ -139,29 +139,7 @@ public class ProyectoDAO {
 }
     
     
-    
-    public static boolean asignarProyectoAAlumno(int idProyecto, int idAlumno) {
-    try (Connection con = Conexion.getConexion()) {
-        String validar = "SELECT fk_proyecto FROM alumno WHERE id_alumno = ?";
-        PreparedStatement check = con.prepareStatement(validar);
-        check.setInt(1, idAlumno);
-        ResultSet rs = check.executeQuery();
-        if (rs.next() && rs.getInt("fk_proyecto") != 0) {
-            return false; // Ya tiene proyecto
-        }
 
-        String sql = "UPDATE alumno SET fk_proyecto = ? WHERE id_alumno = ?";
-        PreparedStatement pst = con.prepareStatement(sql);
-        pst.setInt(1, idProyecto);
-        pst.setInt(2, idAlumno);
-        pst.executeUpdate();
-        return true;
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
-    }
-}
 
         public static Proyecto obtenerProyectoPorId(int id) {
             String sql = "SELECT * FROM proyecto WHERE id_proyecto = ?";

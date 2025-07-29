@@ -7,6 +7,7 @@ import Modelo.DAO.ProyectoDAO;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
@@ -27,6 +28,12 @@ public class agregarProyecto extends javax.swing.JPanel {
      */
     public agregarProyecto(CardLayout layout, JPanel container, vistaProyectos panelProyectos) {
         initComponents();
+        
+        txtDescripcion.setLineWrap(true);
+        txtDescripcion.setWrapStyleWord(true);
+        txtDescripcion.setEditable(true);
+        txtDescripcion.setOpaque(false);
+        txtDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         jPanel1.setPreferredSize(new Dimension(284, 520));
         this.setPreferredSize(jPanel1.getPreferredSize());
         this.card = layout;
@@ -118,19 +125,19 @@ if (resultado) {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         txtNombre = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
         empresasBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
         jButton4 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 157, 35));
-        jPanel2.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 157, 112));
         jPanel2.add(empresasBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 157, 30));
 
         jLabel1.setText("Nombre del Proyecto:");
@@ -149,6 +156,14 @@ if (resultado) {
             }
         });
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, -1, -1));
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setLineWrap(true);
+        txtDescripcion.setRows(5);
+        txtDescripcion.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jScrollPane1.setViewportView(txtDescripcion);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 150, 130));
 
         jButton4.setText("Atras");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -260,7 +275,8 @@ if (resultado) {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

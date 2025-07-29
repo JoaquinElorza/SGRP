@@ -39,7 +39,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelCambiante.add(agregarAlumno, "Agregar alumno");
         panelCambiante.add(proyectos, "panelProyectos");
         panelCambiante.add(panelEditar, "panelEditarProyecto");
-        //IMAGEN DE LOGO
+        //IMAGEN DE LOGO v   
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
         jPanel2.setOpaque(false);
         jPanel2.setBorder(null);
