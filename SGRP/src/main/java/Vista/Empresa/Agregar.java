@@ -58,6 +58,13 @@ public class Agregar extends javax.swing.JFrame {
             }
         });
 
+        // RFC a mayúsculas automáticamente
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField5.setText(jTextField5.getText().toUpperCase());
+            }
+        });
+
     }
 
     public Agregar() {
@@ -222,8 +229,8 @@ public class Agregar extends javax.swing.JFrame {
         String correo = jTextField4.getText().trim();
         String rfc = jTextField5.getText().trim();
 
-        if (!correo.matches("^[^@\\s]+@(gmail\\.com|yahoo\\.com|outlook\\.com)$")) {
-            JOptionPane.showMessageDialog(this, "El correo debe ser @gmail.com, @yahoo.com o @outlook.com.");
+        if (!correo.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            JOptionPane.showMessageDialog(this, "Ingrese un correo válido.");
             return;
         }
 
