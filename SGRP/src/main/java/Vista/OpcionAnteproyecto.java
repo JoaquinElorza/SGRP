@@ -85,6 +85,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         btnNewAnteproyecto = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        TablaAlumnosAnteproyectos = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -140,6 +141,32 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
         jToggleButton1.setText("Editar");
 
+        TablaAlumnosAnteproyectos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Alumno", "Antepoyecto"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        TablaAlumnosAnteproyectos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaAlumnosAnteproyectosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(TablaAlumnosAnteproyectos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,7 +180,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                         .addGap(63, 63, 63)
                         .addComponent(jToggleButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(21, 21, 21)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -188,12 +215,12 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     }//GEN-LAST:event_JPanelBackActionPerformed
 
     private void btnNewAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAnteproyectoMouseClicked
-        JFrame ventanaAgregar = new JFrame("Agregar Alumno");
-    AgregarAlumno panelAgregar = new AgregarAlumno();
-    ventanaAgregar.setContentPane(panelAgregar);
-    ventanaAgregar.setSize(325, 630); // Ajusta el tamaño según tu diseño
-    ventanaAgregar.setLocationRelativeTo(null); // Centrar en pantalla
-    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierre sin terminar la app
+        JFrame ventanaAgregar = new JFrame();
+    AgregarAnteproyecto panelAgregarA = new AgregarAnteproyecto();
+    ventanaAgregar.setContentPane(panelAgregarA);
+    ventanaAgregar.setSize(485,530); 
+    ventanaAgregar.setLocationRelativeTo(null); 
+    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     ventanaAgregar.setVisible(true);
 
     // Al cerrar, actualizar tabla
@@ -204,10 +231,31 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     });
     }//GEN-LAST:event_btnNewAnteproyectoMouseClicked
 
+    private void TablaAlumnosAnteproyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaAlumnosAnteproyectosMouseClicked
+       int fila = TablaAlumnosAnteproyectos.getSelectedRow();
+        if (fila == -1) return;
+        String nControl = TablaAlumnosAnteproyectos.getValueAt(fila, 0).toString();
+        try {
+            AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
+            //DEAQUI
+            // lblControl.setText(alumnoTabla.getNumeroControl());
+            //.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
+            //lblTelefono.setText(alumnoTabla.getNumeroTelefono());
+            //lblCorreo.setText(alumnoTabla.getCorreoElectronico());
+
+            //comboSoli.setSelectedIndex((int)DocumentoDao.comboSolicitud(lblControl.getText()));
+
+            //mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_TablaAlumnosAnteproyectosMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JPanelBack;
     private javax.swing.JPanel LogoTec;
+    private javax.swing.JTable TablaAlumnosAnteproyectos;
     private javax.swing.JButton btnNewAnteproyecto;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

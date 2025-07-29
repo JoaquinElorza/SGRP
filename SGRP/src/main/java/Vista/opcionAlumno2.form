@@ -313,7 +313,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="1" y="1" width="1000" height="-1"/>
+              <AbsoluteConstraints x="1" y="1" width="1070" height="-1"/>
             </Constraint>
           </Constraints>
 
@@ -325,7 +325,7 @@
                       <Component id="JPanelBack" min="-2" pref="53" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="296" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="308" max="32767" attributes="0"/>
+                      <EmptySpace pref="380" max="32767" attributes="0"/>
                       <Component id="JPanelLOGO" min="-2" pref="110" max="-2" attributes="0"/>
                   </Group>
               </Group>

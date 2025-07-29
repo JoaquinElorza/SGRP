@@ -26,7 +26,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
 
     public AgregarAlumno(CardLayout layout, JPanel container, opcionAlumno2 panelAlumno2) {
          super();
-        this.setOpaque(false); // Permite la transparencia del borde redondeado
+        this.setOpaque(false); 
         this.setPreferredSize(new Dimension(325, 500));
         this.card = layout;
         this.panelContainer = container;
