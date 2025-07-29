@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import Utilidades.Conexion;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlumnoDAO {
 
@@ -244,7 +246,7 @@ public class AlumnoDAO {
         return lista;
     }
     
-        public static List<Alumno> obtenerAlumnosSinProyecto() {
+    public static List<Alumno> obtenerAlumnosSinProyecto() {
            List<Alumno> lista = new ArrayList<>();
            try (Connection con = Conexion.getConexion()) {
                String sql = "SELECT a.*, p.nombre, p.ap_paterno, p.ap_materno " +
@@ -267,14 +269,40 @@ public class AlumnoDAO {
            }
            return lista;
        }
+        
+    public static Map<String, List<String>> obtenerPendientes() throws SQLException {
+    Map<String, List<String>> pendientes = new HashMap<>();
 
+    String sql = """
+                 SELECT 
+                     a.n_control,
+                     d.documento
+                 FROM 
+                     alumno a
+                 JOIN
+                 \tpersona p on p.id_persona = a.fk_persona
+                 CROSS JOIN 
+                     documentos d
+                 LEFT JOIN 
+                     expediente_alumno ea ON ea.fk_alumno = a.id_alumno AND ea.fk_documento = d.id_documento
+                 WHERE 
+                     (ea.estatus = 0 OR ea.estatus IS NULL)
+                     AND p.status<>'E';""";
 
-    
-    
-    
-    
-    
-    
-    
-    
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            String nControl = rs.getString("n_control");
+            String documento = rs.getString("documento");
+
+            // Agregar a la lista del alumno
+            pendientes.computeIfAbsent(nControl, k -> new ArrayList<>()).add(documento);
+        }
+    }
+
+    return pendientes;
+}
+
 }

@@ -1,6 +1,7 @@
 package Modelo.DAO;
 
 import Modelo.Entidades.ExpedienteAlumno;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -52,7 +53,7 @@ public class DocumentoDaoTest {
     @Test
     public void testCrearSoli() throws Exception {
         System.out.println("crearSoli");
-        String nControl = "";
+        String nControl = "22161053";
         DocumentoDao.crearSoli(nControl);
     }
 
@@ -62,25 +63,28 @@ public class DocumentoDaoTest {
     @Test
     public void testActualizarEstatusSoli() throws Exception {
         System.out.println("actualizarEstatusSoli");
-        String nControl = "";
-        String nuevoStatus = "";
+        String nControl = "22161053";
+        String nuevoStatus = "No recibida";
         DocumentoDao.actualizarEstatusSoli(nControl, nuevoStatus);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of obtenerDocumentos method, of class DocumentoDao.
+     * @throws java.lang.Exception
      */
     @Test
     public void testObtenerDocumentos() throws Exception {
         System.out.println("obtenerDocumentos");
-        String nControl = "";
-        List<ExpedienteAlumno> expResult = null;
+        String nControl = "22";
+        
+        List<ExpedienteAlumno> expResult = new ArrayList<>();
+        expResult.add(new ExpedienteAlumno("Carga academica", false));
+        expResult.add(new ExpedienteAlumno("Carta de presentacion", false));
+        expResult.add(new ExpedienteAlumno("Carta de aceptacion", false));
+        expResult.add(new ExpedienteAlumno("Carta de liberacion", false));
+        
         List<ExpedienteAlumno> result = DocumentoDao.obtenerDocumentos(nControl);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**

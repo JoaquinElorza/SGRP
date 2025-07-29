@@ -30,18 +30,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
         this.panelContainer = container;
         this.panelAlumno2 = panelAlumno2;
         initComponents();
-             //Imagenes Back y Logo
-         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO2);  
-         JPanelLOGO2.setOpaque(false);
-         JPanelLOGO2.setBorder(null);
-         JPanelLOGO2.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
         
-         acomodarImagen.configurarPanelConImagen("/img/backbutton.png", JPanelBack2);  
-         JPanelBack2.setOpaque(false);
-         JPanelBack2.setBorder(null);
-         JPanelBack2.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
         
          //PlaceHolder
            Placeholder.agregarPlaceholder(tf_nControl, "Numero de Control");
@@ -75,7 +64,6 @@ public class AgregarAlumno extends javax.swing.JPanel {
 
         pnl_AgregarAlumno = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        JPanelLOGO2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         tf_nControl = new javax.swing.JTextField();
         tf_Nombre = new javax.swing.JTextField();
@@ -89,7 +77,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        JPanelBack2 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -104,10 +92,6 @@ public class AgregarAlumno extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        JPanelLOGO2.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelLOGO2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        JPanelLOGO2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tf_Nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +154,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tf_nControl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -197,45 +181,42 @@ public class AgregarAlumno extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        JPanelBack2.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelBack2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        JPanelBack2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JPanelBack2MouseClicked(evt);
-            }
-        });
-        JPanelBack2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.setBackground(new java.awt.Color(255, 102, 0));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 323, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 63, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout pnl_AgregarAlumnoLayout = new javax.swing.GroupLayout(pnl_AgregarAlumno);
         pnl_AgregarAlumno.setLayout(pnl_AgregarAlumnoLayout);
         pnl_AgregarAlumnoLayout.setHorizontalGroup(
             pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_AgregarAlumnoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(JPanelBack2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(JPanelLOGO2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
-                        .addGap(109, 109, 109)
+                        .addGap(67, 67, 67)
                         .addComponent(jButton1)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnl_AgregarAlumnoLayout.setVerticalGroup(
             pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_AgregarAlumnoLayout.createSequentialGroup()
-                .addGroup(pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JPanelLOGO2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JPanelBack2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(21, 21, 21)
                 .addComponent(jButton1)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
 
         add(pnl_AgregarAlumno, java.awt.BorderLayout.PAGE_START);
@@ -329,11 +310,6 @@ public class AgregarAlumno extends javax.swing.JPanel {
     private void tf_MaternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_MaternoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_MaternoActionPerformed
-
-    private void JPanelBack2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBack2MouseClicked
-         Window ventana = SwingUtilities.getWindowAncestor(this);
-        if (ventana != null) ventana.dispose();
-    }//GEN-LAST:event_JPanelBack2MouseClicked
     
     private void ajustarVentana() {
     java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
@@ -345,8 +321,6 @@ public class AgregarAlumno extends javax.swing.JPanel {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel JPanelBack2;
-    private javax.swing.JPanel JPanelLOGO2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -355,6 +329,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel pnl_AgregarAlumno;
     private javax.swing.JTextField tf_Correo;
     private javax.swing.JTextField tf_Materno;
