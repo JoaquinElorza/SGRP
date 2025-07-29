@@ -16,6 +16,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -114,17 +115,23 @@ return false;
     String ruta = escritorio + File.separator + "documentos_pendientes.pdf";
     PdfWriter writer = new PdfWriter(ruta);
 
-        
+    LocalDateTime hoy = LocalDateTime.now(); 
         
     PdfDocument pdf = new PdfDocument(writer);
     Document document = new Document(pdf);
 
+    document.add(new Paragraph(hoy.getDayOfMonth() + " de " + hoy.getMonth() + " de "
+            + hoy.getYear()));
+    document.add(new Paragraph("Lista de alumnos de residencia profesional con documentos"
+            + "faltantes")
+                        .setFontSize(14));
+    
     for (Map.Entry<String, List<String>> entry : data.entrySet()) {
         String nControl = entry.getKey();
         List<String> docs = entry.getValue();
 
         // Escribir el encabezado del alumno
-        document.add(new Paragraph("Alumno: " + nControl)
+        document.add(new Paragraph(nControl)
                         .setFontSize(14));
 
         // Agregar lista de documentos
@@ -136,6 +143,7 @@ return false;
     }
 
     document.close();
+    JOptionPane.showMessageDialog(null, "Reporte generado en el escritorio");
     System.out.println("PDF generado correctamente.");
 }
 
