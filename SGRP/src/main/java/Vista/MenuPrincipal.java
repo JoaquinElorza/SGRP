@@ -57,7 +57,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelOpAlumno.setBorder(null);
         panelOpAlumno.setBackground(new Color(0, 0, 0, 0));
         this.setVisible(true);
-
+        
+        //IMAGEN ANTEPROYECTOS
+        acomodarImagen.configurarPanelConImagen("/img/Antep.png", panelAnteproyectos);
+        panelAnteproyectos.setOpaque(false);
+        panelAnteproyectos.setBorder(null);
+        panelAnteproyectos.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
+        
         //imagen proyectos 
         acomodarImagen.configurarPanelConImagen("/img/proyectos.png", jPanelProyectos);
         jPanelProyectos.setOpaque(false);
