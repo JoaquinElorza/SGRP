@@ -2,16 +2,16 @@ package Vista;
 
 import Controlador.AlumnoContr;
 import java.awt.CardLayout;
-import javax.smartcardio.Card;
 import javax.swing.JPanel;
-import Modelo.DAO.AlumnoDAO;
 import Vista.opcionAlumno2;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import Controlador.AcomodarImagen;
 import Controlador.Placeholder;
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Window;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -25,14 +25,13 @@ public class AgregarAlumno extends javax.swing.JPanel {
     private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
     public AgregarAlumno(CardLayout layout, JPanel container, opcionAlumno2 panelAlumno2) {
-        this.setPreferredSize(new Dimension(325, 652));
+         super();
+        this.setOpaque(false); // Permite la transparencia del borde redondeado
+        this.setPreferredSize(new Dimension(325, 500));
         this.card = layout;
         this.panelContainer = container;
         this.panelAlumno2 = panelAlumno2;
         initComponents();
-        
-        
-         //PlaceHolder
            Placeholder.agregarPlaceholder(tf_nControl, "Numero de Control");
            Placeholder.agregarPlaceholder(tf_Nombre, "Nombre/s");
            Placeholder.agregarPlaceholder(tf_paterno, "Apellido Paterno");
@@ -40,11 +39,17 @@ public class AgregarAlumno extends javax.swing.JPanel {
            Placeholder.agregarPlaceholder(tf_Correo, "Correo Electronico");
            Placeholder.agregarPlaceholder(tf_Telefono, "Numero Telefonico");
         
-        
-        
-        
-        
+}   
+        @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(getBackground()); // Usa el color del fondo configurado
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30); // Radio de redondeo
+        g2.dispose();
     }
+    
     public AgregarAlumno() {
     initComponents(); 
 }
@@ -82,7 +87,6 @@ public class AgregarAlumno extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         pnl_AgregarAlumno.setBackground(new java.awt.Color(255, 255, 255));
-        pnl_AgregarAlumno.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
 
         jButton1.setBackground(new java.awt.Color(0, 153, 255));
         jButton1.setFont(new java.awt.Font("Liberation Mono", 2, 16)); // NOI18N
@@ -187,7 +191,7 @@ public class AgregarAlumno extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 323, Short.MAX_VALUE)
+            .addGap(0, 321, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,24 +203,24 @@ public class AgregarAlumno extends javax.swing.JPanel {
         pnl_AgregarAlumnoLayout.setHorizontalGroup(
             pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_AgregarAlumnoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
                         .addGap(67, 67, 67)
                         .addComponent(jButton1)))
-                .addGap(37, 37, 37))
+                .addGap(38, 38, 38))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnl_AgregarAlumnoLayout.setVerticalGroup(
             pnl_AgregarAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_AgregarAlumnoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_AgregarAlumnoLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(jButton1)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         add(pnl_AgregarAlumno, java.awt.BorderLayout.PAGE_START);

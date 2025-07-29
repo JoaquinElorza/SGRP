@@ -31,8 +31,6 @@ public class Agregar extends javax.swing.JFrame {
 
         getRootPane().setDefaultButton(jButton1);
 
-// Imagen del botón regresar
-// 🔙 Botón de regresar (jButton2)
         ImageIcon iconoBack = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenBack = iconoBack.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         jButton2.setIcon(new ImageIcon(imagenBack));

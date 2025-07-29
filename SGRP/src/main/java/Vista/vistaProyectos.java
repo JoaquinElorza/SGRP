@@ -150,6 +150,8 @@ public class vistaProyectos extends javax.swing.JPanel {
         btnVerArchivo = new javax.swing.JButton();
         comboArchivos = new javax.swing.JComboBox<>();
 
+        setMaximumSize(new java.awt.Dimension(828, 543));
+
         panelProyectos.setBackground(new java.awt.Color(255, 255, 255));
         panelProyectos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelProyectos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -248,7 +250,7 @@ public class vistaProyectos extends javax.swing.JPanel {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblNombreProyecto.setText("nameproyecto");
-        jPanel2.add(lblNombreProyecto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, -1, -1));
+        jPanel2.add(lblNombreProyecto, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, -1, -1));
 
         lblDescripcion.setText("Descripcion:");
         jPanel2.add(lblDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 82, -1, -1));
@@ -260,13 +262,13 @@ public class vistaProyectos extends javax.swing.JPanel {
         txtAreaDescripcion.setRows(5);
         jScrollPane1.setViewportView(txtAreaDescripcion);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 250, 210));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 280, 210));
 
         jLabel1.setText("Empresa:");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
         jLabel2.setText("Nombre del Proyecto:");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, -1, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
         jButton4.setText("Subir Documento");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -274,7 +276,7 @@ public class vistaProyectos extends javax.swing.JPanel {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, -1, -1));
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, -1, -1));
 
         btnVerArchivo.setText("Ver Documento ");
         btnVerArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -282,14 +284,14 @@ public class vistaProyectos extends javax.swing.JPanel {
                 btnVerArchivoActionPerformed(evt);
             }
         });
-        jPanel2.add(btnVerArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 120, -1));
+        jPanel2.add(btnVerArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 120, -1));
 
         comboArchivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboArchivosActionPerformed(evt);
             }
         });
-        jPanel2.add(comboArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 170, -1));
+        jPanel2.add(comboArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 170, -1));
 
         javax.swing.GroupLayout panelProyectosLayout = new javax.swing.GroupLayout(panelProyectos);
         panelProyectos.setLayout(panelProyectosLayout);
@@ -297,18 +299,18 @@ public class vistaProyectos extends javax.swing.JPanel {
             panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelProyectosLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelProyectosLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelProyectosLayout.setVerticalGroup(
             panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,138 +326,143 @@ public class vistaProyectos extends javax.swing.JPanel {
                             .addComponent(jButton2)
                             .addComponent(jButton1)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelProyectos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelProyectos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panelProyectos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelProyectosMouseClicked
-        
+
     }//GEN-LAST:event_panelProyectosMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrame ventanaAgregar = new JFrame("Agregar Proyecto");
-    agregarProyecto panelAgregar = new agregarProyecto();
-    
-    ventanaAgregar.setContentPane(panelAgregar);
-    ventanaAgregar.pack(); // <- Esto ajusta el tamaño al contenido
-    ventanaAgregar.setLocationRelativeTo(null); // centrado
-    ventanaAgregar.setVisible(true);
-    ventanaAgregar.setContentPane(panelAgregar);
-    ventanaAgregar.setSize(400, 450); 
-    ventanaAgregar.setLocationRelativeTo(null);
-    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    ventanaAgregar.setVisible(true);
+    private void comboArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboArchivosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboArchivosActionPerformed
 
-    ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
-        @Override
-        public void windowClosed(java.awt.event.WindowEvent e) {
-            mostrarProyectosEnTabla();
-        }
-    });
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnVerArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerArchivoActionPerformed
+        // TODO add your handling code here:
+        abrirArchivoSeleccionado();
+    }//GEN-LAST:event_btnVerArchivoActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        btnSubirPDFActionPerformed(evt);
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        jButtonEliminarActionPerformed(evt);
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    
-        
-        
+
         int fila = tablaProyectos.getSelectedRow();
 
-    if (fila == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar un proyecto para editar.");
-        return;
-    }
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar un proyecto para editar.");
+            return;
+        }
 
-    // Suponiendo que tienes las columnas: Nombre, Descripción, Estatus, Empresa
+        // Suponiendo columnas: Nombre (0), Estatus (1), Empresa (2)
         Object nombreObj = tablaProyectos.getValueAt(fila, 0);
-        Object descripcionObj = tablaProyectos.getValueAt(fila, 1);
         Object estatusObj = tablaProyectos.getValueAt(fila, 1);
         Object empresaObj = tablaProyectos.getValueAt(fila, 2);
 
-        if (nombreObj == null || descripcionObj == null || estatusObj == null || empresaObj == null) {
+        if (nombreObj == null || estatusObj == null || empresaObj == null) {
             JOptionPane.showMessageDialog(this, "❌ El proyecto seleccionado tiene datos incompletos.");
             return;
         }
 
         String nombre = nombreObj.toString();
-        String descripcion = descripcionObj.toString();
         String estatus = estatusObj.toString();
         String empresa = empresaObj.toString();
 
-    // 🔍 Aquí necesitas obtener el ID del proyecto (ej. desde BD)
-    int id = obtenerIdProyectoDesdeBD(nombre, descripcion,estatus); // ← te ayudo a implementarlo si no lo tienes
+        // Obtener el ID del proyecto desde la BD
+        int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
 
-    // Abrir el panel de edición
-    vistaProyectos estaVista = this; // 👈 hace referencia a sí mismo
+        if (idProyecto == -1) {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo encontrar el ID del proyecto en la base de datos.");
+            return;
+        }
+
+        // Obtener descripción desde la BD
+        String descripcion = obtenerDescripcionProyecto(idProyecto);
+        if (descripcion == null) {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo obtener la descripción del proyecto.");
+            return;
+        }
+
+        // Abrir el panel de edición
+        vistaProyectos estaVista = this;
 
         editarProyecto panelEditar = new editarProyecto(card, panelContainer, estaVista);
-        panelEditar.cargarDatos(id, nombre, empresa, descripcion, estatus);
+        panelEditar.cargarDatos(idProyecto, nombre, empresa, descripcion, estatus);
         panelContainer.add(panelEditar, "panelEditarProyecto");
         card.show(panelContainer, "panelEditarProyecto");
-    
+        panelContainer.revalidate();
+        panelContainer.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-         jButtonEliminarActionPerformed(evt);
-         
-         
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFrame ventanaAgregar = new JFrame("Agregar Proyecto");
+        agregarProyecto panelAgregar = new agregarProyecto();
+
+        ventanaAgregar.setContentPane(panelAgregar);
+        ventanaAgregar.pack(); // <- Esto ajusta el tamaño al contenido
+        ventanaAgregar.setLocationRelativeTo(null); // centrado
+        ventanaAgregar.setVisible(true);
+        ventanaAgregar.setContentPane(panelAgregar);
+        ventanaAgregar.setSize(400, 450);
+        ventanaAgregar.setLocationRelativeTo(null);
+        ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventanaAgregar.setVisible(true);
+
+        ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                mostrarProyectosEnTabla();
+            }
+        });
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tablaProyectosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMousePressed
+        int fila = tablaProyectos.getSelectedRow();
+        if (fila == -1) return;
+
+        String nombre = tablaProyectos.getValueAt(fila, 0).toString();
+        String estatus = tablaProyectos.getValueAt(fila, 1).toString();  // ahora columna 1
+        String empresa = tablaProyectos.getValueAt(fila, 2).toString();  // ahora columna 2
+
+        lblNombreProyecto.setText("📝 " + nombre);
+        lblEmpresa.setText("🏢 " + empresa);
+
+        int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
+        String descripcion = obtenerDescripcionProyecto(idProyecto);
+        txtAreaDescripcion.setText(descripcion);
+
+        cargarArchivosDelProyecto(idProyecto);
+    }//GEN-LAST:event_tablaProyectosMousePressed
+
+    private void tablaProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMouseClicked
+
+    }//GEN-LAST:event_tablaProyectosMouseClicked
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
         Window ventana = SwingUtilities.getWindowAncestor(this);
         if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackMouseClicked
-
-    private void tablaProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMouseClicked
- 
-    }//GEN-LAST:event_tablaProyectosMouseClicked
-
-    private void tablaProyectosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMousePressed
-             int fila = tablaProyectos.getSelectedRow();
-            if (fila == -1) return;
-
-            String nombre = tablaProyectos.getValueAt(fila, 0).toString();
-            String estatus = tablaProyectos.getValueAt(fila, 1).toString();  // ahora columna 1
-            String empresa = tablaProyectos.getValueAt(fila, 2).toString();  // ahora columna 2
-
-            lblNombreProyecto.setText("📝 " + nombre);
-            lblEmpresa.setText("🏢 " + empresa);
-
-            int idProyecto = obtenerIdProyectoDesdeBD(nombre, estatus, empresa);
-            String descripcion = obtenerDescripcionProyecto(idProyecto);
-            txtAreaDescripcion.setText(descripcion);
-
-            cargarArchivosDelProyecto(idProyecto);
-    }//GEN-LAST:event_tablaProyectosMousePressed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-         btnSubirPDFActionPerformed(evt);
-        
-            
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void btnVerArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerArchivoActionPerformed
-        // TODO add your handling code here:
-          abrirArchivoSeleccionado();
-    }//GEN-LAST:event_btnVerArchivoActionPerformed
-
-    private void comboArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboArchivosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboArchivosActionPerformed
         public int obtenerIdPorNombreYDescripcion(String nombre, String descripcion) {
             String sql = "SELECT id_proyecto FROM proyecto WHERE nombre = ? AND descripcion = ? LIMIT 1";
             try (Connection conn = Conexion.getConexion();
