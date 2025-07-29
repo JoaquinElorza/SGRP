@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import Vista.OpcionDocentes;
 import Vista.vistaProyectos;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -18,14 +19,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() {
         this.setUndecorated(true);
         initComponents();
+         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+        setLocationRelativeTo(null);
         card = (CardLayout) panelCambiante.getLayout();
         //this.setPreferredSize(new Dimension(626, 468));
         //setSize(626,470);
-        this.setLocationRelativeTo(null); 
+       // this.setLocationRelativeTo(null); 
         this.setResizable(false); 
         this.setVisible(true);
         
         vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
+        OpcionAnteproyecto Anteproyectos = new  OpcionAnteproyecto(card, panelCambiante);
         opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
         AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
         agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante, proyectos);
@@ -38,6 +42,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         panelCambiante.add(panelAlumnos, "panelAlumnos");
         panelCambiante.add(agregarAlumno, "Agregar alumno");
         panelCambiante.add(proyectos, "panelProyectos");
+        panelCambiante.add(Anteproyectos, "panelAnteproyectos");
         panelCambiante.add(panelEditar, "panelEditarProyecto");
         //IMAGEN DE LOGO
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
@@ -437,7 +442,22 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void panelAnteproyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAnteproyectosMouseClicked
-        // TODO add your handling code here:
+         JFrame ventana = new JFrame("panelAnteproyectos");
+        ventana.setUndecorated(true);
+    CardLayout layout = new CardLayout(); 
+    JPanel container = new JPanel(layout);
+    OpcionAnteproyecto vistasProy = new OpcionAnteproyecto(layout, container);
+
+    container.add(vistasProy, "panelAnteproyectos");
+    layout.show(container, "panelAnteproyectos");
+
+    ventana.setContentPane(container);
+    ventana.setSize(900, 650);
+    ventana.setResizable(false);
+    ventana.setExtendedState(JFrame.NORMAL);
+    ventana.setLocationRelativeTo(null);
+    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventana.setVisible(true);
     }//GEN-LAST:event_panelAnteproyectosMouseClicked
 
     private void AntMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AntMouseClicked

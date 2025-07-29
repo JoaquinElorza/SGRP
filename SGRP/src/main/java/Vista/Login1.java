@@ -3,6 +3,7 @@ package Vista;
 import Controlador.AcomodarImagen;
 import Controlador.LoginController;
 import java.awt.Color;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -14,12 +15,14 @@ public class Login1 extends javax.swing.JFrame {
     public Login1() {
         this.setUndecorated(true);
         initComponents();
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+        setLocationRelativeTo(null);
          acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);  
          jPanel2.setOpaque(false);
          jPanel2.setBorder(null);
          jPanel2.setBackground(new Color(0,0,0,0));
          configurarInteracciones();
-         this.setLocationRelativeTo(null); 
+         //this.setLocationRelativeTo(null); 
     this.setResizable(false); 
     this.setVisible(true);
     }

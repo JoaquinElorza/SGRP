@@ -3,6 +3,7 @@ package Vista;
 import Modelo.DAO.DocenteCarg;
 import Modelo.DAO.DocenteDAO;
 import java.awt.Font;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 
 public class EditarDocente extends JFrame {
@@ -17,9 +18,10 @@ public class EditarDocente extends JFrame {
         this.padre = padre;
         setTitle("Editar Docente");
         setSize(435, 350);
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         setLayout(null);
-
+         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+         setLocationRelativeTo(null);
         Font fuente = new Font("Dialog", Font.PLAIN, 12);
 
         txtNombre    = new JTextField(); txtNombre.setBounds(130, 20, 250, 30); txtNombre.setFont(fuente); add(txtNombre);
