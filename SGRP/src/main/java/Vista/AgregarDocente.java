@@ -62,7 +62,7 @@ public class AgregarDocente extends JFrame {
             y += 40;
         }
 
-        configurarInteracciones(); // 🚀 Enter en cascada
+        configurarInteracciones(); 
     }
 
     private void configurarInteracciones() {
@@ -80,9 +80,9 @@ public class AgregarDocente extends JFrame {
         String apMaterno = txtApMaterno.getText().trim();
         String telefono  = txtTelefono.getText().trim();
         String correo    = txtCorreo.getText().trim();
-        String rfc       = txtRFC.getText().trim();
+        String rfc       = txtRFC.getText().trim().toUpperCase();
 
-        // 🛡️ Validaciones
+        
         if (nombre.isEmpty() || apPaterno.isEmpty() || apMaterno.isEmpty() ||
             telefono.isEmpty() || correo.isEmpty() || rfc.isEmpty()) {
             JOptionPane.showMessageDialog(this, "⚠️ Todos los campos son obligatorios.");
