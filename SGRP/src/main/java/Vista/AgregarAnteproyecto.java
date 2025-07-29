@@ -4,6 +4,10 @@
  */
 package Vista;
 
+import Modelo.DAO.AlumnoCarg;
+import Modelo.DAO.AlumnoDAO;
+import java.sql.SQLException;
+
 /**
  *
  * @author yahir
@@ -26,21 +30,94 @@ public class AgregarAnteproyecto extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaAlumnos = new javax.swing.JTable();
+
         setBackground(new java.awt.Color(255, 255, 255));
+
+        jScrollPane2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
+        jScrollPane2.setToolTipText("");
+        jScrollPane2.setAutoscrolls(true);
+        jScrollPane2.setName(""); // NOI18N
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane2MouseClicked(evt);
+            }
+        });
+
+        tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Numero de  control", "Nombre"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAlumnosMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaAlumnos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 337, Short.MAX_VALUE)
+            .addGap(0, 548, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(80, 80, 80)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(80, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 426, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(85, 85, 85)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(86, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
+        int fila = tablaAlumnos.getSelectedRow();
+        if (fila == -1) return;
+
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+        try {
+            AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
+            //DEAQUI
+            // lblControl.setText(alumnoTabla.getNumeroControl());
+            //.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
+            //lblTelefono.setText(alumnoTabla.getNumeroTelefono());
+            //lblCorreo.setText(alumnoTabla.getCorreoElectronico());
+
+            //comboSoli.setSelectedIndex((int)DocumentoDao.comboSolicitud(lblControl.getText()));
+
+            //mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_tablaAlumnosMouseClicked
+
+    private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
+
+    }//GEN-LAST:event_jScrollPane2MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
 }

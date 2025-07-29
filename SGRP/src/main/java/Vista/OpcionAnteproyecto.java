@@ -45,7 +45,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
      this.card = layout;
         this.panelContainer = container;
         initComponents();
-        actualizarTablaAlumnos(tablaAlumnos);
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", LogoTec);  
     LogoTec.setOpaque(false);
     LogoTec.setBorder(null);
@@ -83,10 +82,9 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         LogoTec = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         JPanelBack = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaAlumnos = new javax.swing.JTable();
         btnNewAnteproyecto = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -133,39 +131,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jScrollPane2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
-        jScrollPane2.setToolTipText("");
-        jScrollPane2.setAutoscrolls(true);
-        jScrollPane2.setName(""); // NOI18N
-        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jScrollPane2MouseClicked(evt);
-            }
-        });
-
-        tablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Numero de  control", "Nombre"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaAlumnosMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tablaAlumnos);
-
         btnNewAnteproyecto.setText("Nuevo Anteproyecto");
         btnNewAnteproyecto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -183,21 +148,21 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(btnNewAnteproyecto)
                         .addGap(63, 63, 63)
-                        .addComponent(jToggleButton1)))
+                        .addComponent(jToggleButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewAnteproyecto)
@@ -222,31 +187,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackActionPerformed
 
-    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
-        int fila = tablaAlumnos.getSelectedRow();
-        if (fila == -1) return;
-
-        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-        try {
-            AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
-               //DEAQUI
-           // lblControl.setText(alumnoTabla.getNumeroControl());
-            //.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
-            //lblTelefono.setText(alumnoTabla.getNumeroTelefono());
-            //lblCorreo.setText(alumnoTabla.getCorreoElectronico());
-
-            //comboSoli.setSelectedIndex((int)DocumentoDao.comboSolicitud(lblControl.getText()));
-
-            //mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }//GEN-LAST:event_tablaAlumnosMouseClicked
-
-    private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
-
-    }//GEN-LAST:event_jScrollPane2MouseClicked
-
     private void btnNewAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAnteproyectoMouseClicked
         JFrame ventanaAgregar = new JFrame("Agregar Alumno");
     AgregarAlumno panelAgregar = new AgregarAlumno();
@@ -260,7 +200,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosed(java.awt.event.WindowEvent e) {
-            actualizarTablaAlumnos(tablaAlumnos);
         }
     });
     }//GEN-LAST:event_btnNewAnteproyectoMouseClicked
@@ -272,8 +211,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     private javax.swing.JButton btnNewAnteproyecto;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jToggleButton1;
-    public javax.swing.JTable tablaAlumnos;
     // End of variables declaration//GEN-END:variables
 }
