@@ -58,6 +58,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         this.panelContainer = container;
         this.setPreferredSize(new Dimension(905, 539));
         initComponents();
+
         actualizarTablaAlumnos(tablaAlumnos);
 
         //Imagen Logo
@@ -84,6 +85,15 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("/img/eye.png"));
         Image scaledImage = originalIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         visualizar.setIcon(new ImageIcon(scaledImage));
+
+        originalIcon = new ImageIcon(getClass().getResource("/img/remove.png"));
+        scaledImage = originalIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        btnEliminar.setIcon(new ImageIcon(scaledImage));
+
+        originalIcon = new ImageIcon(getClass().getResource("/img/gmail.png"));
+        scaledImage = originalIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        btnCorreo.setIcon(new ImageIcon(scaledImage));
+
     }
 
     public String seleccionObligatoria(JFrame parent) {
@@ -154,6 +164,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
         visualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnCorreo = new javax.swing.JButton();
 
         opcionSoli.setLabel("Solicitud de residencia");
         opcionSoli.addActionListener(new java.awt.event.ActionListener() {
@@ -429,7 +441,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, 91, -1));
 
         btnReporte.setBackground(new java.awt.Color(0, 153, 255));
-        btnReporte.setText("Reportes");
+        btnReporte.setText("Fechas");
         btnReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReporteActionPerformed(evt);
@@ -438,7 +450,28 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         panelAlumnos.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 520, -1, -1));
 
         visualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eye.png"))); // NOI18N
+        visualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                visualizarMouseClicked(evt);
+            }
+        });
         panelAlumnos.add(visualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 320, 30, 30));
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/remove.png"))); // NOI18N
+        btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEliminarMouseClicked(evt);
+            }
+        });
+        panelAlumnos.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 280, 30, 30));
+
+        btnCorreo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/gmail.png"))); // NOI18N
+        btnCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCorreoMouseClicked(evt);
+            }
+        });
+        panelAlumnos.add(btnCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 30, 30));
 
         add(panelAlumnos, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -773,10 +806,124 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_btnReporteAlumnosActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        Reporte ventanaReporte = new Reporte(this);
+        String nControl = lblControl.getText(); // del alumno seleccionado
+        Reporte ventanaReporte = new Reporte(this, nControl);
         ventanaReporte.setVisible(true);
-        ventanaReporte.setLocationRelativeTo(this); // Centrar
+        ventanaReporte.setLocationRelativeTo(this);
     }//GEN-LAST:event_btnReporteActionPerformed
+
+    private void visualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualizarMouseClicked
+        int fila = tablaAlumnos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Selecciona un alumno primero.");
+            return;
+        }
+
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString(); // CORRECTO: columna 0 = n_control
+        try (Connection conn = Conexion.getConexion()) {
+            String sql = """
+        SELECT r.fecha_inicio, r.fecha_reporte1, r.fecha_reporte2, r.fecha_reporte3, r.fecha_fin
+        FROM reporte r
+        JOIN alumno a ON r.fk_alumno = a.id_alumno
+        WHERE a.n_control = ?
+        """;
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nControl);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String msg = "📅 Fechas del Reporte:\n\n"
+                        + "Inicio: " + rs.getDate("fecha_inicio") + "\n"
+                        + "Reporte 1: " + rs.getDate("fecha_reporte1") + "\n"
+                        + "Reporte 2: " + rs.getDate("fecha_reporte2") + "\n"
+                        + "Reporte 3: " + rs.getDate("fecha_reporte3") + "\n"
+                        + "Fin: " + rs.getDate("fecha_fin");
+                JOptionPane.showMessageDialog(null, msg, "Fechas de Reporte", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ No se encontraron reportes para este alumno.");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "❌ Error al consultar los reportes.");
+        }
+    }//GEN-LAST:event_visualizarMouseClicked
+
+    private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
+        int fila = tablaAlumnos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Selecciona un alumno primero.");
+            return;
+        }
+
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(null, "¿Deseas eliminar las fechas de entrega de este alumno?",
+                "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try (Connection conn = Conexion.getConexion()) {
+                String sql = """
+                DELETE r FROM reporte r
+                JOIN alumno a ON r.fk_alumno = a.id_alumno
+                WHERE a.n_control = ?
+            """;
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, nControl);
+                int filasAfectadas = ps.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(null, "✅ Fechas de entrega eliminado correctamente.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "❌ No se encontró un Fechas de entrega para eliminar.");
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "❌ Error al eliminar el fechas de entrega.");
+            }
+        }
+    }//GEN-LAST:event_btnEliminarMouseClicked
+
+    private void btnCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCorreoMouseClicked
+        int fila = tablaAlumnos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Selecciona un alumno.");
+            return;
+        }
+
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+
+        try (Connection conn = Conexion.getConexion()) {
+            String sql = """
+            SELECT r.fecha_inicio, r.fecha_reporte1, r.fecha_reporte2, r.fecha_reporte3, r.fecha_fin
+            FROM reporte r
+            JOIN alumno a ON r.fk_alumno = a.id_alumno
+            WHERE a.n_control = ?
+        """;
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nControl);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String inicio = rs.getDate("fecha_inicio").toString();
+                String r1 = rs.getDate("fecha_reporte1").toString();
+                String r2 = rs.getDate("fecha_reporte2").toString();
+                String r3 = rs.getDate("fecha_reporte3").toString();
+                String fin = rs.getDate("fecha_fin").toString();
+
+                // Llamar al método que ya hiciste en Reporte.java
+                Reporte.enviarCorreoReporte(nControl, inicio, r1, r2, r3, fin);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ No se encontraron fechas para este alumno.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "❌ Error al intentar enviar el correo.");
+        }
+    }//GEN-LAST:event_btnCorreoMouseClicked
 
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
         AlumnoDAO dao = new AlumnoDAO();
@@ -813,7 +960,9 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     private javax.swing.JPanel JPanelLOGO;
     private javax.swing.JLabel LbLimportar;
     private javax.swing.JButton btnAgregarAlumno;
+    private javax.swing.JButton btnCorreo;
     private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminarDocumento;
     private javax.swing.JButton btnReporte;
     private javax.swing.JButton btnReporteAlumnos;
