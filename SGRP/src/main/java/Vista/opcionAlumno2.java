@@ -19,6 +19,7 @@ import Utilidades.Conexion;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Window;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +29,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -39,82 +41,82 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class opcionAlumno2 extends javax.swing.JPanel {
-    
+
     private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
     CardLayout card;
     private JPanel panelContainer;
     private EditarAlumno editar;
-    
-    static List<ExpedienteAlumno> lista;
-    
-    public opcionAlumno2() {}
 
-     public opcionAlumno2(CardLayout layout, JPanel container) {
+    static List<ExpedienteAlumno> lista;
+
+    public opcionAlumno2() {
+    }
+
+    public opcionAlumno2(CardLayout layout, JPanel container) {
         this.card = layout;
         this.panelContainer = container;
         this.setPreferredSize(new Dimension(905, 539));
         initComponents();
         actualizarTablaAlumnos(tablaAlumnos);
-        
-
 
         //Imagen Logo
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);  
-         JPanelLOGO.setOpaque(false);
-         JPanelLOGO.setBorder(null);
-         JPanelLOGO.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         //Imagen Back
-         
-         acomodarImagen.configurarPanelConImagen("/img/backbutton.png", JPanelBack);  
-         JPanelBack.setOpaque(false);
-         JPanelBack.setBorder(null);
-         JPanelBack.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-         
-         //Imagen Import
-         acomodarImagen.configurarPanelConImagen("/img/import.png", JPanelImport1);  
-         JPanelImport1.setOpaque(false);
-         JPanelImport1.setBorder(null);
-         JPanelImport1.setBackground(new Color(0,0,0,0));
-         this.setVisible(true);
-    } 
-   
-     
-public String seleccionObligatoria(JFrame parent) {
-    JDialog dialogo = new JDialog(parent, "Selecciona una opción", true); // true = modal
-    dialogo.setUndecorated(true);
-    
-    JComboBox<String> combo = new JComboBox<>(new String[]{"Recibida", "Enviada a firmar",
-        "Firmada y sellada", "Entregada al alumno"});
-    
-    JButton aceptar = new JButton("Aceptar");
+        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", JPanelLOGO);
+        JPanelLOGO.setOpaque(false);
+        JPanelLOGO.setBorder(null);
+        JPanelLOGO.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
 
-    final String[] seleccion = new String[1];
+        //Imagen Back
+        acomodarImagen.configurarPanelConImagen("/img/backbutton.png", JPanelBack);
+        JPanelBack.setOpaque(false);
+        JPanelBack.setBorder(null);
+        JPanelBack.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
 
-    aceptar.addActionListener(e -> {
-        if (combo.getSelectedIndex() != -1) {
-            seleccion[0] = combo.getSelectedItem().toString();
-            dialogo.dispose();
-        } else {
-            JOptionPane.showMessageDialog(dialogo, "Debes seleccionar una opción");
-        }
-    });
+        //Imagen Import
+        acomodarImagen.configurarPanelConImagen("/img/import.png", JPanelImport1);
+        JPanelImport1.setOpaque(false);
+        JPanelImport1.setBorder(null);
+        JPanelImport1.setBackground(new Color(0, 0, 0, 0));
+        this.setVisible(true);
 
-    JPanel panel = new JPanel();
-    panel.add(combo);
-    panel.add(aceptar);
-    dialogo.add(panel);
-    dialogo.pack();
-    dialogo.setLocationRelativeTo(parent);
-    dialogo.setVisible(true); // aquí se bloquea hasta que se cierre
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/img/eye.png"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        visualizar.setIcon(new ImageIcon(scaledImage));
+    }
 
-    return seleccion[0];
-}
+    public String seleccionObligatoria(JFrame parent) {
+        JDialog dialogo = new JDialog(parent, "Selecciona una opción", true); // true = modal
+        dialogo.setUndecorated(true);
 
-     
+        JComboBox<String> combo = new JComboBox<>(new String[]{"Recibida", "Enviada a firmar",
+            "Firmada y sellada", "Entregada al alumno"});
+
+        JButton aceptar = new JButton("Aceptar");
+
+        final String[] seleccion = new String[1];
+
+        aceptar.addActionListener(e -> {
+            if (combo.getSelectedIndex() != -1) {
+                seleccion[0] = combo.getSelectedItem().toString();
+                dialogo.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialogo, "Debes seleccionar una opción");
+            }
+        });
+
+        JPanel panel = new JPanel();
+        panel.add(combo);
+        panel.add(aceptar);
+        dialogo.add(panel);
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(parent);
+        dialogo.setVisible(true); // aquí se bloquea hasta que se cierre
+
+        return seleccion[0];
+    }
+
     public void actualizarTabla() {
         AlumnoContr controlador = new AlumnoContr();
         controlador.actualizarTablaAlumnos(tablaAlumnos);
@@ -150,6 +152,8 @@ public String seleccionObligatoria(JFrame parent) {
         JPanelImport1 = new javax.swing.JPanel();
         btnAgregarAlumno = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        btnReporte = new javax.swing.JButton();
+        visualizar = new javax.swing.JButton();
 
         opcionSoli.setLabel("Solicitud de residencia");
         opcionSoli.addActionListener(new java.awt.event.ActionListener() {
@@ -215,7 +219,7 @@ public String seleccionObligatoria(JFrame parent) {
                 btnEditarActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(304, 515, -1, -1));
+        panelAlumnos.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 520, -1, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         jPanel1.setPreferredSize(new java.awt.Dimension(536, 370));
@@ -413,7 +417,7 @@ public String seleccionObligatoria(JFrame parent) {
                 btnAgregarAlumnoActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnAgregarAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(116, 515, -1, -1));
+        panelAlumnos.add(btnAgregarAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(51, 153, 255));
         jButton2.setText("Eliminar");
@@ -422,20 +426,31 @@ public String seleccionObligatoria(JFrame parent) {
                 jButton2ActionPerformed(evt);
             }
         });
-        panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(203, 515, 91, -1));
+        panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, 91, -1));
+
+        btnReporte.setBackground(new java.awt.Color(0, 153, 255));
+        btnReporte.setText("Reportes");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+        panelAlumnos.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 520, -1, -1));
+
+        visualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eye.png"))); // NOI18N
+        panelAlumnos.add(visualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 320, 30, 30));
 
         add(panelAlumnos, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    public void mostrarDocumentosTabla(JTable tabla, String nControl) throws SQLException{
-        DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+    public void mostrarDocumentosTabla(JTable tabla, String nControl) throws SQLException {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0);
 
-        try{
+        try {
             lista = DocumentoDao.obtenerDocumentos(nControl);
-            
-            for(ExpedienteAlumno e : lista){
+
+            for (ExpedienteAlumno e : lista) {
                 modelo.addRow(new Object[]{
                     e.getNombre(),
                     e.getEstatus() ? "Si" : "No"
@@ -443,23 +458,24 @@ public String seleccionObligatoria(JFrame parent) {
             }
             tabla.setModel(modelo);
             tabla.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                        boolean isSelected, boolean hasFocus, int row, int column) {
 
-        JLabel label = (JLabel) super.getTableCellRendererComponent(
-            table, value, isSelected, hasFocus, row, column);
+                    JLabel label = (JLabel) super.getTableCellRendererComponent(
+                            table, value, isSelected, hasFocus, row, column);
 
-        label.setText("<html><u><font color='blue'>" + value + "</font></u></html>");
-        return label;
+                    label.setText("<html><u><font color='blue'>" + value + "</font></u></html>");
+                    return label;
+                }
+            });
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al mostrar documentos.");
+        }
     }
-});
 
-        }catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al mostrar documentos.");
-    }}
-    
     private void lblAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAtrasMouseClicked
         card.show(panelContainer, "menu principal");
     }//GEN-LAST:event_lblAtrasMouseClicked
@@ -470,79 +486,80 @@ public String seleccionObligatoria(JFrame parent) {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = tablaAlumnos.getSelectedRow();
-    if (fila == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
-        return;
-    }
-
-    String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-    String nombreCompleto = lblNombreAlumno.getText();
-
-    int confirmacion = JOptionPane.showConfirmDialog(this,
-        "¿Deseas eliminar al alumno " + nombreCompleto +
-        " con número de control " + nControl + "?",
-        "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        try {
-            Connection conn = Conexion.getConexion();
-            String sql = "SELECT fk_persona FROM alumno WHERE n_control = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, nControl);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                int idPersona = rs.getInt("fk_persona");
-                AlumnoDAO dao = new AlumnoDAO();
-                boolean eliminado = dao.eliminarAlumno(idPersona);
-
-                if (eliminado) {
-                    JOptionPane.showMessageDialog(this, "✅ Alumno marcado como eliminado.");
-                    actualizarTablaAlumnos(tablaAlumnos);
-                    limpiarPanelAlumno();
-                } else {
-                    JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "⚠️ No se encontró el alumno.");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "❌ Error al intentar eliminar.");
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno para eliminar.");
+            return;
         }
-    }
+
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+        String nombreCompleto = lblNombreAlumno.getText();
+
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Deseas eliminar al alumno " + nombreCompleto
+                + " con número de control " + nControl + "?",
+                "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                Connection conn = Conexion.getConexion();
+                String sql = "SELECT fk_persona FROM alumno WHERE n_control = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, nControl);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    int idPersona = rs.getInt("fk_persona");
+                    AlumnoDAO dao = new AlumnoDAO();
+                    boolean eliminado = dao.eliminarAlumno(idPersona);
+
+                    if (eliminado) {
+                        JOptionPane.showMessageDialog(this, "✅ Alumno marcado como eliminado.");
+                        actualizarTablaAlumnos(tablaAlumnos);
+                        limpiarPanelAlumno();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "⚠️ No se encontró el alumno.");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "❌ Error al intentar eliminar.");
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void LbLimportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LbLimportarMouseClicked
         JFileChooser selector = new JFileChooser();
-    int resultado = selector.showOpenDialog(this);
-    if (resultado == JFileChooser.APPROVE_OPTION) {
-    File archivo = selector.getSelectedFile();
-    VentanaCargaProgreso progreso = new VentanaCargaProgreso(null, archivo, this);
-    progreso.setVisible(true); 
-    }
+        int resultado = selector.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivo = selector.getSelectedFile();
+            VentanaCargaProgreso progreso = new VentanaCargaProgreso(null, archivo, this);
+            progreso.setVisible(true);
+        }
     }//GEN-LAST:event_LbLimportarMouseClicked
 
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
         int fila = tablaAlumnos.getSelectedRow();
-      if (fila == -1) return;
+        if (fila == -1) {
+            return;
+        }
 
-      String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-      try {
-          AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
+        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+        try {
+            AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
 
-          lblControl.setText(alumnoTabla.getNumeroControl());
-          lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
-          lblTelefono.setText(alumnoTabla.getNumeroTelefono());
-          lblCorreo.setText(alumnoTabla.getCorreoElectronico());
+            lblControl.setText(alumnoTabla.getNumeroControl());
+            lblNombreAlumno.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
+            lblTelefono.setText(alumnoTabla.getNumeroTelefono());
+            lblCorreo.setText(alumnoTabla.getCorreoElectronico());
 
-
-          mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
-      } catch (SQLException ex) {
-          ex.printStackTrace();
-      }
+            mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_tablaAlumnosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -554,11 +571,11 @@ public String seleccionObligatoria(JFrame parent) {
         String nControl = lblControl.getText();
         try {
             AlumnoDAO dao = new AlumnoDAO(); //objeto para los metodos de la clase
-        AlumnoCarg datos = dao.consultarAlumno(nControl);
-        
-        editar = new EditarAlumno();
-        editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
-                           datos.getApellidoMaterno(), datos.getNumeroTelefono(), datos.getCorreoElectronico());
+            AlumnoCarg datos = dao.consultarAlumno(nControl);
+
+            editar = new EditarAlumno();
+            editar.cargarDatos(datos.getNumeroControl(), datos.getNombre(), datos.getApellidoPaterno(),
+                    datos.getApellidoMaterno(), datos.getNumeroTelefono(), datos.getCorreoElectronico());
             editar.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosed(java.awt.event.WindowEvent e) {
@@ -576,135 +593,137 @@ public String seleccionObligatoria(JFrame parent) {
 
 
     private void lblactualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblactualizarMouseClicked
-         actualizarTablaAlumnos(tablaAlumnos);
+        actualizarTablaAlumnos(tablaAlumnos);
     }//GEN-LAST:event_lblactualizarMouseClicked
 
     private void JPanelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelBackMouseClicked
-       Window ventana = SwingUtilities.getWindowAncestor(this);
-        if (ventana != null) ventana.dispose(); 
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null)
+            ventana.dispose();
     }//GEN-LAST:event_JPanelBackMouseClicked
 
     private void JPanelImport1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPanelImport1MouseClicked
         // TODO add your handling code here:
-        
-            JFileChooser selector = new JFileChooser();
-    int resultado = selector.showOpenDialog(this);
-    if (resultado == JFileChooser.APPROVE_OPTION) {
-    File archivo = selector.getSelectedFile();
-    VentanaCargaProgreso progreso = new VentanaCargaProgreso(null, archivo, this);
-    progreso.setVisible(true); 
-    }
+
+        JFileChooser selector = new JFileChooser();
+        int resultado = selector.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivo = selector.getSelectedFile();
+            VentanaCargaProgreso progreso = new VentanaCargaProgreso(null, archivo, this);
+            progreso.setVisible(true);
+        }
     }//GEN-LAST:event_JPanelImport1MouseClicked
 
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
-    JFrame ventanaAgregar = new JFrame("Agregar Alumno");
-    AgregarAlumno panelAgregar = new AgregarAlumno();
-    ventanaAgregar.setContentPane(panelAgregar);
-    ventanaAgregar.setSize(325, 630); // Ajusta el tamaño según tu diseño
-    ventanaAgregar.setLocationRelativeTo(null); // Centrar en pantalla
-    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierre sin terminar la app
-    ventanaAgregar.setVisible(true);
+        JFrame ventanaAgregar = new JFrame("Agregar Alumno");
+        AgregarAlumno panelAgregar = new AgregarAlumno();
+        ventanaAgregar.setContentPane(panelAgregar);
+        ventanaAgregar.setSize(325, 630); // Ajusta el tamaño según tu diseño
+        ventanaAgregar.setLocationRelativeTo(null); // Centrar en pantalla
+        ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierre sin terminar la app
+        ventanaAgregar.setVisible(true);
 
-    // Al cerrar, actualizar tabla
-    ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
-        @Override
-        public void windowClosed(java.awt.event.WindowEvent e) {
-            actualizarTablaAlumnos(tablaAlumnos);
-        }
-    });
+        // Al cerrar, actualizar tabla
+        ventanaAgregar.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                actualizarTablaAlumnos(tablaAlumnos);
+            }
+        });
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-               int fs = tablaAlumnos.getSelectedRow();
+        int fs = tablaAlumnos.getSelectedRow();
 
-    // Verifica si se seleccionó una fila
-    if (fs == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar un alumno.");
-        return;
-    }
-
-    // Asegúrate de que el índice de columna corresponde al "Número de Control"
-    // Ajusta el número de columna según tu tabla: aquí se asume que está en la columna 4
-    String nControl;
-    try {
-        nControl = tablaAlumnos.getValueAt(fs, 0).toString();
-    } catch (ArrayIndexOutOfBoundsException e) {
-        JOptionPane.showMessageDialog(this, "❌ Error: La columna del número de control no existe.");
-        return;
-    }
-
-    // Confirmar eliminación
-    int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Estás seguro de que deseas eliminar al alumno con número de control " + nControl + "?",
-            "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION);
-
-    if (confirmacion != JOptionPane.YES_OPTION) return;
-
-    // Obtener ID persona y eliminar
-    AlumnoDAO dao = new AlumnoDAO();
-    int idPersona = dao.obtenerIdPersonaPorNumeroControl(nControl);
-
-    if (idPersona != -1) {
-        boolean eliminado = dao.eliminarAlumno(idPersona);
-        if (eliminado) {
-            JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
-            actualizarTabla();
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+        // Verifica si se seleccionó una fila
+        if (fs == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Debes seleccionar un alumno.");
+            return;
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "❌ No se encontró el alumno en la base de datos.");
-    }
+
+        // Asegúrate de que el índice de columna corresponde al "Número de Control"
+        // Ajusta el número de columna según tu tabla: aquí se asume que está en la columna 4
+        String nControl;
+        try {
+            nControl = tablaAlumnos.getValueAt(fs, 0).toString();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "❌ Error: La columna del número de control no existe.");
+            return;
+        }
+
+        // Confirmar eliminación
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas eliminar al alumno con número de control " + nControl + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Obtener ID persona y eliminar
+        AlumnoDAO dao = new AlumnoDAO();
+        int idPersona = dao.obtenerIdPersonaPorNumeroControl(nControl);
+
+        if (idPersona != -1) {
+            boolean eliminado = dao.eliminarAlumno(idPersona);
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "✅ Alumno eliminado correctamente.");
+                actualizarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ No se pudo eliminar al alumno.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ No se encontró el alumno en la base de datos.");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
-        
+
     }//GEN-LAST:event_jScrollPane2MouseClicked
 
     private void btnEliminarDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocumentoActionPerformed
-        if(tablaAlumnos.getSelectedRow()==-1){
+        if (tablaAlumnos.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "Selecciona un alumno primero.");
-        }else{
-            menuDocumentos.removeAll();   
-            for(ExpedienteAlumno e : lista){
-            JMenuItem item = new JMenuItem(e.getNombre());    
-            item.addActionListener(evtB -> {
-                Path directorio = Paths.get("C:\\SGRP\\" + lblControl.getText());
-                try {
-                    DocumentosAlumno.eliminarArchivo(e.getNombre(), directorio, lblControl.getText());
-                    DocumentoDao.setEstadoDocumento(lblControl.getText(), false, e.getNombre());
-                    mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
-                } catch (SQLException ex) {
-                    Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            menuDocumentos.add(item);
+        } else {
+            menuDocumentos.removeAll();
+            for (ExpedienteAlumno e : lista) {
+                JMenuItem item = new JMenuItem(e.getNombre());
+                item.addActionListener(evtB -> {
+                    Path directorio = Paths.get("C:\\SGRP\\" + lblControl.getText());
+                    try {
+                        DocumentosAlumno.eliminarArchivo(e.getNombre(), directorio, lblControl.getText());
+                        DocumentoDao.setEstadoDocumento(lblControl.getText(), false, e.getNombre());
+                        mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+                menuDocumentos.add(item);
             }
             menuDocumentos.show(btnEliminarDocumento, 0, btnEliminarDocumento.getHeight());
         }
     }//GEN-LAST:event_btnEliminarDocumentoActionPerformed
 
     private void btnSubirDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirDocumentoActionPerformed
-        if(tablaAlumnos.getSelectedRow()==-1){
+        if (tablaAlumnos.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "Selecciona un alumno primero.");
-        }else{
+        } else {
             menuDocumentos.removeAll();
-            for(ExpedienteAlumno e : lista){
-                JMenuItem item = new JMenuItem(e.getNombre());    
+            for (ExpedienteAlumno e : lista) {
+                JMenuItem item = new JMenuItem(e.getNombre());
                 item.addActionListener(evtB -> {
                     try {
-                        if(DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(),
-                                e.getNombre() , this)){
+                        if (DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(),
+                                e.getNombre(), this)) {
                             DocumentoDao.setEstadoDocumento(lblControl.getText(), true,
                                     e.getNombre());
-                            mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());   
-                        }else{
-                        JOptionPane.showMessageDialog(null, "Solo puede subir imagenes y PDF");
-                    }
-                    }
-                    catch (SQLException ex) {
+                            mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Solo puede subir imagenes y PDF");
+                        }
+                    } catch (SQLException ex) {
                         Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
@@ -716,12 +735,12 @@ public String seleccionObligatoria(JFrame parent) {
 
 
     private void tablaDocumentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocumentosMouseClicked
-            if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             int fila = tablaDocumentos.rowAtPoint(evt.getPoint());
             int columna = tablaDocumentos.columnAtPoint(evt.getPoint());
 
             if (columna == 0 && fila != -1) {
-                String carpeta ="C:\\SGRP\\" + lblControl.getText();
+                String carpeta = "C:\\SGRP\\" + lblControl.getText();
                 CarpetaOculta.abrirPDF(tablaDocumentos.getValueAt(fila, 0).toString(), carpeta);
             }
         }
@@ -733,7 +752,7 @@ public String seleccionObligatoria(JFrame parent) {
 
     private void opcionSoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionSoliActionPerformed
         try {
-            DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(), "Solicitud de residencia" , this);
+            DocumentosAlumno.subirDocumentoAlumno(lblControl.getText(), "Solicitud de residencia", this);
         } catch (SQLException ex) {
             Logger.getLogger(opcionAlumno2.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -753,10 +772,14 @@ public String seleccionObligatoria(JFrame parent) {
         }
     }//GEN-LAST:event_btnReporteAlumnosActionPerformed
 
-    
-    
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        Reporte ventanaReporte = new Reporte(this);
+        ventanaReporte.setVisible(true);
+        ventanaReporte.setLocationRelativeTo(this); // Centrar
+    }//GEN-LAST:event_btnReporteActionPerformed
+
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
-         AlumnoDAO dao = new AlumnoDAO();
+        AlumnoDAO dao = new AlumnoDAO();
         List<AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
         DefaultTableModel model = (DefaultTableModel) tablaAlumnos.getModel();
         model.setRowCount(0);
@@ -766,23 +789,23 @@ public String seleccionObligatoria(JFrame parent) {
             model.addRow(new Object[]{a.getNumeroControl(), nombreCompleto});
         }
     }
-        private void limpiarPanelAlumno() {
+
+    private void limpiarPanelAlumno() {
         lblControl.setText("Número de control");
-    lblNombreAlumno.setText("Nombre completo");
-    lblTelefono.setText("Teléfono");
-    lblCorreo.setText("Correo electrónico");
+        lblNombreAlumno.setText("Nombre completo");
+        lblTelefono.setText("Teléfono");
+        lblCorreo.setText("Correo electrónico");
     }
-        
-        
+
     private void ajustarVentana() {
-    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
-    if (ventana instanceof javax.swing.JFrame) {
-        ((javax.swing.JFrame) ventana).pack();
-        ventana.setLocationRelativeTo(null);
+        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (ventana instanceof javax.swing.JFrame) {
+            ((javax.swing.JFrame) ventana).pack();
+            ventana.setLocationRelativeTo(null);
+        }
     }
-}
-   
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelBack;
     private javax.swing.JPanel JPanelImport;
@@ -792,6 +815,7 @@ public String seleccionObligatoria(JFrame parent) {
     private javax.swing.JButton btnAgregarAlumno;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminarDocumento;
+    private javax.swing.JButton btnReporte;
     private javax.swing.JButton btnReporteAlumnos;
     private javax.swing.JButton btnSubirDocumento;
     private javax.swing.JButton jButton2;
@@ -810,7 +834,7 @@ public String seleccionObligatoria(JFrame parent) {
     private javax.swing.JPanel panelAlumnos;
     public javax.swing.JTable tablaAlumnos;
     private javax.swing.JTable tablaDocumentos;
+    private javax.swing.JButton visualizar;
     // End of variables declaration//GEN-END:variables
 
-   
 }

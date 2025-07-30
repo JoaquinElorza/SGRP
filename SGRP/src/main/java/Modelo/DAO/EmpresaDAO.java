@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 public class EmpresaDAO {
 
     public boolean insertarEmpresa(EmpresaEntidad empresa) {
-        String sql = "INSERT INTO empresa(nombre, contacto, correo, rfc, direccion) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO empresa(nombre, contacto, correo, rfc, direccion, descripcion) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -25,6 +25,7 @@ public class EmpresaDAO {
             ps.setString(3, empresa.getCorreo());
             ps.setString(4, empresa.getRfc());
             ps.setString(5, empresa.getDireccion());
+            ps.setString(6, empresa.getDescripcion());
             ps.executeUpdate();
             return true;
 
@@ -48,6 +49,7 @@ public class EmpresaDAO {
                 emp.setCorreo(rs.getString("correo"));
                 emp.setRfc(rs.getString("rfc"));
                 emp.setDireccion(rs.getString("direccion"));
+                emp.setDescripcion(rs.getString("descripcion"));
 
                 lista.add(emp);
             }
@@ -60,7 +62,7 @@ public class EmpresaDAO {
     }
 
     public boolean actualizarEmpresa(EmpresaEntidad empresa) {
-        String sql = "UPDATE empresa SET nombre = ?, contacto = ?, correo = ?, rfc = ?, direccion = ? WHERE id_empresa = ?";
+        String sql = "UPDATE empresa SET nombre = ?, contacto = ?, correo = ?, rfc = ?, direccion = ?, descripcion = ? WHERE id_empresa = ?";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -69,7 +71,8 @@ public class EmpresaDAO {
             ps.setString(3, empresa.getCorreo());
             ps.setString(4, empresa.getRfc());
             ps.setString(5, empresa.getDireccion());
-            ps.setInt(6, empresa.getIdEmpresa());
+            ps.setString(6, empresa.getDescripcion());
+            ps.setInt(7, empresa.getIdEmpresa());
 
             return ps.executeUpdate() > 0;
 
