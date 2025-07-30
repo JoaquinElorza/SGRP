@@ -114,7 +114,27 @@ public class AlumnoDAO {
         }
         return null;
     }
+    public int consultarIdPorControl(String numeroControl) {
+    int idAlumno = -1; // Valor por defecto si no se encuentra
 
+    String query = "SELECT id_alumno FROM alumno WHERE n_control = ?";
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        ps.setString(1, numeroControl);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                idAlumno = rs.getInt("id_alumno");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al consultar ID del alumno: " + e.getMessage());
+    }
+
+    return idAlumno;
+}
     // Verifica existencia de número de control activo
     public boolean existeNumeroControl(String numeroControl) {
         String sql = 

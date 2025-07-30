@@ -7,17 +7,27 @@ package Vista;
 import Controlador.AcomodarImagen;
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
-import Modelo.DAO.DocenteCarg;
-import Modelo.DAO.DocenteDAO;
+import Utilidades.Conexion;
 import java.awt.Image;
 import java.awt.Window;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import javax.swing.ListSelectionModel;
+
 
 /**
  *
@@ -25,12 +35,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AgregarAnteproyecto extends javax.swing.JPanel {
 private final AcomodarImagen acomodarImagen = new AcomodarImagen();
+private File archivoTemporalPDF;
+    private final OpcionAnteproyecto panelPadre;
+
     /**
      * Creates new form AgregarAnteproyecto
      */
-    public AgregarAnteproyecto() {
+    public AgregarAnteproyecto(OpcionAnteproyecto padre) {
+        this.panelPadre = padre;
         initComponents();
+         txtNombreAnteproyecto.addActionListener(e -> txtNombreEmpresa.requestFocus());
+    txtNombreEmpresa.addActionListener(e -> txtTelefono.requestFocus());
+    txtTelefono.addActionListener(e -> txtDireccion.requestFocus());
+    txtDireccion.addActionListener(e -> txtCorreo.requestFocus());
+    txtCorreo.addActionListener(e -> txtRFC.requestFocus());
+    txtRFC.addActionListener(e -> txtDescripcion.requestFocus());
+        BtnElegirAnteProyectoBanco.setEnabled(false);
         actualizarTablaAlumnos(tablaAlumnos);
+        tablaAlumnos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
         JPanelBack.setIcon(new ImageIcon(imagenRedimensionada));
@@ -38,6 +60,21 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         JPanelBack.setContentAreaFilled(false);
         JPanelBack.setFocusPainted(false);     
         JPanelBack.setOpaque(false);
+        
+        JLabelDocumentoCargado.setText("📄 No hay documento cargado");
+        JLabelDocumentoCargado.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        JLabelDocumentoCargado.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (archivoTemporalPDF != null && archivoTemporalPDF.exists()) {
+                    try {
+                        Desktop.getDesktop().open(archivoTemporalPDF);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "No se pudo abrir el documento.");
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -56,7 +93,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         txtNombreAnteproyecto = new javax.swing.JTextField();
         BntCargarPDF = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        txtNombreEmpresa = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         txtDireccion = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
@@ -69,9 +105,11 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
+        txtNombreEmpresa = new javax.swing.JTextField();
         BtnGuardar = new javax.swing.JButton();
         BtnElegirAnteProyectoBanco = new javax.swing.JButton();
         ComboBoxElegir = new javax.swing.JComboBox<>();
+        JLabelDocumentoCargado = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         JPanelBack = new javax.swing.JButton();
@@ -116,6 +154,8 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
         jLabel4.setText("Nombre del Anteproyecto");
 
+        BntCargarPDF.setBackground(new java.awt.Color(0, 153, 255));
+        BntCargarPDF.setForeground(new java.awt.Color(255, 255, 255));
         BntCargarPDF.setText("⬆️ Cargar Documento ⬆️");
         BntCargarPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,12 +164,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         });
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("EMPRESA"));
-
-        txtNombreEmpresa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreEmpresaActionPerformed(evt);
-            }
-        });
 
         jLabel6.setText("RFC");
 
@@ -147,6 +181,12 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         jScrollPane1.setViewportView(txtDescripcion);
 
         jLabel5.setText("DESCRIPCION");
+
+        txtNombreEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreEmpresaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -175,9 +215,9 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtCorreo)
                                     .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtDireccion)
-                                    .addComponent(txtRFC, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
+                                    .addComponent(txtRFC, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.Alignment.LEADING)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(31, 31, 31)
                                 .addComponent(jLabel5)))
@@ -188,7 +228,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel10)
                     .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -210,8 +250,8 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         BtnGuardar.setBackground(new java.awt.Color(0, 153, 255));
@@ -226,32 +266,44 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         BtnElegirAnteProyectoBanco.setText("ELEGIR ANTEPROYECTO");
 
         ComboBoxElegir.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AGREGAR NUEVO ANTEPROYECTO", "ELEGIR DEL BANCO DE PROYECTOS" }));
+        ComboBoxElegir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBoxElegirActionPerformed(evt);
+            }
+        });
+
+        JLabelDocumentoCargado.setForeground(new java.awt.Color(0, 51, 255));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(90, 90, 90))
-                    .addComponent(txtNombreAnteproyecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(108, 108, 108)
-                            .addComponent(jLabel4))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BntCargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(ComboBoxElegir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(BtnElegirAnteProyectoBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(90, 90, 90))
+                            .addComponent(txtNombreAnteproyecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(108, 108, 108)
+                                    .addComponent(jLabel4))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(BntCargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(JLabelDocumentoCargado, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,8 +318,10 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addComponent(txtNombreAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BntCargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JLabelDocumentoCargado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -331,10 +385,10 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -358,6 +412,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             ex.printStackTrace();
         }
     }//GEN-LAST:event_tablaAlumnosMouseClicked
+    
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
          AlumnoDAO dao = new AlumnoDAO();
         List<AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
@@ -379,15 +434,118 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     }//GEN-LAST:event_JPanelBackActionPerformed
 
     private void BntCargarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BntCargarPDFActionPerformed
-        // TODO add your handling code here:
+      JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Selecciona un archivo PDF o Word");
+
+        int resultado = fileChooser.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            archivoTemporalPDF = fileChooser.getSelectedFile();
+            String nombre = archivoTemporalPDF.getName().toLowerCase();
+
+            if (!nombre.endsWith(".pdf") && !nombre.endsWith(".doc") && !nombre.endsWith(".docx")) {
+                JOptionPane.showMessageDialog(this, "Solo se permiten archivos PDF o Word.");
+                archivoTemporalPDF = null;
+                JLabelDocumentoCargado.setText("📄 No hay documento cargado");
+                return;
+            }
+
+            JLabelDocumentoCargado.setText("📎 " + archivoTemporalPDF.getName());
+            JOptionPane.showMessageDialog(this, "✔️ Documento cargado. Haz clic para visualizar.");
+        }
     }//GEN-LAST:event_BntCargarPDFActionPerformed
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
-        if (txtNombreAnteproyecto == null) {
-        JOptionPane.showMessageDialog(this, "Asigna nombre al Anteproyecto.");
-        return;
-    }
+     String nombre = txtNombreAnteproyecto.getText().trim().toUpperCase();
+        String descripcion = txtDescripcion.getText().trim();
+        String linea = txtNombreEmpresa.getText().trim();
+        String estado = "Anteproyecto";
+        String usuario = System.getProperty("user.name");
+        String rfcEmpresa = txtRFC.getText().trim().toUpperCase();
+        String telefono = txtTelefono.getText().trim();
+        String correo = txtCorreo.getText().trim();
+
+        // 🧪 Validaciones
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Asigna nombre al Anteproyecto.");
+            return;
+        }
+        if (descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La descripción es obligatoria.");
+            return;
+        }
+        if (linea.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Asigna línea de investigación.");
+            return;
+        }
+        if (rfcEmpresa.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Captura el RFC de la empresa.");
+            return;
+        }
+        if (!telefono.matches("\\d{10}")) {
+            JOptionPane.showMessageDialog(this, "Número de teléfono inválido. Debe tener 10 dígitos.");
+            return;
+        }
+        if (!correo.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$")) {
+            JOptionPane.showMessageDialog(this, "Correo electrónico inválido.");
+            return;
+        }
+
+        int[] filas = tablaAlumnos.getSelectedRows();
+        if (filas.length == 0 || filas.length > 3) {
+            JOptionPane.showMessageDialog(this, "Selecciona entre 1 y 3 alumnos.");
+            return;
+        }
+
+        if (archivoTemporalPDF == null || !archivoTemporalPDF.exists()) {
+            JOptionPane.showMessageDialog(this, "Carga un documento válido antes de guardar.");
+            return;
+        }
+
+        try (Connection conn = Conexion.getConexion()) {
+            for (int fila : filas) {
+                String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+                int idAlumno = new AlumnoDAO().consultarIdPorControl(nControl);
+
+                PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO anteproyecto (nombre, descripcion, linea_investigacion, estado, fecha_registro, usuario_registro, fk_alumno, rfc_empresa) VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)"
+                );
+                ps.setString(1, nombre);
+                ps.setString(2, descripcion);
+                ps.setString(3, linea);
+                ps.setString(4, estado);
+                ps.setString(5, usuario);
+                ps.setInt(6, idAlumno);
+                ps.setString(7, rfcEmpresa); 
+                ps.executeUpdate();
+            }
+
+            // 💾 Guardar PDF localmente con ruta asegurada
+            String rutaFinal = System.getProperty("user.home") + "/Documents/AnteproyectosCargados/";
+            File carpeta = new File(rutaFinal);
+            if (!carpeta.exists()) carpeta.mkdirs();
+
+            File destino = new File(carpeta, archivoTemporalPDF.getName());
+            Files.copy(archivoTemporalPDF.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            JOptionPane.showMessageDialog(this, "✅ Anteproyecto guardado correctamente.");
+            panelPadre.actualizarTablaAnteproyectos();
+
+            Window ventana = SwingUtilities.getWindowAncestor(this);
+            if (ventana != null) ventana.dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "❌ Error al guardar: " + e.getMessage());
+        } 
     }//GEN-LAST:event_BtnGuardarActionPerformed
+   
+    private void ComboBoxElegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxElegirActionPerformed
+        String opcionSeleccionada = (String) ComboBoxElegir.getSelectedItem();
+    if ("AGREGAR NUEVO ANTEPROYECTO".equals(opcionSeleccionada)) {
+        BtnElegirAnteProyectoBanco.setEnabled(false);
+    } else if ("ELEGIR DEL BANCO DE PROYECTOS".equals(opcionSeleccionada)) {
+        BtnElegirAnteProyectoBanco.setEnabled(true);
+    }
+    }//GEN-LAST:event_ComboBoxElegirActionPerformed
 
     private void txtNombreEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreEmpresaActionPerformed
         // TODO add your handling code here:
@@ -399,6 +557,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     private javax.swing.JButton BtnElegirAnteProyectoBanco;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JComboBox<String> ComboBoxElegir;
+    private javax.swing.JLabel JLabelDocumentoCargado;
     private javax.swing.JButton JPanelBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

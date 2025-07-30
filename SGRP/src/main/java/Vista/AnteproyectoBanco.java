@@ -4,17 +4,30 @@
  */
 package Vista;
 
+import Controlador.AcomodarImagen;
+import java.awt.Image;
+import java.awt.Window;
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author yahir
  */
 public class AnteproyectoBanco extends javax.swing.JPanel {
-
+private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     /**
      * Creates new form AnteproyectoBanco
      */
     public AnteproyectoBanco() {
         initComponents();
+        ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
+        Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        JPanelBack.setIcon(new ImageIcon(imagenRedimensionada));
+        JPanelBack.setBorderPainted(false);
+        JPanelBack.setContentAreaFilled(false);
+        JPanelBack.setFocusPainted(false);     
+        JPanelBack.setOpaque(false);
     }
 
     /**
@@ -26,21 +39,121 @@ public class AnteproyectoBanco extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        JPanelBack = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaProyectos = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+
         setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel3.setBackground(new java.awt.Color(255, 102, 0));
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel1.setText("Banco de Anteproyectos");
+
+        JPanelBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/backbutton.png"))); // NOI18N
+        JPanelBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JPanelBackActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(138, 138, 138)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(JPanelBack, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tablaProyectos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre", "Estatus", "Empresa"
+            }
+        ));
+        tablaProyectos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProyectosMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaProyectosMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaProyectos);
+
+        jButton1.setText("ACEPTAR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 665, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(224, 224, 224)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(0, 17, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void JPanelBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JPanelBackActionPerformed
+        Window ventana = SwingUtilities.getWindowAncestor(this);
+        if (ventana != null) ventana.dispose();
+    }//GEN-LAST:event_JPanelBackActionPerformed
+
+    private void tablaProyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMouseClicked
+
+    }//GEN-LAST:event_tablaProyectosMouseClicked
+
+    private void tablaProyectosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProyectosMousePressed
+        int fila = tablaProyectos.getSelectedRow();
+        if (fila == -1) return;
+
+        String nombre = tablaProyectos.getValueAt(fila, 0).toString();
+        String estatus = tablaProyectos.getValueAt(fila, 1).toString(); 
+        String empresa = tablaProyectos.getValueAt(fila, 2).toString();  
+    }//GEN-LAST:event_tablaProyectosMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JPanelBack;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tablaProyectos;
     // End of variables declaration//GEN-END:variables
 }
