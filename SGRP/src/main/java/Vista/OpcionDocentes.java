@@ -222,6 +222,8 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
         lblTelefono.setText("Telefono");
 
+        lblProyecto.setBackground(new java.awt.Color(229, 231, 235));
+        lblProyecto.setForeground(new java.awt.Color(229, 231, 235));
         lblProyecto.setText("Proyecto");
 
         lblCorreo.setText("Correo electronico");
@@ -232,7 +234,8 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
 
         txtTelefonoDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        ProyectoDoc.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ProyectoDoc.setBackground(new java.awt.Color(229, 231, 235));
+        ProyectoDoc.setOpaque(true);
 
         CorreoDoc1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 

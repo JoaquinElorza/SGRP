@@ -400,6 +400,12 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblProyecto">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="eb" green="e7" red="e5" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="eb" green="e7" red="e5" type="rgb"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Proyecto"/>
                   </Properties>
                 </Component>
@@ -437,11 +443,10 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="ProyectoDoc">
                   <Properties>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-                        <BevelBorder/>
-                      </Border>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="eb" green="e7" red="e5" type="rgb"/>
                     </Property>
+                    <Property name="opaque" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="CorreoDoc1">
