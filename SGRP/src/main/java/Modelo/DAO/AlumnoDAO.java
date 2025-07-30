@@ -163,6 +163,9 @@ public class AlumnoDAO {
                 psP.setInt(4, idPersona);
                 psP.executeUpdate();
 
+                
+                CarpetaOculta.renombrarCarpeta(controlOriginal, alumno.getNumeroControl());
+                
                 psA.setString(1, alumno.getNumeroControl());
                 psA.setString(2, alumno.getCorreoElectronico());
                 psA.setString(3, alumno.getNumeroTelefono());
@@ -258,7 +261,7 @@ public class AlumnoDAO {
 
                while (rs.next()) {
                    Alumno a = new Alumno();
-                   a.setIdPersona(rs.getInt("fk_persona"));  // o usa setIdAlumno según tu modelo
+                   a.setIdPersona(rs.getInt("fk_persona")); 
                    a.setNombre(rs.getString("nombre"));
                    a.setApellidoPaterno(rs.getString("ap_paterno"));
                    a.setApellidoMaterno(rs.getString("ap_materno"));
@@ -276,6 +279,9 @@ public class AlumnoDAO {
     String sql = """
                  SELECT 
                      a.n_control,
+                     p.nombre,
+                     p.ap_paterno,
+                     p.ap_materno,
                      d.documento
                  FROM 
                      alumno a
@@ -295,10 +301,12 @@ public class AlumnoDAO {
 
         while (rs.next()) {
             String nControl = rs.getString("n_control");
+            String nombreC = nControl + " - " + rs.getString("nombre") + " "
+                    + rs.getString("ap_paterno")+ " " + rs.getString("ap_materno");
             String documento = rs.getString("documento");
 
             // Agregar a la lista del alumno
-            pendientes.computeIfAbsent(nControl, k -> new ArrayList<>()).add(documento);
+            pendientes.computeIfAbsent(nombreC, k -> new ArrayList<>()).add(documento);
         }
     }
 

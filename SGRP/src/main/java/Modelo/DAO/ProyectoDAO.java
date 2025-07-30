@@ -1,10 +1,15 @@
 package Modelo.DAO;
 
+import Modelo.Entidades.EmpresaEntidad;
 import Modelo.Entidades.Proyecto;
 import Utilidades.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileOutputStream;
+import java.util.List;
+
+
 
 public class ProyectoDAO {
     
@@ -154,6 +159,7 @@ public class ProyectoDAO {
                     p.setDescripcion(rs.getString("descripcion"));
                     p.setEstatus(rs.getString("estatus"));
                     p.setIdEmpresa(rs.getInt("id_empresa"));
+                    p.setFechaRegistro(rs.getDate("fecha_registro"));
                     return p;
                 }
             } catch (SQLException e) {
@@ -162,6 +168,75 @@ public class ProyectoDAO {
             return null;
         }
     
+        public static List<Proyecto> obtenerProyectosPorSemestre(int año, int semestre) {
+    List<Proyecto> lista = new ArrayList<>();
+
+    String sql = """
+        SELECT p.id_proyecto, p.nombre, p.descripcion, p.estatus, p.fk_empresa,
+               e.nombre AS nombre_empresa
+        FROM proyecto p
+        JOIN empresa e ON p.fk_empresa = e.id_empresa
+        WHERE YEAR(p.fecha_registro) = ? AND 
+              MONTH(p.fecha_registro) BETWEEN ? AND ?
+    """;
+
+    int mesInicio = (semestre == 1) ? 1 : 7;
+    int mesFin = (semestre == 1) ? 6 : 12;
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, año);
+        ps.setInt(2, mesInicio);
+        ps.setInt(3, mesFin);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Proyecto p = new Proyecto();
+            p.setIdProyecto(rs.getInt("id_proyecto"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setEstatus(rs.getString("estatus"));
+            p.setIdEmpresa(rs.getInt("fk_empresa"));
+
+            // Crear la empresa
+            EmpresaEntidad empresa = new EmpresaEntidad();
+            empresa.setIdEmpresa(rs.getInt("fk_empresa"));
+            empresa.setNombre(rs.getString("nombre_empresa"));
+            p.setEmpresa(empresa); // 👉 Asegúrate de tener este setter en tu modelo Proyecto
+
+            lista.add(p);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return lista;
+}
+        
+        public static List<Integer> obtenerAniosConProyectos() {
+        List<Integer> anios = new ArrayList<>();
+        String sql = "SELECT DISTINCT YEAR(fecha_registro) AS anio FROM proyecto ORDER BY anio DESC";
+
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                anios.add(rs.getInt("anio"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return anios;
+    }
+
+
+
     
     
     

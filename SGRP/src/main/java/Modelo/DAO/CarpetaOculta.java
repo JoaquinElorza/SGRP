@@ -144,7 +144,7 @@ public class CarpetaOculta {
         }
     }
     
- /*   public static boolean renombrarCarpeta(String nControlA, String nControlB){
+    public static boolean renombrarCarpeta(String nControlA, String nControlB){
         File oldNombre = new File (RUTA_BASE + "\\" + nControlA);
         if(oldNombre.exists()){
             File newNombre = new File(RUTA_BASE + "\\" + nControlB);
@@ -159,7 +159,7 @@ public class CarpetaOculta {
         System.out.println("No se ha creado la carpeta para renombrarla");
         return false;
     }
-*/
+
     
     }
 
