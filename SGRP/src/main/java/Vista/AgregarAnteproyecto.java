@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 
 
@@ -264,6 +265,11 @@ private File archivoTemporalPDF;
         });
 
         BtnElegirAnteProyectoBanco.setText("ELEGIR ANTEPROYECTO");
+        BtnElegirAnteProyectoBanco.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnElegirAnteProyectoBancoMouseClicked(evt);
+            }
+        });
 
         ComboBoxElegir.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AGREGAR NUEVO ANTEPROYECTO", "ELEGIR DEL BANCO DE PROYECTOS" }));
         ComboBoxElegir.addActionListener(new java.awt.event.ActionListener() {
@@ -393,24 +399,6 @@ private File archivoTemporalPDF;
     }// </editor-fold>//GEN-END:initComponents
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
-        int fila = tablaAlumnos.getSelectedRow();
-        if (fila == -1) return;
-
-        String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-        try {
-            AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
-            //DEAQUI
-            // lblControl.setText(alumnoTabla.getNumeroControl());
-            //.setText(alumnoTabla.getNombre() + " " + alumnoTabla.getApellidoPaterno() + " " + alumnoTabla.getApellidoMaterno());
-            //lblTelefono.setText(alumnoTabla.getNumeroTelefono());
-            //lblCorreo.setText(alumnoTabla.getCorreoElectronico());
-
-            //comboSoli.setSelectedIndex((int)DocumentoDao.comboSolicitud(lblControl.getText()));
-
-            //mostrarDocumentosTabla(tablaDocumentos, lblControl.getText());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
     }//GEN-LAST:event_tablaAlumnosMouseClicked
     
     void actualizarTablaAlumnos(JTable tablaAlumnos) {
@@ -434,7 +422,7 @@ private File archivoTemporalPDF;
     }//GEN-LAST:event_JPanelBackActionPerformed
 
     private void BntCargarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BntCargarPDFActionPerformed
-      JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Selecciona un archivo PDF o Word");
 
         int resultado = fileChooser.showOpenDialog(this);
@@ -456,101 +444,191 @@ private File archivoTemporalPDF;
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
      String nombre = txtNombreAnteproyecto.getText().trim().toUpperCase();
-        String descripcion = txtDescripcion.getText().trim();
-        String linea = txtNombreEmpresa.getText().trim();
-        String estado = "Anteproyecto";
-        String usuario = System.getProperty("user.name");
-        String rfcEmpresa = txtRFC.getText().trim().toUpperCase();
-        String telefono = txtTelefono.getText().trim();
-        String correo = txtCorreo.getText().trim();
+    String descripcion = txtDescripcion.getText().trim();
+    String lineaInvestigacion = txtNombreEmpresa.getText().trim(); // Renómbralo si no es línea
+    String estado = "Anteproyecto";
+    String usuario = System.getProperty("user.name");
+    String rfcEmpresa = txtRFC.getText().trim().toUpperCase();
+    String telefono = txtTelefono.getText().trim();
+    String correo = txtCorreo.getText().trim();
 
-        // 🧪 Validaciones
-        if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Asigna nombre al Anteproyecto.");
-            return;
-        }
-        if (descripcion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "La descripción es obligatoria.");
-            return;
-        }
-        if (linea.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Asigna línea de investigación.");
-            return;
-        }
-        if (rfcEmpresa.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Captura el RFC de la empresa.");
-            return;
-        }
-        if (!telefono.matches("\\d{10}")) {
-            JOptionPane.showMessageDialog(this, "Número de teléfono inválido. Debe tener 10 dígitos.");
-            return;
-        }
-        if (!correo.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$")) {
-            JOptionPane.showMessageDialog(this, "Correo electrónico inválido.");
-            return;
-        }
+    if (nombre.isEmpty() || descripcion.isEmpty() || lineaInvestigacion.isEmpty() || rfcEmpresa.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Completa todos los campos obligatorios.");
+        return;
+    }
 
-        int[] filas = tablaAlumnos.getSelectedRows();
-        if (filas.length == 0 || filas.length > 3) {
-            JOptionPane.showMessageDialog(this, "Selecciona entre 1 y 3 alumnos.");
-            return;
-        }
+    if (!telefono.matches("\\d{10}")) {
+        JOptionPane.showMessageDialog(this, "Número de teléfono inválido. Debe tener 10 dígitos.");
+        return;
+    }
 
-        if (archivoTemporalPDF == null || !archivoTemporalPDF.exists()) {
-            JOptionPane.showMessageDialog(this, "Carga un documento válido antes de guardar.");
-            return;
-        }
+    if (!correo.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$")) {
+        JOptionPane.showMessageDialog(this, "Correo electrónico inválido.");
+        return;
+    }
 
-        try (Connection conn = Conexion.getConexion()) {
-            for (int fila : filas) {
-                String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-                int idAlumno = new AlumnoDAO().consultarIdPorControl(nControl);
+    int[] filas = tablaAlumnos.getSelectedRows();
+    if (filas.length == 0 || filas.length > 3) {
+        JOptionPane.showMessageDialog(this, "Selecciona entre 1 y 3 alumnos.");
+        return;
+    }
 
-                PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO anteproyecto (nombre, descripcion, linea_investigacion, estado, fecha_registro, usuario_registro, fk_alumno, rfc_empresa) VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)"
-                );
-                ps.setString(1, nombre);
-                ps.setString(2, descripcion);
-                ps.setString(3, linea);
-                ps.setString(4, estado);
-                ps.setString(5, usuario);
-                ps.setInt(6, idAlumno);
-                ps.setString(7, rfcEmpresa); 
-                ps.executeUpdate();
+    if (archivoTemporalPDF == null || !archivoTemporalPDF.exists()) {
+        JOptionPane.showMessageDialog(this, "Carga un documento válido antes de guardar.");
+        return;
+    }
+
+    try (Connection conn = Conexion.getConexion()) {
+        boolean ok = true;
+
+        for (int fila : filas) {
+            String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
+            int idAlumno = new Modelo.DAO.AlumnoDAO().consultarIdPorControl(nControl);
+
+            PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO anteproyecto (nombre, descripcion, linea_investigacion, estado, fecha_registro, usuario_registro, fk_alumno, rfc_empresa) " +
+                "VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)"
+            );
+            ps.setString(1, nombre);
+            ps.setString(2, descripcion);
+            ps.setString(3, lineaInvestigacion);
+            ps.setString(4, estado);
+            ps.setString(5, usuario);
+            ps.setInt(6, idAlumno);
+            ps.setString(7, rfcEmpresa);
+
+            int result = ps.executeUpdate();
+            if (result == 0) {
+                System.out.println("⚠️ No se insertó anteproyecto para alumno: " + nControl);
+                ok = false;
             }
+        }
 
-            // 💾 Guardar PDF localmente con ruta asegurada
-            String rutaFinal = System.getProperty("user.home") + "/Documents/AnteproyectosCargados/";
-            File carpeta = new File(rutaFinal);
-            if (!carpeta.exists()) carpeta.mkdirs();
+        // 💾 Guardar PDF localmente
+        String rutaFinal = System.getProperty("user.home") + "/Documents/AnteproyectosCargados/";
+        File carpeta = new File(rutaFinal);
+        if (!carpeta.exists()) carpeta.mkdirs();
 
-            File destino = new File(carpeta, archivoTemporalPDF.getName());
-            Files.copy(archivoTemporalPDF.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        File destino = new File(carpeta, archivoTemporalPDF.getName());
+        Files.copy(archivoTemporalPDF.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+        if (ok) {
             JOptionPane.showMessageDialog(this, "✅ Anteproyecto guardado correctamente.");
             panelPadre.actualizarTablaAnteproyectos();
-
             Window ventana = SwingUtilities.getWindowAncestor(this);
             if (ventana != null) ventana.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ Falló al guardar algunos registros. Revisa la consola.");
+        }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "❌ Error al guardar: " + e.getMessage());
-        } 
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "❌ Error técnico al guardar: " + e.getMessage());
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_BtnGuardarActionPerformed
    
     private void ComboBoxElegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxElegirActionPerformed
-        String opcionSeleccionada = (String) ComboBoxElegir.getSelectedItem();
+     String opcionSeleccionada = (String) ComboBoxElegir.getSelectedItem();
+
     if ("AGREGAR NUEVO ANTEPROYECTO".equals(opcionSeleccionada)) {
         BtnElegirAnteProyectoBanco.setEnabled(false);
+
+        // Desbloquea todos los campos
+        txtNombreAnteproyecto.setEditable(true);
+        txtNombreEmpresa.setEditable(true);
+        txtTelefono.setEditable(true);
+        txtDireccion.setEditable(true);
+        txtCorreo.setEditable(true);
+        txtRFC.setEditable(true);
+        
+        txtNombreAnteproyecto.setText("");
+        txtNombreEmpresa.setText("");
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+        txtCorreo.setText("");
+        txtRFC.setText("");
+        txtDescripcion.setText("");
+        JLabelDocumentoCargado.setText("📄 No hay documento cargado");
+        archivoTemporalPDF = null;
     } else if ("ELEGIR DEL BANCO DE PROYECTOS".equals(opcionSeleccionada)) {
         BtnElegirAnteProyectoBanco.setEnabled(true);
+
+        // Bloquea campos excepto los permitidos
+        txtNombreAnteproyecto.setEditable(false);
+        txtNombreEmpresa.setEditable(false);
+        txtTelefono.setEditable(false);
+        txtDireccion.setEditable(false);
+        txtCorreo.setEditable(false);
+        txtRFC.setEditable(false);
+        txtDescripcion.setEditable(true);
+        BntCargarPDF.setEnabled(true);
+
+        // Limpia campos visibles
+        txtNombreAnteproyecto.setText("");
+        txtNombreEmpresa.setText("");
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+        txtCorreo.setText("");
+        txtRFC.setText("");
+        txtDescripcion.setText("");
+        JLabelDocumentoCargado.setText("📄 No hay documento cargado");
+        archivoTemporalPDF = null;
+
+        tablaAlumnos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
     }//GEN-LAST:event_ComboBoxElegirActionPerformed
 
     private void txtNombreEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreEmpresaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreEmpresaActionPerformed
+    
+    
+    private void BtnElegirAnteProyectoBancoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnElegirAnteProyectoBancoMouseClicked
+       String opcionSeleccionada = (String) ComboBoxElegir.getSelectedItem();
+    if (!"ELEGIR DEL BANCO DE PROYECTOS".equals(opcionSeleccionada)) {
+        JOptionPane.showMessageDialog(null, "Esta opción no está disponible en el modo actual.");
+        return;
+    }
+        JFrame ventanaAgregar = new JFrame();
+        ventanaAgregar.setUndecorated(true);
+    AnteproyectoBanco panelBanco = new AnteproyectoBanco(this);
+    ventanaAgregar.setContentPane(panelBanco);
+    ventanaAgregar.setSize(400,400); //ancho - largo
+    ventanaAgregar.setLocationRelativeTo(null); 
+    ventanaAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventanaAgregar.setVisible(true);
 
+    }//GEN-LAST:event_BtnElegirAnteProyectoBancoMouseClicked
+    public void rellenarCamposDesdeBanco(String nombreProyecto, String estatus,
+    String nombreEmpresa, String direccion, String telefono,
+    String correo, String rfc) {
+
+    txtNombreAnteproyecto.setEditable(true);
+    txtDescripcion.setEditable(true);
+    txtNombreEmpresa.setEditable(true);
+    txtDireccion.setEditable(true);
+    txtTelefono.setEditable(true);
+    txtCorreo.setEditable(true);
+    txtRFC.setEditable(true);
+
+    txtNombreAnteproyecto.setText(nombreProyecto);
+    txtDescripcion.setText("");
+    txtNombreEmpresa.setText(nombreEmpresa);
+    txtDireccion.setText(direccion);
+    txtTelefono.setText(telefono);
+    txtCorreo.setText(correo);
+    txtRFC.setText(rfc);
+
+    txtNombreAnteproyecto.setEditable(false);
+    txtDescripcion.setEditable(true);
+    txtNombreEmpresa.setEditable(false);
+    txtDireccion.setEditable(false);
+    txtTelefono.setEditable(false);
+    txtCorreo.setEditable(false);
+    txtRFC.setEditable(false);
+
+    JLabelDocumentoCargado.setText("Cargado desde el banco de proyectos");
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BntCargarPDF;

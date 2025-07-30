@@ -33,7 +33,29 @@ public class EmpresaDAO {
             return false;
         }
     }
+public EmpresaEntidad buscarPorId(int idEmpresa) {
+    EmpresaEntidad empresa = null;
+    String sql = "SELECT * FROM empresa WHERE id_empresa = ?";
 
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idEmpresa);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            empresa = new EmpresaEntidad();
+            empresa.setIdEmpresa(rs.getInt("id_empresa"));
+            empresa.setNombre(rs.getString("nombre"));
+            empresa.setContacto(rs.getString("contacto"));
+            empresa.setCorreo(rs.getString("correo"));
+            empresa.setRfc(rs.getString("rfc"));
+            empresa.setDireccion(rs.getString("direccion"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return empresa;
+}
     public List<EmpresaEntidad> listarEmpresas() {
         List<EmpresaEntidad> lista = new ArrayList<>();
         String sql = "SELECT * FROM empresa WHERE activo = true";

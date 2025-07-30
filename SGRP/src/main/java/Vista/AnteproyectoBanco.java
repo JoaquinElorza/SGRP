@@ -5,10 +5,22 @@
 package Vista;
 
 import Controlador.AcomodarImagen;
+import Modelo.DAO.EmpresaDAO;
+import Modelo.DAO.ProyectoDAO;
+import Modelo.Entidades.EmpresaEntidad;
+import Modelo.Entidades.Proyecto;
+import Utilidades.Conexion;
 import java.awt.Image;
 import java.awt.Window;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,11 +28,14 @@ import javax.swing.SwingUtilities;
  */
 public class AnteproyectoBanco extends javax.swing.JPanel {
 private final AcomodarImagen acomodarImagen = new AcomodarImagen();
+private final AgregarAnteproyecto panelPadre;
     /**
      * Creates new form AnteproyectoBanco
      */
-    public AnteproyectoBanco() {
+    public AnteproyectoBanco(AgregarAnteproyecto padre) {
+         this.panelPadre = padre;
         initComponents();
+        mostrarProyectosEnTabla();
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
         JPanelBack.setIcon(new ImageIcon(imagenRedimensionada));
@@ -29,7 +44,53 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         JPanelBack.setFocusPainted(false);     
         JPanelBack.setOpaque(false);
     }
+  public void mostrarProyectosEnTabla() {
+            DefaultTableModel modelo = (DefaultTableModel) tablaProyectos.getModel();
+            modelo.setRowCount(0); 
 
+            ProyectoDAO dao = new ProyectoDAO();
+            List<Proyecto> lista = dao.obtenerTodos();
+
+            for (Proyecto p : lista) {
+                String nombreEmpresa = obtenerNombreEmpresa(p.getIdEmpresa());
+                modelo.addRow(new Object[]{
+                p.getNombre(),
+                p.getEstatus(),
+                nombreEmpresa
+            });
+            }
+            System.out.println("✅ Se cargaron " + lista.size() + " proyectos.");
+        }
+    private boolean anteproyectoExiste(String nombreAnteproyecto) {
+    String sql = "SELECT COUNT(*) FROM anteproyecto WHERE nombre = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombreAnteproyecto.toUpperCase());
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (SQLException e) {
+        System.out.println("[ERROR] Validación de existencia falló: " + e.getMessage());
+    }
+    return false;
+    }
+     private String obtenerNombreEmpresa(int idEmpresa) {
+            String nombre = "";
+            String sql = "SELECT nombre FROM empresa WHERE id_empresa = ?";
+
+            try (Connection conn = Conexion.getConexion();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, idEmpresa);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    nombre = rs.getString("nombre");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return nombre;
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,7 +105,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         JPanelBack = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaProyectos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        BtnAceptarBanco = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -101,7 +162,12 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         });
         jScrollPane2.setViewportView(tablaProyectos);
 
-        jButton1.setText("ACEPTAR");
+        BtnAceptarBanco.setText("ACEPTAR");
+        BtnAceptarBanco.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnAceptarBancoMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,8 +179,8 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(224, 224, 224)
-                .addComponent(jButton1)
+                .addGap(138, 138, 138)
+                .addComponent(BtnAceptarBanco)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -124,7 +190,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(BtnAceptarBanco)
                 .addGap(0, 17, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -147,10 +213,64 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         String empresa = tablaProyectos.getValueAt(fila, 2).toString();  
     }//GEN-LAST:event_tablaProyectosMousePressed
 
+    private void BtnAceptarBancoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnAceptarBancoMouseClicked
+       int fila = tablaProyectos.getSelectedRow();
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Selecciona un anteproyecto del banco.");
+        return;
+    }
+
+    String nombreProyecto = tablaProyectos.getValueAt(fila, 0).toString().trim();
+
+    Proyecto proyecto = new ProyectoDAO().buscarPorNombre(nombreProyecto);
+    if (proyecto == null) {
+        JOptionPane.showMessageDialog(this, "⚠️ Proyecto no encontrado.");
+        return;
+    }
+    
+    if (anteproyectoExiste(nombreProyecto)) {
+        JOptionPane.showMessageDialog(this, "⚠️ El anteproyecto '" + nombreProyecto + "' ya ha sido registrado.");
+        return;
+    }
+
+    EmpresaDAO dao = new EmpresaDAO();
+    EmpresaEntidad original = dao.buscarPorId(proyecto.getIdEmpresa());
+    EmpresaEntidad empresa = normalizarEmpresa(original);
+
+    panelPadre.rellenarCamposDesdeBanco(
+        proyecto.getNombre(),
+        proyecto.getEstatus(),
+        empresa.getNombre(),
+        empresa.getDireccion(),
+        empresa.getContacto(), 
+        empresa.getCorreo(),
+        empresa.getRfc()
+    );
+
+    Window ventana = SwingUtilities.getWindowAncestor(this);
+    if (ventana != null) ventana.dispose();
+    }//GEN-LAST:event_BtnAceptarBancoMouseClicked
+    private EmpresaEntidad normalizarEmpresa(EmpresaEntidad original) {
+    EmpresaEntidad e = new EmpresaEntidad();
+    e.setIdEmpresa(original.getIdEmpresa());
+    e.setNombre(original.getNombre().trim());
+    e.setContacto(original.getContacto().trim());
+
+    String correo = original.getCorreo().trim().toLowerCase();
+    if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+        correo = "correo@invalido.com";
+    }
+    e.setCorreo(correo);
+
+    e.setRfc(original.getRfc().trim().toUpperCase()); 
+    e.setDireccion(original.getDireccion().trim());
+
+    return e;
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnAceptarBanco;
     private javax.swing.JButton JPanelBack;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;

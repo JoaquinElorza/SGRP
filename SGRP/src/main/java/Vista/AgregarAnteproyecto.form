@@ -375,6 +375,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="ELEGIR ANTEPROYECTO"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BtnElegirAnteProyectoBancoMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="ComboBoxElegir">
           <Properties>

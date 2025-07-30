@@ -32,7 +32,27 @@ public class ProyectoDAO {
         return false;
     }
 }
+public Proyecto buscarPorNombre(String nombre) {
+    Proyecto proyecto = null;
+    String sql = "SELECT * FROM proyecto WHERE nombre = ?";
 
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            proyecto = new Proyecto();
+            proyecto.setIdProyecto(rs.getInt("id_proyecto"));
+            proyecto.setNombre(rs.getString("nombre"));
+            proyecto.setEstatus(rs.getString("estatus"));
+            proyecto.setIdEmpresa(rs.getInt("fk_empresa"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return proyecto;
+}
     public boolean eliminarProyecto(int idProyecto) {
     String sql = "DELETE FROM proyecto WHERE id_proyecto = ?";
     try (Connection conn = Conexion.getConexion();
