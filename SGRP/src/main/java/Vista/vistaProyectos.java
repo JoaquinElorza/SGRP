@@ -5,6 +5,7 @@
 package Vista;
 
 import Controlador.AcomodarImagen;
+import Controlador.ReportePDF;
 import Modelo.DAO.AlumnoDAO;
 import Modelo.DAO.ProyectoDAO;
 import Modelo.Entidades.Alumno;
@@ -27,8 +28,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -149,6 +154,7 @@ public class vistaProyectos extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         btnVerArchivo = new javax.swing.JButton();
         comboArchivos = new javax.swing.JComboBox<>();
+        jButton5 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(828, 543));
 
@@ -293,6 +299,13 @@ public class vistaProyectos extends javax.swing.JPanel {
         });
         jPanel2.add(comboArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 170, -1));
 
+        jButton5.setText("Generar Reporte ");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelProyectosLayout = new javax.swing.GroupLayout(panelProyectos);
         panelProyectos.setLayout(panelProyectosLayout);
         panelProyectosLayout.setHorizontalGroup(
@@ -302,7 +315,8 @@ public class vistaProyectos extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelProyectosLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
@@ -324,7 +338,8 @@ public class vistaProyectos extends javax.swing.JPanel {
                         .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jButton2)
-                            .addComponent(jButton1)))
+                            .addComponent(jButton1)
+                            .addComponent(jButton5)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -463,6 +478,54 @@ public class vistaProyectos extends javax.swing.JPanel {
         Window ventana = SwingUtilities.getWindowAncestor(this);
         if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackMouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+       try {
+        List<Integer> aniosDisponibles = ProyectoDAO.obtenerAniosConProyectos();
+        if (aniosDisponibles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "⚠️ No hay proyectos registrados aún.");
+            return;
+        }
+
+        JComboBox<Integer> comboAnios = new JComboBox<>();
+        for (Integer anio : aniosDisponibles) {
+            comboAnios.addItem(anio);
+        }
+
+        String[] semestres = {"Enero-Junio", "Julio-Diciembre"};
+        JComboBox<String> comboSemestres = new JComboBox<>(semestres);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(new JLabel("Selecciona el año:"));
+        panel.add(comboAnios);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(new JLabel("Selecciona el semestre:"));
+        panel.add(comboSemestres);
+
+        int opcion = JOptionPane.showConfirmDialog(this, panel, "Generar Reporte",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (opcion == JOptionPane.OK_OPTION) {
+            int anioSeleccionado = (Integer) comboAnios.getSelectedItem();
+            int semestre = comboSemestres.getSelectedIndex() + 1;
+
+            List<Proyecto> proyectos = ProyectoDAO.obtenerProyectosPorSemestre(anioSeleccionado, semestre);
+
+            if (proyectos.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "⚠️ No hay proyectos para ese periodo.");
+            } else {
+                ReportePDF.generarReporte(proyectos, anioSeleccionado, semestre);
+                JOptionPane.showMessageDialog(this, "✅ Reporte generado correctamente.");
+            }
+        }
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "❌ Error al generar el reporte.");
+    }
+    }//GEN-LAST:event_jButton5ActionPerformed
         public int obtenerIdPorNombreYDescripcion(String nombre, String descripcion) {
             String sql = "SELECT id_proyecto FROM proyecto WHERE nombre = ? AND descripcion = ? LIMIT 1";
             try (Connection conn = Conexion.getConexion();
@@ -723,6 +786,7 @@ public class vistaProyectos extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
