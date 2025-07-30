@@ -45,7 +45,27 @@ public class DocenteDAO {
             return false;
         }
     }
-    
+    public int consultarIdPorRFC(String rfc) {
+    int idDocente = -1; // Valor por defecto si no se encuentra
+
+    String query = "SELECT id_docente FROM docente WHERE rfc = ?";
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        ps.setString(1, rfc.trim().toUpperCase());
+
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                idDocente = rs.getInt("id_docente");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al consultar ID del docente: " + e.getMessage());
+    }
+
+    return idDocente;
+}
 
     public List<DocenteCarg> obtenerTodos() {
         String sql = "SELECT d.rfc, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +

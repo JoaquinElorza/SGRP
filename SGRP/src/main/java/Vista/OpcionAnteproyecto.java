@@ -7,6 +7,7 @@ package Vista;
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
 import Controlador.AcomodarImagen;
+import Utilidades.Conexion;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,10 +16,14 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Window;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -45,6 +50,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
      this.card = layout;
         this.panelContainer = container;
         initComponents();
+        actualizarTablaAnteproyectos();
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", LogoTec);  
     LogoTec.setOpaque(false);
     LogoTec.setBorder(null);
@@ -87,6 +93,22 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         TablaAlumnosAnteproyectos = new javax.swing.JTable();
         BtnEditarAnteproyecto = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        LblDescripcionE = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        LblNombreEmpresa = new javax.swing.JLabel();
+        LblTelefonoE = new javax.swing.JLabel();
+        LblDireccionE = new javax.swing.JLabel();
+        LblCorreoE = new javax.swing.JLabel();
+        LblRfcE = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        LblNombreAnteproyecto = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -148,7 +170,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Tipo", "Estado"
+                "Nombre", "Empresa", "Tipo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -173,15 +195,127 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             }
         });
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("EMPRESA"));
+
+        jLabel6.setText("RFC");
+
+        jLabel7.setText("Correo");
+
+        jLabel8.setText("Direccion");
+
+        jLabel9.setText("Telefono");
+
+        jLabel10.setText("Nombre");
+
+        LblDescripcionE.setEditable(false);
+        LblDescripcionE.setColumns(20);
+        LblDescripcionE.setRows(5);
+        LblDescripcionE.setBorder(null);
+        jScrollPane2.setViewportView(LblDescripcionE);
+
+        jLabel5.setText("DESCRIPCION");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                                    .addComponent(jLabel9)
+                                                    .addGap(6, 6, 6))
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(6, 6, 6)))
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(LblNombreEmpresa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                            .addComponent(LblTelefonoE, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(LblDireccionE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel7))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(LblCorreoE, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                                            .addComponent(LblRfcE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel5)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LblNombreEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(LblTelefonoE, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(LblDireccionE, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(LblCorreoE, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(LblRfcE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
+        );
+
+        jLabel4.setText("Nombre del Anteproyecto");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(LblNombreAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(152, 152, 152))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 410, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(9, 9, 9)
+                .addComponent(LblNombreAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -191,16 +325,15 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addComponent(btnNewAnteproyecto)
                         .addGap(34, 34, 34)
-                        .addComponent(BtnEditarAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(BtnEditarAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 28, 28)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -217,7 +350,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                             .addComponent(btnNewAnteproyecto)
                             .addComponent(BtnEditarAnteproyecto)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 29, Short.MAX_VALUE))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -236,11 +369,29 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
        Window ventana = SwingUtilities.getWindowAncestor(this);
         if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackActionPerformed
+public void actualizarTablaAnteproyectos() {
+    DefaultTableModel model = (DefaultTableModel) TablaAlumnosAnteproyectos.getModel();
+    model.setRowCount(0); // Limpia tabla
 
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement("SELECT a.nombre, a.linea_investigacion, a.estado FROM anteproyecto a");
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            String nombre = rs.getString("nombre");
+            String linea = rs.getString("linea_investigacion");
+            String estado = rs.getString("estado");
+            model.addRow(new Object[]{nombre, linea, estado});
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "❌ Error al cargar anteproyectos: " + e.getMessage());
+    }
+}
     private void btnNewAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAnteproyectoMouseClicked
         JFrame ventanaAgregar = new JFrame();
         ventanaAgregar.setUndecorated(true);
-    AgregarAnteproyecto panelAgregarA = new AgregarAnteproyecto();
+    AgregarAnteproyecto panelAgregarA = new AgregarAnteproyecto(this);
     ventanaAgregar.setContentPane(panelAgregarA);
     ventanaAgregar.setSize(970,700); //ancho - largo
     ventanaAgregar.setLocationRelativeTo(null); 
@@ -288,12 +439,28 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnEditarAnteproyecto;
     private javax.swing.JButton JPanelBack;
+    private javax.swing.JLabel LblCorreoE;
+    private javax.swing.JTextArea LblDescripcionE;
+    private javax.swing.JLabel LblDireccionE;
+    private javax.swing.JLabel LblNombreAnteproyecto;
+    private javax.swing.JLabel LblNombreEmpresa;
+    private javax.swing.JLabel LblRfcE;
+    private javax.swing.JLabel LblTelefonoE;
     private javax.swing.JPanel LogoTec;
     private javax.swing.JTable TablaAlumnosAnteproyectos;
     private javax.swing.JButton btnNewAnteproyecto;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
