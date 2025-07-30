@@ -139,7 +139,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             }
         });
 
-        jToggleButton1.setText("Editar");
+        jToggleButton1.setText("Asignar Anteproyecto del banco");
 
         TablaAlumnosAnteproyectos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -175,13 +175,14 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(btnNewAnteproyecto)
-                        .addGap(63, 63, 63)
-                        .addComponent(jToggleButton1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(btnNewAnteproyecto))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jToggleButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -191,10 +192,10 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNewAnteproyecto)
-                    .addComponent(jToggleButton1))
-                .addGap(0, 174, Short.MAX_VALUE))
+                .addComponent(btnNewAnteproyecto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jToggleButton1)
+                .addGap(0, 139, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
