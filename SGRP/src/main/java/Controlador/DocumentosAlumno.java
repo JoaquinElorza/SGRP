@@ -122,9 +122,9 @@ return false;
 
     document.add(new Paragraph(hoy.getDayOfMonth() + " de " + hoy.getMonth() + " de "
             + hoy.getYear()));
-    document.add(new Paragraph("Lista de alumnos de residencia profesional con documentos"
-            + "faltantes")
+    document.add(new Paragraph("Lista de alumnos de residencia profesional con documentos faltantes")
                         .setFontSize(14));
+    document.add(new Paragraph("\n"));
     
     for (Map.Entry<String, List<String>> entry : data.entrySet()) {
         String nControl = entry.getKey();
