@@ -16,9 +16,9 @@ public class Alumno extends Persona {
         this.telefono      = telefono;
     }
 
-    public Alumno(String nControl, String Nombre){
-        nControl = nControl;
-        Nombre = Nombre;
+    public Alumno(String nControl, String telefono){
+        this.numeroControl = nControl;
+        this.telefono = telefono;
     }
     
     public String getNumeroControl() { return numeroControl; }
