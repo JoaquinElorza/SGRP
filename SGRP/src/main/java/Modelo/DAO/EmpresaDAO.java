@@ -83,6 +83,27 @@ public EmpresaEntidad buscarPorId(int idEmpresa) {
         return lista;
     }
 
+    public EmpresaEntidad obtenerEmpresaPorRFC(String rfc) {
+        String sql = "SELECT * FROM empresa WHERE rfc = ?";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, rfc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                EmpresaEntidad emp = new EmpresaEntidad();
+                emp.setIdEmpresa(rs.getInt("id_empresa"));
+                emp.setNombre(rs.getString("nombre"));
+                emp.setContacto(rs.getString("contacto"));
+                emp.setDireccion(rs.getString("direccion"));
+                emp.setCorreo(rs.getString("correo"));
+                emp.setRfc(rs.getString("rfc"));
+                return emp;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public boolean actualizarEmpresa(EmpresaEntidad empresa) {
         String sql = "UPDATE empresa SET nombre = ?, contacto = ?, correo = ?, rfc = ?, direccion = ?, descripcion = ? WHERE id_empresa = ?";
 

@@ -459,14 +459,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
     layout.show(container, "panelAnteproyectos");
 
     ventana.setContentPane(container);
-    ventana.setSize(600, 550);
+    ventana.setSize(1100, 550);
     ventana.setResizable(false);
     ventana.setExtendedState(JFrame.NORMAL);
     ventana.setLocationRelativeTo(null);
     ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     ventana.setVisible(true);
     }//GEN-LAST:event_panelAnteproyectosMouseClicked
-
+    
     private void AntMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AntMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_AntMouseClicked

@@ -7,6 +7,11 @@ package Vista;
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
 import Controlador.AcomodarImagen;
+import Modelo.DAO.EmpresaDAO;
+import Modelo.DAO.ProyectoDAO;
+import Modelo.Entidades.Anteproyecto;
+import Modelo.Entidades.EmpresaEntidad;
+import Modelo.Entidades.Proyecto;
 import Utilidades.Conexion;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -19,7 +24,6 @@ import java.awt.Window;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -50,6 +54,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
      this.card = layout;
         this.panelContainer = container;
         initComponents();
+        
         actualizarTablaAnteproyectos();
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", LogoTec);  
     LogoTec.setOpaque(false);
@@ -91,6 +96,26 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         btnNewAnteproyecto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaAlumnosAnteproyectos = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        LblDescripcionE = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        LblNombreEmpresa = new javax.swing.JLabel();
+        LblTelefonoE = new javax.swing.JLabel();
+        LblDireccionE = new javax.swing.JLabel();
+        LblCorreoE = new javax.swing.JLabel();
+        LblRfcE = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        LblEstado = new javax.swing.JLabel();
+        LblNombreAnteproyecto1 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        BtnEditarAnteproyecto = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -117,7 +142,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(138, 138, 138)
+                .addGap(354, 354, 354)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(LogoTec, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,15 +154,17 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addContainerGap(7, Short.MAX_VALUE)
                 .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(LogoTec, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnNewAnteproyecto.setBackground(new java.awt.Color(0, 153, 255));
+        btnNewAnteproyecto.setForeground(new java.awt.Color(255, 255, 255));
         btnNewAnteproyecto.setText("Nuevo Anteproyecto");
         btnNewAnteproyecto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -171,6 +198,151 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         });
         jScrollPane1.setViewportView(TablaAlumnosAnteproyectos);
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("EMPRESA"));
+
+        jLabel6.setText("RFC");
+
+        jLabel7.setText("Correo");
+
+        jLabel8.setText("Direccion");
+
+        jLabel9.setText("Telefono");
+
+        jLabel10.setText("Nombre");
+
+        LblDescripcionE.setEditable(false);
+        LblDescripcionE.setColumns(20);
+        LblDescripcionE.setRows(5);
+        LblDescripcionE.setBorder(null);
+        jScrollPane2.setViewportView(LblDescripcionE);
+
+        jLabel5.setText("DESCRIPCION");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                                    .addComponent(jLabel9)
+                                                    .addGap(6, 6, 6))
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(6, 6, 6)))
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(LblNombreEmpresa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                            .addComponent(LblTelefonoE, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(LblDireccionE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel7))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(LblCorreoE, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                                            .addComponent(LblRfcE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel5)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LblNombreEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(LblTelefonoE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(LblDireccionE, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(LblCorreoE, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(LblRfcE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
+        );
+
+        jLabel4.setText("Nombre del Anteproyecto");
+
+        jLabel11.setText("Tipo");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel11)
+                                .addGap(66, 66, 66)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LblNombreAnteproyecto1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                            .addComponent(LblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(LblNombreAnteproyecto1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+
+        BtnEditarAnteproyecto.setBackground(new java.awt.Color(0, 153, 255));
+        BtnEditarAnteproyecto.setForeground(new java.awt.Color(255, 255, 255));
+        BtnEditarAnteproyecto.setText("Editar");
+        BtnEditarAnteproyecto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnEditarAnteproyectoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,19 +354,30 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                         .addGap(21, 21, 21)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(216, 216, 216)
-                        .addComponent(btnNewAnteproyecto)))
-                .addGap(0, 12, Short.MAX_VALUE))
+                        .addGap(89, 89, 89)
+                        .addComponent(btnNewAnteproyecto)
+                        .addGap(97, 97, 97)
+                        .addComponent(BtnEditarAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnNewAnteproyecto)
-                .addGap(0, 133, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 9, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BtnEditarAnteproyecto)
+                            .addComponent(btnNewAnteproyecto))
+                        .addGap(26, 26, 26))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -214,24 +397,29 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackActionPerformed
 public void actualizarTablaAnteproyectos() {
+
     DefaultTableModel model = (DefaultTableModel) TablaAlumnosAnteproyectos.getModel();
-    model.setRowCount(0); // Limpia tabla
+    model.setRowCount(0);
 
     try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement("SELECT a.nombre, a.linea_investigacion, a.estado FROM anteproyecto a");
+         PreparedStatement ps = conn.prepareStatement("SELECT a.id_anteproyecto, a.nombre, a.linea_investigacion, a.estado FROM anteproyecto a");
+
          ResultSet rs = ps.executeQuery()) {
 
         while (rs.next()) {
-            String nombre = rs.getString("nombre");
-            String linea = rs.getString("linea_investigacion");
-            String estado = rs.getString("estado");
-            model.addRow(new Object[]{nombre, linea, estado});
+            int id = rs.getInt("id_anteproyecto");
+String nombre = rs.getString("nombre");
+String linea = rs.getString("linea_investigacion");
+String estado = rs.getString("estado");
+
+model.addRow(new Object[]{id, nombre, linea, estado});
         }
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "❌ Error al cargar anteproyectos: " + e.getMessage());
     }
 }
+     
     private void btnNewAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAnteproyectoMouseClicked
         JFrame ventanaAgregar = new JFrame();
         ventanaAgregar.setUndecorated(true);
@@ -249,26 +437,108 @@ public void actualizarTablaAnteproyectos() {
         }
     });
     }//GEN-LAST:event_btnNewAnteproyectoMouseClicked
+private void mostrarAnteproyecto(Anteproyecto ap, EmpresaEntidad empresa) {
+     if (ap == null) return;
 
+    LblNombreAnteproyecto1.setText(ap.getNombre() != null ? ap.getNombre() : "—");
+    LblDescripcionE.setText(ap.getDescripcion() != null ? ap.getDescripcion() : "—");
+    LblEstado.setText(ap.getEstado() != null ? ap.getEstado() : "—");
+
+    if (empresa != null) {
+        LblNombreEmpresa.setText(empresa.getNombre() != null ? empresa.getNombre() : "—");
+        LblTelefonoE.setText(empresa.getContacto() != null ? empresa.getContacto() : "—");
+        LblDireccionE.setText(empresa.getDireccion() != null ? empresa.getDireccion() : "—");
+        LblCorreoE.setText(empresa.getCorreo() != null ? empresa.getCorreo() : "—");
+        LblRfcE.setText(empresa.getRfc() != null ? empresa.getRfc() : "—");
+    } else {
+        LblNombreEmpresa.setText("No vinculada");
+        LblTelefonoE.setText("—");
+        LblDireccionE.setText("—");
+        LblCorreoE.setText("—");
+        LblRfcE.setText(ap.getRfcEmpresa() != null ? ap.getRfcEmpresa() : "—");
+    }
+}
     private void TablaAlumnosAnteproyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaAlumnosAnteproyectosMouseClicked
-       int fila = TablaAlumnosAnteproyectos.getSelectedRow();
-        if (fila == -1) return;
-        String nControl = TablaAlumnosAnteproyectos.getValueAt(fila, 0).toString();
-        try {
-            AlumnoCarg alumnoTabla = new AlumnoDAO().consultarAlumno(nControl);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+    {
+    int filaModelo = TablaAlumnosAnteproyectos.convertRowIndexToModel(TablaAlumnosAnteproyectos.getSelectedRow());
+
+    if (filaModelo != -1) {
+        int idAnteproyecto = Integer.parseInt(
+            TablaAlumnosAnteproyectos.getModel().getValueAt(filaModelo, 0).toString()
+        );
+
+        Anteproyecto ap = new ProyectoDAO().obtenerAnteproyectoPorId(idAnteproyecto);
+        EmpresaEntidad empresa = (ap != null) ? new EmpresaDAO().obtenerEmpresaPorRFC(ap.getRfcEmpresa()) : null;
+
+        mostrarAnteproyecto(ap, empresa);
+    
+}}}
+
+private void cargarDatosVisualesDeProyecto(Proyecto proyecto) {
+    if (proyecto == null) return;
+
+    LblNombreAnteproyecto1.setText(
+        proyecto.getNombre() != null ? proyecto.getNombre() : "Nombre no definido"
+    );
+    LblDescripcionE.setText(
+        proyecto.getDescripcion() != null ? proyecto.getDescripcion() : "Sin descripción"
+    );
+    LblEstado.setText(
+        proyecto.getEstatus() != null ? proyecto.getEstatus() : "Sin estado"
+    );
+
+    EmpresaEntidad empresa = proyecto.getEmpresa();
+    LblNombreEmpresa.setText(
+        (empresa != null && empresa.getNombre() != null) ? empresa.getNombre() : "No vinculada"
+    );
     }//GEN-LAST:event_TablaAlumnosAnteproyectosMouseClicked
+
+    private void BtnEditarAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnEditarAnteproyectoMouseClicked
+        JFrame ventanaEditar = new JFrame();
+        ventanaEditar.setUndecorated(true);
+        EditarAnteproyecto panelEditarA = new  EditarAnteproyecto();
+        ventanaEditar.setContentPane(panelEditarA);
+        ventanaEditar.setSize(970,700); //ancho - largo
+        ventanaEditar.setLocationRelativeTo(null);
+        ventanaEditar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventanaEditar.setVisible(true);
+
+        // Al cerrar, actualizar tabla
+        ventanaEditar.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+            }
+        });
+    }//GEN-LAST:event_BtnEditarAnteproyectoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnEditarAnteproyecto;
     private javax.swing.JButton JPanelBack;
+    private javax.swing.JLabel LblCorreoE;
+    private javax.swing.JTextArea LblDescripcionE;
+    private javax.swing.JLabel LblDireccionE;
+    private javax.swing.JLabel LblEstado;
+    private javax.swing.JLabel LblNombreAnteproyecto1;
+    private javax.swing.JLabel LblNombreEmpresa;
+    private javax.swing.JLabel LblRfcE;
+    private javax.swing.JLabel LblTelefonoE;
     private javax.swing.JPanel LogoTec;
     private javax.swing.JTable TablaAlumnosAnteproyectos;
     private javax.swing.JButton btnNewAnteproyecto;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

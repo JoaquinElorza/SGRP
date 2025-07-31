@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -504,7 +503,6 @@ private File archivoTemporalPDF;
             }
         }
 
-        // 💾 Guardar PDF localmente
         String rutaFinal = System.getProperty("user.home") + "/Documents/AnteproyectosCargados/";
         File carpeta = new File(rutaFinal);
         if (!carpeta.exists()) carpeta.mkdirs();

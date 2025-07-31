@@ -6,8 +6,8 @@ import Utilidades.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.FileOutputStream;
-import java.util.List;
+import Modelo.Entidades.Anteproyecto;
+
 
 
 
@@ -162,10 +162,31 @@ public Proyecto buscarPorNombre(String nombre) {
         e.printStackTrace();
     }
 }
+   public Anteproyecto obtenerAnteproyectoPorNombre(String nombre) {
+    String sql = "SELECT * FROM anteproyecto WHERE nombre = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            Anteproyecto ap = new Anteproyecto();
+            ap.setNombre(rs.getString("nombre"));
+            ap.setDescripcion(rs.getString("descripcion"));
+            ap.setLineaInvestigacion(rs.getString("linea_investigacion"));
+            ap.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+            ap.setEstado(rs.getString("estado"));
+            ap.setUsuarioRegistro(rs.getString("usuario_registro"));
+            ap.setFkAlumno(rs.getInt("fk_alumno"));
+            ap.setRfcEmpresa(rs.getString("rfc_empresa"));
+            return ap;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+   }
     
     
-
-
         public static Proyecto obtenerProyectoPorId(int id) {
             String sql = "SELECT * FROM proyecto WHERE id_proyecto = ?";
             try (Connection conn = Conexion.getConexion();
@@ -187,6 +208,8 @@ public Proyecto buscarPorNombre(String nombre) {
             }
             return null;
         }
+        
+        
     
         public static List<Proyecto> obtenerProyectosPorSemestre(int año, int semestre) {
     List<Proyecto> lista = new ArrayList<>();
@@ -235,7 +258,31 @@ public Proyecto buscarPorNombre(String nombre) {
 
     return lista;
 }
-        
+        public Anteproyecto obtenerAnteproyectoPorId(int id) {
+    String sql = "SELECT * FROM anteproyecto WHERE id_anteproyecto = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            Anteproyecto ap = new Anteproyecto();
+            ap.setIdAnteproyecto(rs.getInt("id_anteproyecto"));
+            ap.setNombre(rs.getString("nombre"));
+            ap.setDescripcion(rs.getString("descripcion"));
+            ap.setLineaInvestigacion(rs.getString("linea_investigacion"));
+            ap.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+            ap.setEstado(rs.getString("estado"));
+            ap.setUsuarioRegistro(rs.getString("usuario_registro"));
+            ap.setFkAlumno(rs.getInt("fk_alumno"));
+            ap.setRfcEmpresa(rs.getString("rfc_empresa"));
+            return ap;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
         public static List<Integer> obtenerAniosConProyectos() {
         List<Integer> anios = new ArrayList<>();
         String sql = "SELECT DISTINCT YEAR(fecha_registro) AS anio FROM proyecto ORDER BY anio DESC";
