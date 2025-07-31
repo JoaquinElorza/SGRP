@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComboBox;
 
 /**
  *
@@ -61,7 +60,7 @@ public class DocumentoDao {
         }
     }
     
-public static void actualizarEstatusSoli(String nControl,
+    public static void actualizarEstatusSoli(String nControl,
         String nuevoStatus) throws SQLException {
     String sql1 = "SELECT id_estatus FROM estatus_soli_residencia WHERE estatus = ?;";
     String sql2 = "SELECT id_alumno FROM alumno WHERE n_control = ?;";
@@ -123,7 +122,8 @@ public static void actualizarEstatusSoli(String nControl,
     }
 }
     
-    public static List<ExpedienteAlumno> obtenerDocumentos(String nControl) throws SQLException {
+    public static List<ExpedienteAlumno> obtenerDocumentos(String nControl)
+            throws SQLException {
     List<ExpedienteAlumno> lista = new ArrayList<>();
 
     String sql = "SELECT d.documento, ea.estatus\n" +
@@ -159,8 +159,8 @@ public static void actualizarEstatusSoli(String nControl,
 
     return lista;
 }
-
-public static void setEstadoDocumento(String nControl, boolean estado,
+    
+    public static void setEstadoDocumento(String nControl, boolean estado,
         String nombreDocumento) throws SQLException {
     String updateSql = "UPDATE expediente_alumno ea\n" +
                        "JOIN alumno a ON ea.fk_alumno = a.id_alumno\n" +
@@ -192,9 +192,8 @@ public static void setEstadoDocumento(String nControl, boolean estado,
         }
     }
 }
-
-
-public static void eliminarSolicitudSoli(String nControl) throws SQLException {
+    
+    public static void eliminarSolicitudSoli(String nControl) throws SQLException {
     String sqlGetAlumno = "SELECT id_alumno FROM alumno WHERE n_control = ?;";
     String sqlCheck = "SELECT COUNT(*) FROM soli_residencia WHERE fk_alumno = ?;";
     String sqlDelete = "DELETE FROM soli_residencia WHERE fk_alumno = ?;";

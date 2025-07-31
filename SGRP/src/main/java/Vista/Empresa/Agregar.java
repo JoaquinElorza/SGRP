@@ -31,8 +31,6 @@ public class Agregar extends javax.swing.JFrame {
 
         getRootPane().setDefaultButton(jButton1);
 
-// Imagen del botón regresar
-// 🔙 Botón de regresar (jButton2)
         ImageIcon iconoBack = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenBack = iconoBack.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         jButton2.setIcon(new ImageIcon(imagenBack));
@@ -57,6 +55,13 @@ public class Agregar extends javax.swing.JFrame {
                 if (!Character.isDigit(c) || GuardarContacto.getText().length() >= 10) {
                     evt.consume();
                 }
+            }
+        });
+
+        // RFC a mayúsculas automáticamente
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField5.setText(jTextField5.getText().toUpperCase());
             }
         });
 
@@ -86,6 +91,9 @@ public class Agregar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPaneDescripcion = new javax.swing.JScrollPane();
+        jTextAreaDescripcion = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,7 +143,7 @@ public class Agregar extends javax.swing.JFrame {
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(45, 45, 45))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,49 +155,61 @@ public class Agregar extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel7.setText("Descripcion");
+
+        jTextAreaDescripcion.setColumns(20);
+        jTextAreaDescripcion.setRows(5);
+        jScrollPaneDescripcion.setViewportView(jTextAreaDescripcion);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addGap(34, 34, 34))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(GuardarContacto)
+                            .addComponent(GuardarNombre)
+                            .addComponent(jTextField4)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField5)
+                            .addComponent(jScrollPaneDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))))
+                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(144, 144, 144)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap(123, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(6, 6, 6))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(17, 17, 17)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(GuardarContacto)
-                    .addComponent(GuardarNombre)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(203, 203, 203))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(169, 169, 169))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(GuardarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -209,9 +229,17 @@ public class Agregar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addComponent(jScrollPaneDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -223,14 +251,15 @@ public class Agregar extends javax.swing.JFrame {
         String direccion = jTextField3.getText().trim();
         String correo = jTextField4.getText().trim();
         String rfc = jTextField5.getText().trim();
+        String descripcion = jTextAreaDescripcion.getText().trim();
 
-        if (!correo.matches("^[^@\\s]+@(gmail\\.com|yahoo\\.com|outlook\\.com)$")) {
-            JOptionPane.showMessageDialog(this, "El correo debe ser @gmail.com, @yahoo.com o @outlook.com.");
+        if (!correo.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            JOptionPane.showMessageDialog(this, "Ingrese un correo válido.");
             return;
         }
 
         if (!rfc.matches("^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$")) {
-            JOptionPane.showMessageDialog(this, "Ingrese un RFC válido (12 o 13 caracteres en mayúsculas).");
+            JOptionPane.showMessageDialog(this, "Ingrese un RFC válido (12 o 13 caracteres).");
             return;
         }
 
@@ -252,9 +281,9 @@ public class Agregar extends javax.swing.JFrame {
 
         EmpresaDAO dao = new EmpresaDAO();
 
-        // Validar que no se repita el nombre
+// Validar duplicados...
         if (dao.existeNombre(nombre)) {
-            JOptionPane.showMessageDialog(this, "La empresa \"" + nombre + "\" ya está registrada. Contacte al administrador.");
+            JOptionPane.showMessageDialog(this, "La empresa \"" + nombre + "\" ya está registrada.");
             return;
         }
 
@@ -263,12 +292,14 @@ public class Agregar extends javax.swing.JFrame {
             return;
         }
 
-        EmpresaEntidad nueva = new EmpresaEntidad();
+// ✅ ESTA LÍNEA ES LA QUE FALTABA
+        EmpresaEntidad nueva = new EmpresaEntidad(); // ← ¡ESTO corrige el error!
         nueva.setNombre(nombre);
         nueva.setContacto(contacto);
         nueva.setDireccion(direccion);
         nueva.setCorreo(correo);
         nueva.setRfc(rfc);
+        nueva.setDescripcion(descripcion); // ← Ya puedes usarlo sin error
 
         boolean guardado = dao.insertarEmpresa(nueva);
 
@@ -276,7 +307,7 @@ public class Agregar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Empresa guardada correctamente.");
             agregarProyecto.cargarEmpresasEnCombo();
             this.dispose();
-            ventanaEmpresa.recargarTabla(); // si estás usando referencia a la ventana anterior
+            ventanaEmpresa.recargarTabla();
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar la empresa.");
         }
@@ -345,7 +376,10 @@ public class Agregar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPaneDescripcion;
+    private javax.swing.JTextArea jTextAreaDescripcion;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;

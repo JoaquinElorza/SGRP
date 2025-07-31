@@ -38,6 +38,10 @@ public class Empresa extends javax.swing.JFrame {
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
         jButton4.setIcon(new ImageIcon(imagenRedimensionada));
 
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/img/eye.png"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        btnVisualizar.setIcon(new ImageIcon(scaledImage));
+
 // Estilizar para que se vea transparente sobre fondo naranja
         jButton4.setBorderPainted(false);         // sin borde
         jButton4.setContentAreaFilled(false);     // sin fondo gris
@@ -48,9 +52,9 @@ public class Empresa extends javax.swing.JFrame {
         ImageIcon logoOriginal = new ImageIcon(getClass().getResource("/img/ITOlogo.png"));
         Image logoEscalado = logoOriginal.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         jButton5.setIcon(new ImageIcon(logoEscalado));
-        jButton5.setText(""); 
+        jButton5.setText("");
         jButton5.setBorder(null); // opcional: quitar bordes
-        jButton5.setContentAreaFilled(false); 
+        jButton5.setContentAreaFilled(false);
 
     }
 
@@ -58,7 +62,7 @@ public class Empresa extends javax.swing.JFrame {
         EmpresaDAO dao = new EmpresaDAO();
         List<EmpresaEntidad> lista = dao.listarEmpresas();
 
-        String[] columnas = {"ID", "Nombre", "Contacto", "Correo", "RFC", "Dirección"};
+        String[] columnas = {"ID", "Nombre", "Contacto", "Correo", "RFC", "Dirección", "Descripción"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
 
         for (EmpresaEntidad emp : lista) {
@@ -68,15 +72,15 @@ public class Empresa extends javax.swing.JFrame {
                 emp.getContacto(),
                 emp.getCorreo(),
                 emp.getRfc(),
-                emp.getDireccion()
+                emp.getDireccion(),
+                emp.getDescripcion() // ← Esta línea es la clave
             };
-
             modelo.addRow(fila);
         }
 
         jTable1.setModel(modelo);
 
-        jTable1.setShowGrid(false); 
+        jTable1.setShowGrid(false);
         jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
 
         jTable1.setBackground(Color.WHITE);
@@ -84,14 +88,13 @@ public class Empresa extends javax.swing.JFrame {
         jTable1.setRowHeight(30);
         jTable1.setSelectionBackground(new Color(100, 150, 255));
 
-       
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setWidth(0);
     }
 
     public void recargarTabla() {
-        cargarTablaEmpresas(); 
+        cargarTablaEmpresas();
     }
 
     @SuppressWarnings("unchecked")
@@ -108,6 +111,7 @@ public class Empresa extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btnVisualizar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -116,14 +120,15 @@ public class Empresa extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Telefono", "Direccion ", "Correo", "RFC"
+                "Nombre", "Telefono", "Direccion ", "Correo", "RFC", "Descripcion"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -175,11 +180,11 @@ public class Empresa extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(197, 197, 197)
                 .addComponent(jLabel1)
-                .addGap(195, 195, 195)
+                .addGap(175, 175, 175)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,44 +198,56 @@ public class Empresa extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        btnVisualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eye.png"))); // NOI18N
+        btnVisualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnVisualizarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(77, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(136, 136, 136)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(63, 63, 63))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(130, 130, 130)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(btnVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,6 +271,7 @@ public class Empresa extends javax.swing.JFrame {
         String correo = jTable1.getModel().getValueAt(fila, 3).toString();
         String rfc = jTable1.getModel().getValueAt(fila, 4).toString();
         String direccion = jTable1.getModel().getValueAt(fila, 5).toString();
+        String descripcion = jTable1.getModel().getValueAt(fila, 6).toString();
 
         EmpresaEntidad empresa = new EmpresaEntidad();
         empresa.setIdEmpresa(id);
@@ -262,6 +280,7 @@ public class Empresa extends javax.swing.JFrame {
         empresa.setCorreo(correo);
         empresa.setRfc(rfc);
         empresa.setDireccion(direccion);
+        empresa.setDescripcion(descripcion);
 
         Editar editarVentana = new Editar(empresa, this);
         editarVentana.setVisible(true);
@@ -304,6 +323,32 @@ public class Empresa extends javax.swing.JFrame {
         ventanaAgregar.setLocationRelativeTo(this); // Centrar
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnVisualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVisualizarMouseClicked
+        int fila = jTable1.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona una empresa.");
+            return;
+        }
+
+        int id = Integer.parseInt(jTable1.getModel().getValueAt(fila, 0).toString());
+        String nombre = jTable1.getModel().getValueAt(fila, 1).toString();
+        String contacto = jTable1.getModel().getValueAt(fila, 2).toString();
+        String correo = jTable1.getModel().getValueAt(fila, 3).toString();
+        String rfc = jTable1.getModel().getValueAt(fila, 4).toString();
+        String direccion = jTable1.getModel().getValueAt(fila, 5).toString();
+        String descripcion = jTable1.getModel().getValueAt(fila, 6).toString();
+
+        String mensaje = "📋 Detalles de la Empresa:\n\n"
+                + "🔹 Nombre: " + nombre + "\n"
+                + "🔹 Contacto: " + contacto + "\n"
+                + "🔹 Correo: " + correo + "\n"
+                + "🔹 RFC: " + rfc + "\n"
+                + "🔹 Dirección: " + direccion + "\n"
+                + "🔹 Descripción: " + descripcion;
+
+        JOptionPane.showMessageDialog(this, mensaje, "Visualización", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnVisualizarMouseClicked
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -316,6 +361,7 @@ public class Empresa extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnVisualizar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

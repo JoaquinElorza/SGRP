@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import Utilidades.Conexion;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlumnoDAO {
 
@@ -112,7 +114,27 @@ public class AlumnoDAO {
         }
         return null;
     }
+    public int consultarIdPorControl(String numeroControl) {
+    int idAlumno = -1; // Valor por defecto si no se encuentra
 
+    String query = "SELECT id_alumno FROM alumno WHERE n_control = ?";
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        ps.setString(1, numeroControl);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                idAlumno = rs.getInt("id_alumno");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al consultar ID del alumno: " + e.getMessage());
+    }
+
+    return idAlumno;
+}
     // Verifica existencia de número de control activo
     public boolean existeNumeroControl(String numeroControl) {
         String sql = 
@@ -161,6 +183,9 @@ public class AlumnoDAO {
                 psP.setInt(4, idPersona);
                 psP.executeUpdate();
 
+                
+                CarpetaOculta.renombrarCarpeta(controlOriginal, alumno.getNumeroControl());
+                
                 psA.setString(1, alumno.getNumeroControl());
                 psA.setString(2, alumno.getCorreoElectronico());
                 psA.setString(3, alumno.getNumeroTelefono());
@@ -244,7 +269,7 @@ public class AlumnoDAO {
         return lista;
     }
     
-        public static List<Alumno> obtenerAlumnosSinProyecto() {
+    public static List<Alumno> obtenerAlumnosSinProyecto() {
            List<Alumno> lista = new ArrayList<>();
            try (Connection con = Conexion.getConexion()) {
                String sql = "SELECT a.*, p.nombre, p.ap_paterno, p.ap_materno " +
@@ -256,7 +281,7 @@ public class AlumnoDAO {
 
                while (rs.next()) {
                    Alumno a = new Alumno();
-                   a.setIdPersona(rs.getInt("fk_persona"));  // o usa setIdAlumno según tu modelo
+                   a.setIdPersona(rs.getInt("fk_persona")); 
                    a.setNombre(rs.getString("nombre"));
                    a.setApellidoPaterno(rs.getString("ap_paterno"));
                    a.setApellidoMaterno(rs.getString("ap_materno"));
@@ -267,14 +292,45 @@ public class AlumnoDAO {
            }
            return lista;
        }
+        
+    public static Map<String, List<String>> obtenerPendientes() throws SQLException {
+    Map<String, List<String>> pendientes = new HashMap<>();
 
+    String sql = """
+                 SELECT 
+                     a.n_control,
+                     p.nombre,
+                     p.ap_paterno,
+                     p.ap_materno,
+                     d.documento
+                 FROM 
+                     alumno a
+                 JOIN
+                 \tpersona p on p.id_persona = a.fk_persona
+                 CROSS JOIN 
+                     documentos d
+                 LEFT JOIN 
+                     expediente_alumno ea ON ea.fk_alumno = a.id_alumno AND ea.fk_documento = d.id_documento
+                 WHERE 
+                     (ea.estatus = 0 OR ea.estatus IS NULL)
+                     AND p.status<>'E';""";
 
-    
-    
-    
-    
-    
-    
-    
-    
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            String nControl = rs.getString("n_control");
+            String nombreC = nControl + " - " + rs.getString("nombre") + " "
+                    + rs.getString("ap_paterno")+ " " + rs.getString("ap_materno");
+            String documento = rs.getString("documento");
+
+            // Agregar a la lista del alumno
+            pendientes.computeIfAbsent(nombreC, k -> new ArrayList<>()).add(documento);
+        }
+    }
+
+    return pendientes;
+}
+
 }

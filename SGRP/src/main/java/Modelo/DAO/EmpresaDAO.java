@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 public class EmpresaDAO {
 
     public boolean insertarEmpresa(EmpresaEntidad empresa) {
-        String sql = "INSERT INTO empresa(nombre, contacto, correo, rfc, direccion) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO empresa(nombre, contacto, correo, rfc, direccion, descripcion) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -25,6 +25,7 @@ public class EmpresaDAO {
             ps.setString(3, empresa.getCorreo());
             ps.setString(4, empresa.getRfc());
             ps.setString(5, empresa.getDireccion());
+            ps.setString(6, empresa.getDescripcion());
             ps.executeUpdate();
             return true;
 
@@ -33,7 +34,29 @@ public class EmpresaDAO {
             return false;
         }
     }
+public EmpresaEntidad buscarPorId(int idEmpresa) {
+    EmpresaEntidad empresa = null;
+    String sql = "SELECT * FROM empresa WHERE id_empresa = ?";
 
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idEmpresa);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            empresa = new EmpresaEntidad();
+            empresa.setIdEmpresa(rs.getInt("id_empresa"));
+            empresa.setNombre(rs.getString("nombre"));
+            empresa.setContacto(rs.getString("contacto"));
+            empresa.setCorreo(rs.getString("correo"));
+            empresa.setRfc(rs.getString("rfc"));
+            empresa.setDireccion(rs.getString("direccion"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return empresa;
+}
     public List<EmpresaEntidad> listarEmpresas() {
         List<EmpresaEntidad> lista = new ArrayList<>();
         String sql = "SELECT * FROM empresa WHERE activo = true";
@@ -48,6 +71,7 @@ public class EmpresaDAO {
                 emp.setCorreo(rs.getString("correo"));
                 emp.setRfc(rs.getString("rfc"));
                 emp.setDireccion(rs.getString("direccion"));
+                emp.setDescripcion(rs.getString("descripcion"));
 
                 lista.add(emp);
             }
@@ -59,8 +83,29 @@ public class EmpresaDAO {
         return lista;
     }
 
+    public EmpresaEntidad obtenerEmpresaPorRFC(String rfc) {
+        String sql = "SELECT * FROM empresa WHERE rfc = ?";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, rfc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                EmpresaEntidad emp = new EmpresaEntidad();
+                emp.setIdEmpresa(rs.getInt("id_empresa"));
+                emp.setNombre(rs.getString("nombre"));
+                emp.setContacto(rs.getString("contacto"));
+                emp.setDireccion(rs.getString("direccion"));
+                emp.setCorreo(rs.getString("correo"));
+                emp.setRfc(rs.getString("rfc"));
+                return emp;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public boolean actualizarEmpresa(EmpresaEntidad empresa) {
-        String sql = "UPDATE empresa SET nombre = ?, contacto = ?, correo = ?, rfc = ?, direccion = ? WHERE id_empresa = ?";
+        String sql = "UPDATE empresa SET nombre = ?, contacto = ?, correo = ?, rfc = ?, direccion = ?, descripcion = ? WHERE id_empresa = ?";
 
         try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -69,7 +114,8 @@ public class EmpresaDAO {
             ps.setString(3, empresa.getCorreo());
             ps.setString(4, empresa.getRfc());
             ps.setString(5, empresa.getDireccion());
-            ps.setInt(6, empresa.getIdEmpresa());
+            ps.setString(6, empresa.getDescripcion());
+            ps.setInt(7, empresa.getIdEmpresa());
 
             return ps.executeUpdate() > 0;
 

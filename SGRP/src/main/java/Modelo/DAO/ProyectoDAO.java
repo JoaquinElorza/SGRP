@@ -1,10 +1,15 @@
 package Modelo.DAO;
 
+import Modelo.Entidades.EmpresaEntidad;
 import Modelo.Entidades.Proyecto;
 import Utilidades.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Modelo.Entidades.Anteproyecto;
+
+
+
 
 public class ProyectoDAO {
     
@@ -27,7 +32,27 @@ public class ProyectoDAO {
         return false;
     }
 }
+public Proyecto buscarPorNombre(String nombre) {
+    Proyecto proyecto = null;
+    String sql = "SELECT * FROM proyecto WHERE nombre = ?";
 
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            proyecto = new Proyecto();
+            proyecto.setIdProyecto(rs.getInt("id_proyecto"));
+            proyecto.setNombre(rs.getString("nombre"));
+            proyecto.setEstatus(rs.getString("estatus"));
+            proyecto.setIdEmpresa(rs.getInt("fk_empresa"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return proyecto;
+}
     public boolean eliminarProyecto(int idProyecto) {
     String sql = "DELETE FROM proyecto WHERE id_proyecto = ?";
     try (Connection conn = Conexion.getConexion();
@@ -137,32 +162,31 @@ public class ProyectoDAO {
         e.printStackTrace();
     }
 }
-    
-    
-    
-    public static boolean asignarProyectoAAlumno(int idProyecto, int idAlumno) {
-    try (Connection con = Conexion.getConexion()) {
-        String validar = "SELECT fk_proyecto FROM alumno WHERE id_alumno = ?";
-        PreparedStatement check = con.prepareStatement(validar);
-        check.setInt(1, idAlumno);
-        ResultSet rs = check.executeQuery();
-        if (rs.next() && rs.getInt("fk_proyecto") != 0) {
-            return false; // Ya tiene proyecto
+   public Anteproyecto obtenerAnteproyectoPorNombre(String nombre) {
+    String sql = "SELECT * FROM anteproyecto WHERE nombre = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            Anteproyecto ap = new Anteproyecto();
+            ap.setNombre(rs.getString("nombre"));
+            ap.setDescripcion(rs.getString("descripcion"));
+            ap.setLineaInvestigacion(rs.getString("linea_investigacion"));
+            ap.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+            ap.setEstado(rs.getString("estado"));
+            ap.setUsuarioRegistro(rs.getString("usuario_registro"));
+            ap.setFkAlumno(rs.getInt("fk_alumno"));
+            ap.setRfcEmpresa(rs.getString("rfc_empresa"));
+            return ap;
         }
-
-        String sql = "UPDATE alumno SET fk_proyecto = ? WHERE id_alumno = ?";
-        PreparedStatement pst = con.prepareStatement(sql);
-        pst.setInt(1, idProyecto);
-        pst.setInt(2, idAlumno);
-        pst.executeUpdate();
-        return true;
-
     } catch (SQLException e) {
         e.printStackTrace();
-        return false;
     }
-}
-
+    return null;
+   }
+    
+    
         public static Proyecto obtenerProyectoPorId(int id) {
             String sql = "SELECT * FROM proyecto WHERE id_proyecto = ?";
             try (Connection conn = Conexion.getConexion();
@@ -176,6 +200,7 @@ public class ProyectoDAO {
                     p.setDescripcion(rs.getString("descripcion"));
                     p.setEstatus(rs.getString("estatus"));
                     p.setIdEmpresa(rs.getInt("id_empresa"));
+                    p.setFechaRegistro(rs.getDate("fecha_registro"));
                     return p;
                 }
             } catch (SQLException e) {
@@ -183,7 +208,102 @@ public class ProyectoDAO {
             }
             return null;
         }
+        
+        
     
+        public static List<Proyecto> obtenerProyectosPorSemestre(int año, int semestre) {
+    List<Proyecto> lista = new ArrayList<>();
+
+    String sql = """
+        SELECT p.id_proyecto, p.nombre, p.descripcion, p.estatus, p.fk_empresa,
+               e.nombre AS nombre_empresa
+        FROM proyecto p
+        JOIN empresa e ON p.fk_empresa = e.id_empresa
+        WHERE YEAR(p.fecha_registro) = ? AND 
+              MONTH(p.fecha_registro) BETWEEN ? AND ?
+    """;
+
+    int mesInicio = (semestre == 1) ? 1 : 7;
+    int mesFin = (semestre == 1) ? 6 : 12;
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, año);
+        ps.setInt(2, mesInicio);
+        ps.setInt(3, mesFin);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Proyecto p = new Proyecto();
+            p.setIdProyecto(rs.getInt("id_proyecto"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setEstatus(rs.getString("estatus"));
+            p.setIdEmpresa(rs.getInt("fk_empresa"));
+
+            // Crear la empresa
+            EmpresaEntidad empresa = new EmpresaEntidad();
+            empresa.setIdEmpresa(rs.getInt("fk_empresa"));
+            empresa.setNombre(rs.getString("nombre_empresa"));
+            p.setEmpresa(empresa); // 👉 Asegúrate de tener este setter en tu modelo Proyecto
+
+            lista.add(p);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return lista;
+}
+        public Anteproyecto obtenerAnteproyectoPorId(int id) {
+    String sql = "SELECT * FROM anteproyecto WHERE id_anteproyecto = ?";
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            Anteproyecto ap = new Anteproyecto();
+            ap.setIdAnteproyecto(rs.getInt("id_anteproyecto"));
+            ap.setNombre(rs.getString("nombre"));
+            ap.setDescripcion(rs.getString("descripcion"));
+            ap.setLineaInvestigacion(rs.getString("linea_investigacion"));
+            ap.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+            ap.setEstado(rs.getString("estado"));
+            ap.setUsuarioRegistro(rs.getString("usuario_registro"));
+            ap.setFkAlumno(rs.getInt("fk_alumno"));
+            ap.setRfcEmpresa(rs.getString("rfc_empresa"));
+            return ap;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+        public static List<Integer> obtenerAniosConProyectos() {
+        List<Integer> anios = new ArrayList<>();
+        String sql = "SELECT DISTINCT YEAR(fecha_registro) AS anio FROM proyecto ORDER BY anio DESC";
+
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                anios.add(rs.getInt("anio"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return anios;
+    }
+
+
+
     
     
     
