@@ -139,7 +139,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="290" y="520" width="-1" height="-1"/>
+              <AbsoluteConstraints x="100" y="520" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -178,11 +178,7 @@
                                   <Component id="lblTelefono" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblProyecto" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="btnEliminarDocumento" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnReporteAlumnos" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="btnEliminarDocumento" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnSubirDocumento" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -211,10 +207,7 @@
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Component id="btnSubirDocumento" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnEliminarDocumento" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnReporteAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btnEliminarDocumento" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="174" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
@@ -288,14 +281,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarDocumentoActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnReporteAlumnos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Generar reporte"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReporteAlumnosActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -455,7 +440,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="60" y="520" width="-1" height="-1"/>
+              <AbsoluteConstraints x="20" y="520" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -471,7 +456,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="170" y="520" width="91" height="-1"/>
+              <AbsoluteConstraints x="180" y="520" width="91" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -487,7 +472,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="380" y="520" width="-1" height="-1"/>
+              <AbsoluteConstraints x="270" y="520" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -533,6 +518,19 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="500" y="240" width="30" height="30"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnReporteAlumnos">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Generar reporte"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReporteAlumnosActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="350" y="520" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

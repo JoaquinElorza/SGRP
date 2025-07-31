@@ -153,7 +153,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         tablaDocumentos = new javax.swing.JTable();
         btnSubirDocumento = new javax.swing.JButton();
         btnEliminarDocumento = new javax.swing.JButton();
-        btnReporteAlumnos = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         JPanelLOGO = new javax.swing.JPanel();
         JPanelBack = new javax.swing.JPanel();
@@ -166,6 +165,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         visualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnCorreo = new javax.swing.JButton();
+        btnReporteAlumnos = new javax.swing.JButton();
 
         opcionSoli.setLabel("Solicitud de residencia");
         opcionSoli.addActionListener(new java.awt.event.ActionListener() {
@@ -231,7 +231,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 btnEditarActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 520, -1, -1));
+        panelAlumnos.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 520, -1, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         jPanel1.setPreferredSize(new java.awt.Dimension(536, 370));
@@ -301,13 +301,6 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             }
         });
 
-        btnReporteAlumnos.setText("Generar reporte");
-        btnReporteAlumnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReporteAlumnosActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -322,10 +315,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                             .addComponent(lblTelefono)
                             .addComponent(lblProyecto)
                             .addComponent(lblCorreo)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnEliminarDocumento)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnReporteAlumnos))
+                            .addComponent(btnEliminarDocumento)
                             .addComponent(btnSubirDocumento)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -348,9 +338,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 .addGap(22, 22, 22)
                 .addComponent(btnSubirDocumento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarDocumento)
-                    .addComponent(btnReporteAlumnos))
+                .addComponent(btnEliminarDocumento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -429,7 +417,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 btnAgregarAlumnoActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnAgregarAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, -1, -1));
+        panelAlumnos.add(btnAgregarAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(51, 153, 255));
         jButton2.setText("Eliminar");
@@ -438,7 +426,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, 91, -1));
+        panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 520, 91, -1));
 
         btnReporte.setBackground(new java.awt.Color(0, 153, 255));
         btnReporte.setText("Fechas");
@@ -447,7 +435,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 btnReporteActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 520, -1, -1));
+        panelAlumnos.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 520, -1, -1));
 
         visualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eye.png"))); // NOI18N
         visualizar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -472,6 +460,14 @@ public class opcionAlumno2 extends javax.swing.JPanel {
             }
         });
         panelAlumnos.add(btnCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 30, 30));
+
+        btnReporteAlumnos.setText("Generar reporte");
+        btnReporteAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteAlumnosActionPerformed(evt);
+            }
+        });
+        panelAlumnos.add(btnReporteAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 520, -1, -1));
 
         add(panelAlumnos, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
