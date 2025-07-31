@@ -93,7 +93,8 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         originalIcon = new ImageIcon(getClass().getResource("/img/gmail.png"));
         scaledImage = originalIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         btnCorreo.setIcon(new ImageIcon(scaledImage));
-
+        
+        
     }
 
     public String seleccionObligatoria(JFrame parent) {
@@ -426,7 +427,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 520, 91, -1));
+        panelAlumnos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, 91, -1));
 
         btnReporte.setBackground(new java.awt.Color(0, 153, 255));
         btnReporte.setText("Fechas");
@@ -435,7 +436,7 @@ public class opcionAlumno2 extends javax.swing.JPanel {
                 btnReporteActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 520, -1, -1));
+        panelAlumnos.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 520, -1, -1));
 
         visualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eye.png"))); // NOI18N
         visualizar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -461,13 +462,14 @@ public class opcionAlumno2 extends javax.swing.JPanel {
         });
         panelAlumnos.add(btnCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 30, 30));
 
+        btnReporteAlumnos.setBackground(new java.awt.Color(51, 153, 255));
         btnReporteAlumnos.setText("Generar reporte");
         btnReporteAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReporteAlumnosActionPerformed(evt);
             }
         });
-        panelAlumnos.add(btnReporteAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 520, -1, -1));
+        panelAlumnos.add(btnReporteAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 520, -1, -1));
 
         add(panelAlumnos, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -802,10 +804,48 @@ public class opcionAlumno2 extends javax.swing.JPanel {
     }//GEN-LAST:event_btnReporteAlumnosActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        String nControl = lblControl.getText(); // del alumno seleccionado
-        Reporte ventanaReporte = new Reporte(this, nControl);
-        ventanaReporte.setVisible(true);
-        ventanaReporte.setLocationRelativeTo(this);
+        int fila = tablaAlumnos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un alumno primero.");
+            return;
+        }
+
+        String nControl = lblControl.getText(); // número de control seleccionado
+
+        try (Connection conn = Conexion.getConexion()) {
+            // Obtener el ID del alumno
+            String sql = "SELECT id_alumno FROM alumno WHERE n_control = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nControl);
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                JOptionPane.showMessageDialog(this, "❌ Alumno no encontrado.");
+                return;
+            }
+
+            int idAlumno = rs.getInt("id_alumno");
+
+            // Verificar si tiene anteproyecto
+            sql = "SELECT COUNT(*) FROM anteproyecto WHERE fk_alumno = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, idAlumno);
+            rs = ps.executeQuery();
+
+            if (rs.next() && rs.getInt(1) == 0) {
+                JOptionPane.showMessageDialog(this, "❌ El alumno no tiene un anteproyecto registrado.\nNo se pueden asignar fechas.");
+                return;
+            }
+
+            // Si tiene anteproyecto, abrir la ventana de fechas
+            Reporte ventanaReporte = new Reporte(this, nControl);
+            ventanaReporte.setVisible(true);
+            ventanaReporte.setLocationRelativeTo(this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "❌ Error al validar anteproyecto.");
+        }
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void visualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualizarMouseClicked
