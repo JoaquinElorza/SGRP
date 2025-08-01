@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import Vista.OpcionDocentes;
 import Vista.vistaProyectos;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -17,81 +20,85 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private final AcomodarImagen acomodarImagen = new AcomodarImagen(); 
 
     public MenuPrincipal() {
-        this.setUndecorated(true);
-        initComponents();
-         setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
-        setLocationRelativeTo(null);
-        card = (CardLayout) panelCambiante.getLayout();
-        //this.setPreferredSize(new Dimension(626, 468));
-        //setSize(626,470);
-       // this.setLocationRelativeTo(null); 
-        this.setResizable(false); 
-        this.setVisible(true);
-        
-        vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
-        OpcionAnteproyecto Anteproyectos = new  OpcionAnteproyecto(card, panelCambiante);
-        opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
-        AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
-        agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante, proyectos);
-        editarProyecto panelEditar = new editarProyecto(card, panelCambiante, proyectos);
-        
-        
-        
-        panelCambiante.add(panelAgregar, "panelAgregarProyecto");
-        panelCambiante.add(panelPrincipal, "menu principal");
-        panelCambiante.add(panelAlumnos, "panelAlumnos");
-        panelCambiante.add(agregarAlumno, "Agregar alumno");
-        panelCambiante.add(proyectos, "panelProyectos");
-        panelCambiante.add(Anteproyectos, "panelAnteproyectos");
-        panelCambiante.add(panelEditar, "panelEditarProyecto");
-        //IMAGEN DE LOGO v   
-        acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
-        jPanel2.setOpaque(false);
-        jPanel2.setBorder(null);
-        jPanel2.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-
-        //IMAGEN OPCION ALUMNOS
-        acomodarImagen.configurarPanelConImagen("/img/user.png", panelOpAlumno);
-        panelOpAlumno.setOpaque(false);
-        panelOpAlumno.setBorder(null);
-        panelOpAlumno.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-        
-        //IMAGEN ANTEPROYECTOS
-        acomodarImagen.configurarPanelConImagen("/img/Antep.png", panelAnteproyectos);
-        panelAnteproyectos.setOpaque(false);
-        panelAnteproyectos.setBorder(null);
-        panelAnteproyectos.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-        
-        //imagen proyectos 
-        acomodarImagen.configurarPanelConImagen("/img/proyectos.png", jPanelProyectos);
-        jPanelProyectos.setOpaque(false);
-        jPanelProyectos.setBorder(null);
-        jPanelProyectos.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-        //Imagen Docentes
-        acomodarImagen.configurarPanelConImagen("/img/docentes.png", jPanelDocentes);
-        jPanelDocentes.setOpaque(false);
-        jPanelDocentes.setBorder(null);
-        jPanelDocentes.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-        //Imagen Empresas
-        acomodarImagen.configurarPanelConImagen("/img/empresas.png", jPanelEmpresas);
-        jPanelEmpresas.setOpaque(false);
-        jPanelEmpresas.setBorder(null);
-        jPanelEmpresas.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-
-        //Imagen LogOut
-        acomodarImagen.configurarPanelConImagen("/img/logout.png", JPanelLogOut);
-        JPanelLogOut.setOpaque(false);
-        JPanelLogOut.setBorder(null);
-        JPanelLogOut.setBackground(new Color(0, 0, 0, 0));
-        this.setVisible(true);
-        
-        card.show(panelCambiante, "menu principal");
+        try {
+            this.setUndecorated(true);
+            initComponents();
+            setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+            setLocationRelativeTo(null);
+            card = (CardLayout) panelCambiante.getLayout();
+            //this.setPreferredSize(new Dimension(626, 468));
+            //setSize(626,470);
+            // this.setLocationRelativeTo(null);
+            this.setResizable(false);
+            this.setVisible(true);
+            
+            vistaProyectos proyectos = new vistaProyectos(card, panelCambiante);
+            OpcionAnteproyecto Anteproyectos = new  OpcionAnteproyecto(card, panelCambiante);
+            opcionAlumno2 panelAlumnos = new opcionAlumno2(card, panelCambiante);
+            AgregarAlumno agregarAlumno = new AgregarAlumno(card, panelCambiante, panelAlumnos);
+            agregarProyecto panelAgregar = new agregarProyecto(card, panelCambiante, proyectos);
+            editarProyecto panelEditar = new editarProyecto(card, panelCambiante, proyectos);
+            
+            
+            
+            panelCambiante.add(panelAgregar, "panelAgregarProyecto");
+            panelCambiante.add(panelPrincipal, "menu principal");
+            panelCambiante.add(panelAlumnos, "panelAlumnos");
+            panelCambiante.add(agregarAlumno, "Agregar alumno");
+            panelCambiante.add(proyectos, "panelProyectos");
+            panelCambiante.add(Anteproyectos, "panelAnteproyectos");
+            panelCambiante.add(panelEditar, "panelEditarProyecto");
+            //IMAGEN DE LOGO v
+            acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", jPanel2);
+            jPanel2.setOpaque(false);
+            jPanel2.setBorder(null);
+            jPanel2.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            
+            //IMAGEN OPCION ALUMNOS
+            acomodarImagen.configurarPanelConImagen("/img/user.png", panelOpAlumno);
+            panelOpAlumno.setOpaque(false);
+            panelOpAlumno.setBorder(null);
+            panelOpAlumno.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            
+            //IMAGEN ANTEPROYECTOS
+            acomodarImagen.configurarPanelConImagen("/img/Antep.png", panelAnteproyectos);
+            panelAnteproyectos.setOpaque(false);
+            panelAnteproyectos.setBorder(null);
+            panelAnteproyectos.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            
+            //imagen proyectos
+            acomodarImagen.configurarPanelConImagen("/img/proyectos.png", jPanelProyectos);
+            jPanelProyectos.setOpaque(false);
+            jPanelProyectos.setBorder(null);
+            jPanelProyectos.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            //Imagen Docentes
+            acomodarImagen.configurarPanelConImagen("/img/docentes.png", jPanelDocentes);
+            jPanelDocentes.setOpaque(false);
+            jPanelDocentes.setBorder(null);
+            jPanelDocentes.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            //Imagen Empresas
+            acomodarImagen.configurarPanelConImagen("/img/empresas.png", jPanelEmpresas);
+            jPanelEmpresas.setOpaque(false);
+            jPanelEmpresas.setBorder(null);
+            jPanelEmpresas.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            
+            //Imagen LogOut
+            acomodarImagen.configurarPanelConImagen("/img/logout.png", JPanelLogOut);
+            JPanelLogOut.setOpaque(false);
+            JPanelLogOut.setBorder(null);
+            JPanelLogOut.setBackground(new Color(0, 0, 0, 0));
+            this.setVisible(true);
+            
+            card.show(panelCambiante, "menu principal");
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -449,22 +456,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void panelAnteproyectosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAnteproyectosMouseClicked
-         JFrame ventana = new JFrame("panelAnteproyectos");
-        ventana.setUndecorated(true);
-    CardLayout layout = new CardLayout(); 
-    JPanel container = new JPanel(layout);
-    OpcionAnteproyecto vistasProy = new OpcionAnteproyecto(layout, container);
-
-    container.add(vistasProy, "panelAnteproyectos");
-    layout.show(container, "panelAnteproyectos");
-
-    ventana.setContentPane(container);
-    ventana.setSize(650,550);
-    ventana.setResizable(false);
-    ventana.setExtendedState(JFrame.NORMAL);
-    ventana.setLocationRelativeTo(null);
-    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    ventana.setVisible(true);
+        try {
+            JFrame ventana = new JFrame("panelAnteproyectos");
+            ventana.setUndecorated(true);
+            CardLayout layout = new CardLayout();
+            JPanel container = new JPanel(layout);
+            OpcionAnteproyecto vistasProy = new OpcionAnteproyecto(layout, container);
+            
+            container.add(vistasProy, "panelAnteproyectos");
+            layout.show(container, "panelAnteproyectos");
+            
+            ventana.setContentPane(container);
+            ventana.setSize(650,550);
+            ventana.setResizable(false);
+            ventana.setExtendedState(JFrame.NORMAL);
+            ventana.setLocationRelativeTo(null);
+            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            ventana.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_panelAnteproyectosMouseClicked
     
     private void AntMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AntMouseClicked

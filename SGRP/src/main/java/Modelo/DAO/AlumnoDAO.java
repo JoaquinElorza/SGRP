@@ -1,6 +1,7 @@
 package Modelo.DAO;
 
 import Modelo.Entidades.Alumno;
+import Modelo.Entidades.Anteproyecto;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +115,97 @@ public class AlumnoDAO {
         }
         return null;
     }
+   public AlumnoCarg consultarPorId(int idAlumno) {
+    AlumnoCarg alumno = null;
+
+    try {
+        Connection con = Conexion.getConnection();
+
+        PreparedStatement ps = con.prepareStatement(
+            "SELECT a.id_alumno, a.n_control, a.telefono, a.correo, p.nombre, p.ap_paterno, p.ap_materno " +
+            "FROM alumno a " +
+            "JOIN persona p ON a.fk_persona = p.id_persona " +
+            "WHERE a.id_alumno = ?"
+        );
+        ps.setInt(1, idAlumno);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            alumno = new AlumnoCarg();
+            alumno.setId(rs.getInt("id_alumno"));
+            alumno.setNumeroControl(rs.getString("n_control"));
+            alumno.setNombre(rs.getString("nombre"));
+            alumno.setNumeroTelefono(rs.getString("telefono"));
+            alumno.setCorreoElectronico(rs.getString("correo"));
+            alumno.setApellidoPaterno(rs.getString("ap_paterno"));
+            alumno.setApellidoMaterno(rs.getString("ap_materno"));
+
+            System.out.printf("Alumno(id=%d) cargado: nombre='%s', control='%s', tel='%s', correo='%s'%n",
+                alumno.getId(), alumno.getNombre(), alumno.getNumeroControl(),
+                alumno.getNumeroTelefono(), alumno.getCorreoElectronico());
+        } else {
+            System.out.println("No se encontró alumno con ID: " + idAlumno);
+        }
+
+        rs.close();
+        ps.close();
+        con.close();
+
+    } catch (SQLException e) {
+        System.out.println("[ERROR] consultarPorId: " + e.getMessage());
+    }
+
+    return alumno;
+}
+    public List<AlumnoCarg> obtenerAlumnosPorAnteproyecto(int idAnteproyecto) {
+    List<AlumnoCarg> lista = new ArrayList<>();
+
+    try {
+        Connection con = Conexion.getConnection();
+        PreparedStatement ps = con.prepareStatement(
+            "SELECT a.* FROM asignacion_anteproyecto aa " +
+            "JOIN alumno a ON aa.id_alumno = a.id_alumno " +
+            "WHERE aa.id_anteproyecto = ?"
+        );
+
+        ps.setInt(1, idAnteproyecto);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            AlumnoCarg alu = new AlumnoCarg();
+            alu.setId(rs.getInt("id_alumno"));
+            alu.setNombre(rs.getString("nombre"));
+            alu.setNumeroControl(rs.getString("numeroControl"));
+            alu.setNumeroTelefono(rs.getString("telefono"));
+            alu.setCorreoElectronico(rs.getString("correo"));
+            lista.add(alu);
+        }
+
+        rs.close();
+        ps.close();
+        con.close();
+
+        if (lista.isEmpty()) {
+            ProyectoDAO proyectoDAO = new ProyectoDAO();
+            Anteproyecto ap = proyectoDAO.obtenerAnteproyectoPorId(idAnteproyecto);
+            if (ap != null && ap.getFkAlumno() > 0){
+                AlumnoCarg unico = consultarPorId(ap.getFkAlumno());
+                if (unico != null) {
+                    lista.add(unico);
+                    System.out.println("[TRACE] Alumno agregado vía fkAlumno directo (sin asignaciones explícitas)");
+                }
+            }
+        }
+
+    } catch (SQLException e) {
+        System.out.println("[ERROR] obtenerAlumnosPorAnteproyecto: " + e.getMessage());
+    }
+
+    return lista;
+}
+    
+ 
     public int consultarIdPorControl(String numeroControl) {
     int idAlumno = -1; // Valor por defecto si no se encuentra
 

@@ -7,6 +7,8 @@ package Vista;
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
 import Controlador.AcomodarImagen;
+import Modelo.DAO.DocenteCarg;
+import Modelo.DAO.DocenteDAO;
 import Modelo.DAO.EmpresaDAO;
 import Modelo.DAO.ProyectoDAO;
 import Modelo.Entidades.Anteproyecto;
@@ -24,6 +26,7 @@ import java.awt.Window;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -45,7 +48,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
     /**
      * Creates new form OpcionAnteproyecto
      */
-    public OpcionAnteproyecto(CardLayout layout, JPanel container) {
+    public OpcionAnteproyecto(CardLayout layout, JPanel container) throws SQLException {
         super();
         this.setOpaque(false);
         this.card = layout;
@@ -55,6 +58,9 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         this.panelContainer = container;
         initComponents();
         actualizarTablaAnteproyectos();
+        TablaAlumnosAnteproyectos.removeColumn(
+  TablaAlumnosAnteproyectos.getColumnModel().getColumn(0)
+);
         acomodarImagen.configurarPanelConImagen("/img/ITOlogo.png", LogoTec);  
     LogoTec.setOpaque(false);
     LogoTec.setBorder(null);
@@ -97,6 +103,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         TablaAlumnosAnteproyectos = new javax.swing.JTable();
         BtnEditarAnteproyecto = new javax.swing.JButton();
         BtnDetallesAnteproyecto = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -196,6 +203,10 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(255, 0, 0));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Eliminar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -208,9 +219,11 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNewAnteproyecto)
-                        .addGap(83, 83, 83)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnDetallesAnteproyecto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnEditarAnteproyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38))))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -225,7 +238,8 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnEditarAnteproyecto)
                     .addComponent(btnNewAnteproyecto)
-                    .addComponent(BtnDetallesAnteproyecto))
+                    .addComponent(BtnDetallesAnteproyecto)
+                    .addComponent(jButton1))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -245,29 +259,30 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
        Window ventana = SwingUtilities.getWindowAncestor(this);
         if (ventana != null) ventana.dispose();
     }//GEN-LAST:event_JPanelBackActionPerformed
-public void actualizarTablaAnteproyectos() {
-{
-    DefaultTableModel model = (DefaultTableModel) TablaAlumnosAnteproyectos.getModel();
-    model.setRowCount(0);
+public void actualizarTablaAnteproyectos() throws SQLException {
+String sql = "SELECT id_anteproyecto, nombre, estado, statusant FROM anteproyecto";
+DefaultTableModel model = (DefaultTableModel) TablaAlumnosAnteproyectos.getModel();
 
-    String sql = "SELECT nombre, estado, statusant FROM anteproyecto";
+model.setColumnCount(0);
+model.addColumn("ID");         // Columna 0 (ocultaremos luego)
+model.addColumn("Nombre");     // Columna 1
+model.addColumn("Estado");     // Columna 2
+model.addColumn("StatusAnt");  // Columna 3
+model.setRowCount(0);
 
-    try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
+try (Connection conn = Conexion.getConexion();
+     PreparedStatement ps = conn.prepareStatement(sql);
+     ResultSet rs = ps.executeQuery()) {
+    while (rs.next()) {
+        model.addRow(new Object[]{
+            rs.getInt("id_anteproyecto"),
+            rs.getString("nombre"),
+            rs.getString("estado"),
+            rs.getString("statusant")
+        });
+    }
+}}
 
-        while (rs.next()) {
-            String nombre = rs.getString("nombre");
-            String estado = rs.getString("estado");
-            String statusant = rs.getString("statusant");
-
-            model.addRow(new Object[]{nombre, estado, statusant});
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "❌ Error al cargar anteproyectos: " + e.getMessage());
-    
-}}}
      
     private void btnNewAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewAnteproyectoMouseClicked
          JFrame ventanaAgregar = new JFrame();
@@ -321,11 +336,35 @@ public void actualizarTablaAnteproyectos() {
     }//GEN-LAST:event_BtnEditarAnteproyectoMouseClicked
 
     private void BtnDetallesAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnDetallesAnteproyectoMouseClicked
-        int fila = TablaAlumnosAnteproyectos.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona un anteproyecto.");
-            return;
-        }
+     int fila = TablaAlumnosAnteproyectos.getSelectedRow();
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Selecciona un anteproyecto para ver los datos");
+        return;
+    }
+
+    int rowModel = TablaAlumnosAnteproyectos.convertRowIndexToModel(fila);
+    int idAnte = (int) TablaAlumnosAnteproyectos
+                      .getModel()
+                      .getValueAt(rowModel, 0);
+
+    Anteproyecto ap = new ProyectoDAO().obtenerAnteproyectoPorId(idAnte);
+
+    EmpresaEntidad emp = new EmpresaDAO().obtenerEmpresaPorRFC(ap.getRfcEmpresa());
+
+    DocenteCarg doc = new DocenteDAO().consultarPorId(ap.getFkDocente());
+
+    List<AlumnoCarg> alumnos = new AlumnoDAO().obtenerAlumnosPorAnteproyecto(idAnte);
+
+    JFrame ventana = new JFrame("Detalles del Anteproyecto");
+    DatosAnteproyecto panel = new DatosAnteproyecto();
+    panel.cargarDatos(ap, emp, doc, alumnos);
+
+    ventana.setUndecorated(true);
+    ventana.setContentPane(panel);
+    ventana.pack();
+    ventana.setLocationRelativeTo(this);
+    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventana.setVisible(true);
     }//GEN-LAST:event_BtnDetallesAnteproyectoMouseClicked
 
 
@@ -336,6 +375,7 @@ public void actualizarTablaAnteproyectos() {
     private javax.swing.JPanel LogoTec;
     private javax.swing.JTable TablaAlumnosAnteproyectos;
     private javax.swing.JButton btnNewAnteproyecto;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;

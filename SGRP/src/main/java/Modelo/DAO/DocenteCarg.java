@@ -1,5 +1,11 @@
 package Modelo.DAO;
 
+import Utilidades.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class DocenteCarg {
     private int idDocente;
     private String nombre;
@@ -81,4 +87,37 @@ public class DocenteCarg {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-}
+    public DocenteCarg consultarPorId(int idDocente) {
+    String sql = """
+        SELECT d.id_docente, d.rfc, d.telefono, d.correo,
+               p.nombre, p.ap_paterno, p.ap_materno
+          FROM docente d
+          JOIN persona p ON d.fk_persona = p.id_persona
+         WHERE d.id_docente = ? AND p.status = 'A'
+    """;
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+         
+        ps.setInt(1, idDocente);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            DocenteCarg d = new DocenteCarg();
+            d.setIdDocente(rs.getInt("id_docente"));
+            d.setRfc(rs.getString("rfc"));
+            d.setTelefono(rs.getString("telefono"));
+            d.setCorreo(rs.getString("correo"));
+            d.setNombre(rs.getString("nombre"));
+            d.setApellidoPaterno(rs.getString("ap_paterno"));
+            d.setApellidoMaterno(rs.getString("ap_materno"));
+            return d;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+
+}}
