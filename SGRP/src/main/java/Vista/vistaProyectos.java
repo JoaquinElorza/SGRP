@@ -39,6 +39,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 /**
  *
@@ -50,6 +52,8 @@ public class vistaProyectos extends javax.swing.JPanel {
         private JPanel panelCambiante;
         private editarProyecto editarPanel;
         private List<Alumno> listaAlumnos;
+        private TableRowSorter<DefaultTableModel> rowSorter;
+
         
 
     
@@ -92,6 +96,34 @@ public class vistaProyectos extends javax.swing.JPanel {
             public void mostrarProyectosEnTabla() {
             DefaultTableModel modelo = (DefaultTableModel) tablaProyectos.getModel();
             modelo.setRowCount(0); // limpia tabla
+            rowSorter = new TableRowSorter<>(modelo); // modelo es tu DefaultTableModel
+            tablaProyectos.setRowSorter(rowSorter);
+            txtBuscarProyecto.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            private void filtrar() {
+                String texto = txtBuscarProyecto.getText();
+                if (texto.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto, 0)); // 0 = columna "Nombre"
+                }
+            }
+        });
+
 
             ProyectoDAO dao = new ProyectoDAO();
             List<Proyecto> lista = dao.obtenerTodos();
@@ -155,6 +187,7 @@ public class vistaProyectos extends javax.swing.JPanel {
         btnVerArchivo = new javax.swing.JButton();
         comboArchivos = new javax.swing.JComboBox<>();
         jButton5 = new javax.swing.JButton();
+        txtBuscarProyecto = new javax.swing.JTextField();
 
         setMaximumSize(new java.awt.Dimension(828, 543));
 
@@ -306,6 +339,13 @@ public class vistaProyectos extends javax.swing.JPanel {
             }
         });
 
+        txtBuscarProyecto.setText("🔍 Buscar Proyecto:");
+        txtBuscarProyecto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtBuscarProyectoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelProyectosLayout = new javax.swing.GroupLayout(panelProyectos);
         panelProyectos.setLayout(panelProyectosLayout);
         panelProyectosLayout.setHorizontalGroup(
@@ -322,7 +362,10 @@ public class vistaProyectos extends javax.swing.JPanel {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+                    .addGroup(panelProyectosLayout.createSequentialGroup()
+                        .addComponent(txtBuscarProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -332,15 +375,17 @@ public class vistaProyectos extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelProyectosLayout.createSequentialGroup()
+                        .addComponent(txtBuscarProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelProyectosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jButton2)
                             .addComponent(jButton1)
-                            .addComponent(jButton5)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton5))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -526,6 +571,11 @@ public class vistaProyectos extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "❌ Error al generar el reporte.");
     }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtBuscarProyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarProyectoMouseClicked
+        // TODO add your handling code here:
+        txtBuscarProyecto.setText("");
+    }//GEN-LAST:event_txtBuscarProyectoMouseClicked
         public int obtenerIdPorNombreYDescripcion(String nombre, String descripcion) {
             String sql = "SELECT id_proyecto FROM proyecto WHERE nombre = ? AND descripcion = ? LIMIT 1";
             try (Connection conn = Conexion.getConexion();
@@ -800,5 +850,6 @@ public class vistaProyectos extends javax.swing.JPanel {
     private javax.swing.JPanel panelProyectos;
     private javax.swing.JTable tablaProyectos;
     private javax.swing.JTextArea txtAreaDescripcion;
+    private javax.swing.JTextField txtBuscarProyecto;
     // End of variables declaration//GEN-END:variables
 }
