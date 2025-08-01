@@ -51,7 +51,7 @@ private File archivoTemporalPDF;
         inicializar();}
         private void inicializar(){
 actualizarTablaAlumnos(tablaAlumnos);
-        actualizarTablaDocentes(tablaDocentex2);
+        actualizarTablaDocentes(tablaDocentex);
         tablaAlumnos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     
          txtNombreAnteproyecto.addActionListener(e -> txtNombreEmpresa.requestFocus());
@@ -118,12 +118,14 @@ actualizarTablaAlumnos(tablaAlumnos);
         BtnElegirAnteProyectoBanco = new javax.swing.JButton();
         ComboBoxElegir = new javax.swing.JComboBox<>();
         JLabelDocumentoCargado = new javax.swing.JLabel();
+        ComboboxStatusAnt = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         JPanelBack = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         tablaDocentes2 = new javax.swing.JScrollPane();
-        tablaDocentex2 = new javax.swing.JTable();
+        tablaDocentex = new javax.swing.JTable();
         jLabel11qq = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -289,6 +291,10 @@ actualizarTablaAlumnos(tablaAlumnos);
 
         JLabelDocumentoCargado.setForeground(new java.awt.Color(0, 51, 255));
 
+        ComboboxStatusAnt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "En revision", "Aceptado", "En corrección", "Rechazado" }));
+
+        jLabel3.setText("Estado del anteproyecto");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -302,22 +308,27 @@ actualizarTablaAlumnos(tablaAlumnos);
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(JLabelDocumentoCargado, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(90, 90, 90))
-                            .addComponent(txtNombreAnteproyecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(108, 108, 108)
-                                    .addComponent(jLabel4))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(BntCargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(JLabelDocumentoCargado, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ComboboxStatusAnt, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtNombreAnteproyecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(108, 108, 108)
+                                        .addComponent(jLabel4))
+                                    .addComponent(BntCargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(90, 90, 90))
+                                .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -335,11 +346,15 @@ actualizarTablaAlumnos(tablaAlumnos);
                 .addComponent(BntCargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JLabelDocumentoCargado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ComboboxStatusAnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 102, 0));
@@ -383,7 +398,7 @@ actualizarTablaAlumnos(tablaAlumnos);
         tablaDocentes2.setAutoscrolls(true);
         tablaDocentes2.setName(""); // NOI18N
 
-        tablaDocentex2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDocentex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -399,17 +414,17 @@ actualizarTablaAlumnos(tablaAlumnos);
                 return types [columnIndex];
             }
         });
-        tablaDocentex2.setSelectionBackground(new java.awt.Color(0, 83, 188));
-        tablaDocentex2.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tablaDocentex2.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaDocentex.setSelectionBackground(new java.awt.Color(0, 83, 188));
+        tablaDocentex.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tablaDocentex.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaDocentex2MouseClicked(evt);
+                tablaDocentexMouseClicked(evt);
             }
         });
-        tablaDocentes2.setViewportView(tablaDocentex2);
+        tablaDocentes2.setViewportView(tablaDocentex);
 
         jLabel11qq.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel11qq.setText("SELECCIONA A UN DOCENTE");
+        jLabel11qq.setText("SELECCIONA A UN DOCENTE REVISOR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -424,32 +439,34 @@ actualizarTablaAlumnos(tablaAlumnos);
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                             .addComponent(tablaDocentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
+                        .addGap(126, 126, 126)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(93, 93, 93)
                         .addComponent(jLabel11qq)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11qq)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tablaDocentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addGap(20, 20, 20)
+                        .addComponent(tablaDocentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(23, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -516,6 +533,7 @@ actualizarTablaAlumnos(tablaAlumnos);
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
 {
+    String estadoCombo = ComboboxStatusAnt.getSelectedItem().toString();
     String nombreAP     = txtNombreAnteproyecto.getText().trim().toUpperCase();
     String descripcion  = txtDescripcion.getText().trim();
     String nombreEmp    = txtNombreEmpresa.getText().trim();
@@ -543,17 +561,17 @@ actualizarTablaAlumnos(tablaAlumnos);
 
     int[] filasAl = tablaAlumnos.getSelectedRows();
     if (filasAl.length == 0 || filasAl.length > 3) {
-        JOptionPane.showMessageDialog(this, "Selecciona entre 1 y 3 alumnos.");
+        JOptionPane.showMessageDialog(this, "Selecciona de 1 a 3 alumnos.");
         return;
     }
 
-    int filaDoc = tablaDocentex2.getSelectedRow();
+    int filaDoc = tablaDocentex.getSelectedRow();
     if (filaDoc == -1) {
-        JOptionPane.showMessageDialog(this, "Selecciona un docente.");
+        JOptionPane.showMessageDialog(this, "Selecciona un docente revisor.");
         return;
     }
 
-    String rfcDocente = tablaDocentex2.getValueAt(filaDoc, 0).toString();
+    String rfcDocente = tablaDocentex.getValueAt(filaDoc, 0).toString();
     int idDocente = new DocenteDAO().obtenerIdPorRfc(rfcDocente);
     if (idDocente < 0) {
         JOptionPane.showMessageDialog(this, "No se encontró el docente en la base.");
@@ -586,8 +604,8 @@ actualizarTablaAlumnos(tablaAlumnos);
 
             String sql = """
                 INSERT INTO anteproyecto
-                  (nombre, descripcion, estado, rfc_empresa, fk_alumno, fk_docente)
-                VALUES (?, ?, ?, ?, ?, ?)
+                  (nombre, descripcion, estado, rfc_empresa, fk_alumno, fk_docente, statusant)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -597,12 +615,13 @@ actualizarTablaAlumnos(tablaAlumnos);
                 ps.setString(4, rfcEmpresa);
                 ps.setInt(5, idAlumno);
                 ps.setInt(6, idDocente);
+                ps.setString(7, estadoCombo);
                 if (ps.executeUpdate() == 0) {
                     ok = false;
                 }
             }
         }
-
+        
         // Copiar PDF
         String rutaFinal = System.getProperty("user.home") + "/Documents/AnteproyectosCargados/";
         File carpeta = new File(rutaFinal);
@@ -699,14 +718,14 @@ actualizarTablaAlumnos(tablaAlumnos);
 
     }//GEN-LAST:event_BtnElegirAnteProyectoBancoMouseClicked
 
-    private void tablaDocentex2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocentex2MouseClicked
+    private void tablaDocentexMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocentexMouseClicked
         int filaVisual = tablaDocentex.getSelectedRow();
         if (filaVisual == -1) return;
 
         int filaModelo = tablaDocentex.convertRowIndexToModel(filaVisual);
         String seleccionRfc = tablaDocentex.getModel().getValueAt(filaModelo, 0).toString();
        
-    }//GEN-LAST:event_tablaDocentex2MouseClicked
+    }//GEN-LAST:event_tablaDocentexMouseClicked
     public void rellenarCamposDesdeBanco(String nombreProyecto, String estatus,
     String nombreEmpresa, String direccion, String telefono,
     String correo, String rfc) {
@@ -743,12 +762,14 @@ actualizarTablaAlumnos(tablaAlumnos);
     private javax.swing.JButton BtnElegirAnteProyectoBanco;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JComboBox<String> ComboBoxElegir;
+    private javax.swing.JComboBox<String> ComboboxStatusAnt;
     private javax.swing.JLabel JLabelDocumentoCargado;
     private javax.swing.JButton JPanelBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11qq;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -761,12 +782,8 @@ actualizarTablaAlumnos(tablaAlumnos);
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTable tablaAlumnos;
-    private javax.swing.JScrollPane tablaDocentes;
-    private javax.swing.JScrollPane tablaDocentes1;
     private javax.swing.JScrollPane tablaDocentes2;
     public javax.swing.JTable tablaDocentex;
-    public javax.swing.JTable tablaDocentex1;
-    public javax.swing.JTable tablaDocentex2;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtDireccion;

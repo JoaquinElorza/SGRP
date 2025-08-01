@@ -429,7 +429,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     layout.show(container, "panelProyectos");
 
     ventana.setContentPane(container);
-    ventana.setSize(900, 650);
+    ventana.setSize(930, 550);
     ventana.setResizable(false);
     ventana.setExtendedState(JFrame.NORMAL);
     ventana.setLocationRelativeTo(null);
@@ -459,7 +459,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     layout.show(container, "panelAnteproyectos");
 
     ventana.setContentPane(container);
-    ventana.setSize(1350, 700);
+    ventana.setSize(650,550);
     ventana.setResizable(false);
     ventana.setExtendedState(JFrame.NORMAL);
     ventana.setLocationRelativeTo(null);
