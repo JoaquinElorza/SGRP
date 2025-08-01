@@ -11,8 +11,13 @@ public class DocenteCarg {
 
     public DocenteCarg() {}
 
-    public DocenteCarg(String nombre, String apellidoPaterno, String apellidoMaterno,
-                       String rfc, String telefono, String correo) {
+    public DocenteCarg(
+                       String nombre,
+                       String apellidoPaterno,
+                       String apellidoMaterno,
+                       String rfc,
+                       String telefono,
+                       String correo) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
