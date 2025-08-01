@@ -7,6 +7,10 @@ package Vista;
 import Controlador.AcomodarImagen;
 import Modelo.DAO.AlumnoCarg;
 import Modelo.DAO.AlumnoDAO;
+import Modelo.DAO.DocenteCarg;
+import Modelo.DAO.DocenteDAO;
+import Modelo.DAO.EmpresaDAO;
+import Modelo.Entidades.EmpresaEntidad;
 import Utilidades.Conexion;
 import java.awt.Image;
 import java.awt.Window;
@@ -44,6 +48,12 @@ private File archivoTemporalPDF;
     public AgregarAnteproyecto(OpcionAnteproyecto padre) {
         this.panelPadre = padre;
         initComponents();
+        inicializar();}
+        private void inicializar(){
+actualizarTablaAlumnos(tablaAlumnos);
+        actualizarTablaDocentes(tablaDocentex2);
+        tablaAlumnos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    
          txtNombreAnteproyecto.addActionListener(e -> txtNombreEmpresa.requestFocus());
     txtNombreEmpresa.addActionListener(e -> txtTelefono.requestFocus());
     txtTelefono.addActionListener(e -> txtDireccion.requestFocus());
@@ -51,8 +61,6 @@ private File archivoTemporalPDF;
     txtCorreo.addActionListener(e -> txtRFC.requestFocus());
     txtRFC.addActionListener(e -> txtDescripcion.requestFocus());
         BtnElegirAnteProyectoBanco.setEnabled(false);
-        actualizarTablaAlumnos(tablaAlumnos);
-        tablaAlumnos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/img/backbutton.png"));
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
         JPanelBack.setIcon(new ImageIcon(imagenRedimensionada));
@@ -114,6 +122,9 @@ private File archivoTemporalPDF;
         jLabel1 = new javax.swing.JLabel();
         JPanelBack = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        tablaDocentes2 = new javax.swing.JScrollPane();
+        tablaDocentex2 = new javax.swing.JTable();
+        jLabel11qq = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -211,7 +222,6 @@ private File archivoTemporalPDF;
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel6)
                                             .addComponent(jLabel7))))
-                                .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtCorreo)
                                     .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,8 +260,8 @@ private File archivoTemporalPDF;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
         );
 
         BtnGuardar.setBackground(new java.awt.Color(0, 153, 255));
@@ -353,7 +363,7 @@ private File archivoTemporalPDF;
                 .addComponent(JPanelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(341, 341, 341)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(461, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,15 +377,56 @@ private File archivoTemporalPDF;
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setText("SELECCIONA A UN ALUMNO");
 
+        tablaDocentes2.setBackground(new java.awt.Color(229, 231, 235));
+        tablaDocentes2.setBorder(null);
+        tablaDocentes2.setToolTipText("");
+        tablaDocentes2.setAutoscrolls(true);
+        tablaDocentes2.setName(""); // NOI18N
+
+        tablaDocentex2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "RFC", "NOMBRE"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tablaDocentex2.setSelectionBackground(new java.awt.Color(0, 83, 188));
+        tablaDocentex2.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tablaDocentex2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDocentex2MouseClicked(evt);
+            }
+        });
+        tablaDocentes2.setViewportView(tablaDocentex2);
+
+        jLabel11qq.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel11qq.setText("SELECCIONA A UN DOCENTE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                            .addComponent(tablaDocentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel11qq)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
@@ -391,26 +442,52 @@ private File archivoTemporalPDF;
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel11qq)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tablaDocentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
     }//GEN-LAST:event_tablaAlumnosMouseClicked
     
-    void actualizarTablaAlumnos(JTable tablaAlumnos) {
-         AlumnoDAO dao = new AlumnoDAO();
-        List<AlumnoCarg> lista = dao.obtenerTodosLosAlumnos();
-        DefaultTableModel model = (DefaultTableModel) tablaAlumnos.getModel();
-        model.setRowCount(0);
+    public void actualizarTablaDocentes() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDocentex.getModel();
+        modelo.setRowCount(0);
 
-        for (AlumnoCarg a : lista) {
-            String nombreCompleto = a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno();
-            model.addRow(new Object[]{a.getNumeroControl(), nombreCompleto});
+        List<DocenteCarg> lista = new DocenteDAO().obtenerTodos();
+        for (DocenteCarg d : lista) {
+            String nombreCompleto = d.getNombre() + " " + d.getApellidoPaterno() + " " + d.getApellidoMaterno();
+            modelo.addRow(new Object[]{d.getRfc(), nombreCompleto});
         }
     }
+    void actualizarTablaAlumnos(JTable tabla) {
+        DefaultTableModel m = (DefaultTableModel) tabla.getModel();
+        m.setRowCount(0);
+        for (AlumnoCarg a : new AlumnoDAO().obtenerTodosLosAlumnos()) {
+            String nombre = a.getNombre() + " "
+                            + a.getApellidoPaterno() + " "
+                            + a.getApellidoMaterno();
+            m.addRow(new Object[]{a.getNumeroControl(), nombre});
+        }
+    }
+
+    void actualizarTablaDocentes(JTable tabla) {
+        DefaultTableModel m = (DefaultTableModel) tabla.getModel();
+        m.setRowCount(0);
+        for (DocenteCarg d : new DocenteDAO().obtenerTodos()) {
+            String nombre = d.getNombre() + " "
+                            + d.getApellidoPaterno() + " "
+                            + d.getApellidoMaterno();
+            m.addRow(new Object[]{d.getRfc(), nombre});
+        }
+    }
+
     private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
 
     }//GEN-LAST:event_jScrollPane2MouseClicked
@@ -421,108 +498,132 @@ private File archivoTemporalPDF;
     }//GEN-LAST:event_JPanelBackActionPerformed
 
     private void BntCargarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BntCargarPDFActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Selecciona un archivo PDF o Word");
-
-        int resultado = fileChooser.showOpenDialog(this);
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            archivoTemporalPDF = fileChooser.getSelectedFile();
-            String nombre = archivoTemporalPDF.getName().toLowerCase();
-
-            if (!nombre.endsWith(".pdf") && !nombre.endsWith(".doc") && !nombre.endsWith(".docx")) {
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Selecciona un archivo PDF o Word");
+        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            archivoTemporalPDF = fc.getSelectedFile();
+            String name = archivoTemporalPDF.getName().toLowerCase();
+            if (!name.endsWith(".pdf") && !name.endsWith(".doc") && !name.endsWith(".docx")) {
                 JOptionPane.showMessageDialog(this, "Solo se permiten archivos PDF o Word.");
                 archivoTemporalPDF = null;
                 JLabelDocumentoCargado.setText("📄 No hay documento cargado");
                 return;
             }
-
             JLabelDocumentoCargado.setText("📎 " + archivoTemporalPDF.getName());
             JOptionPane.showMessageDialog(this, "✔️ Documento cargado. Haz clic para visualizar.");
         }
     }//GEN-LAST:event_BntCargarPDFActionPerformed
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
-     String nombre = txtNombreAnteproyecto.getText().trim().toUpperCase();
-    String descripcion = txtDescripcion.getText().trim();
-    String lineaInvestigacion = txtNombreEmpresa.getText().trim(); // Renómbralo si no es línea
-    String estado = "Anteproyecto";
-    String usuario = System.getProperty("user.name");
-    String rfcEmpresa = txtRFC.getText().trim().toUpperCase();
-    String telefono = txtTelefono.getText().trim();
-    String correo = txtCorreo.getText().trim();
+{
+    String nombreAP     = txtNombreAnteproyecto.getText().trim().toUpperCase();
+    String descripcion  = txtDescripcion.getText().trim();
+    String nombreEmp    = txtNombreEmpresa.getText().trim();
+    String telefono     = txtTelefono.getText().trim();
+    String direccion    = txtDireccion.getText().trim();
+    String correo       = txtCorreo.getText().trim();
+    String rfcEmpresa   = txtRFC.getText().trim().toUpperCase();
 
-    if (nombre.isEmpty() || descripcion.isEmpty() || lineaInvestigacion.isEmpty() || rfcEmpresa.isEmpty()) {
+    if (nombreAP.isEmpty() || nombreEmp.isEmpty() || rfcEmpresa.isEmpty() || descripcion.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Completa todos los campos obligatorios.");
         return;
     }
-
     if (!telefono.matches("\\d{10}")) {
         JOptionPane.showMessageDialog(this, "Número de teléfono inválido. Debe tener 10 dígitos.");
         return;
     }
-
     if (!correo.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$")) {
         JOptionPane.showMessageDialog(this, "Correo electrónico inválido.");
         return;
     }
-
-    int[] filas = tablaAlumnos.getSelectedRows();
-    if (filas.length == 0 || filas.length > 3) {
-        JOptionPane.showMessageDialog(this, "Selecciona entre 1 y 3 alumnos.");
-        return;
-    }
-
     if (archivoTemporalPDF == null || !archivoTemporalPDF.exists()) {
         JOptionPane.showMessageDialog(this, "Carga un documento válido antes de guardar.");
         return;
     }
 
+    int[] filasAl = tablaAlumnos.getSelectedRows();
+    if (filasAl.length == 0 || filasAl.length > 3) {
+        JOptionPane.showMessageDialog(this, "Selecciona entre 1 y 3 alumnos.");
+        return;
+    }
+
+    int filaDoc = tablaDocentex2.getSelectedRow();
+    if (filaDoc == -1) {
+        JOptionPane.showMessageDialog(this, "Selecciona un docente.");
+        return;
+    }
+
+    String rfcDocente = tablaDocentex2.getValueAt(filaDoc, 0).toString();
+    int idDocente = new DocenteDAO().obtenerIdPorRfc(rfcDocente);
+    if (idDocente < 0) {
+        JOptionPane.showMessageDialog(this, "No se encontró el docente en la base.");
+        return;
+    }
+
+    EmpresaDAO empresaDAO = new EmpresaDAO();
+    EmpresaEntidad empresa = empresaDAO.obtenerEmpresaPorRFC(rfcEmpresa);
+    if (empresa == null) {
+        EmpresaEntidad nueva = new EmpresaEntidad();
+        nueva.setNombre(nombreEmp);
+        nueva.setContacto(telefono);
+        nueva.setCorreo(correo);
+        nueva.setDireccion(direccion);
+        nueva.setRfc(rfcEmpresa);
+        nueva.setDescripcion(descripcion);
+        if (!empresaDAO.insertarEmpresa(nueva)) {
+            JOptionPane.showMessageDialog(this, "Error al guardar la empresa.");
+            return;
+        }
+    }
+
     try (Connection conn = Conexion.getConexion()) {
+        conn.setAutoCommit(false);
         boolean ok = true;
 
-        for (int fila : filas) {
-            String nControl = tablaAlumnos.getValueAt(fila, 0).toString();
-            int idAlumno = new Modelo.DAO.AlumnoDAO().consultarIdPorControl(nControl);
+        for (int fila : filasAl) {
+            String control = tablaAlumnos.getValueAt(fila, 0).toString();
+            int idAlumno = new AlumnoDAO().consultarIdPorControl(control);
 
-            PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO anteproyecto (nombre, descripcion, linea_investigacion, estado, fecha_registro, usuario_registro, fk_alumno, rfc_empresa) " +
-                "VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)"
-            );
-            ps.setString(1, nombre);
-            ps.setString(2, descripcion);
-            ps.setString(3, lineaInvestigacion);
-            ps.setString(4, estado);
-            ps.setString(5, usuario);
-            ps.setInt(6, idAlumno);
-            ps.setString(7, rfcEmpresa);
+            String sql = """
+                INSERT INTO anteproyecto
+                  (nombre, descripcion, estado, rfc_empresa, fk_alumno, fk_docente)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """;
 
-            int result = ps.executeUpdate();
-            if (result == 0) {
-                System.out.println("⚠️ No se insertó anteproyecto para alumno: " + nControl);
-                ok = false;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, nombreAP);
+                ps.setString(2, descripcion);
+                ps.setString(3, "Anteproyecto");
+                ps.setString(4, rfcEmpresa);
+                ps.setInt(5, idAlumno);
+                ps.setInt(6, idDocente);
+                if (ps.executeUpdate() == 0) {
+                    ok = false;
+                }
             }
         }
 
+        // Copiar PDF
         String rutaFinal = System.getProperty("user.home") + "/Documents/AnteproyectosCargados/";
         File carpeta = new File(rutaFinal);
         if (!carpeta.exists()) carpeta.mkdirs();
-
         File destino = new File(carpeta, archivoTemporalPDF.getName());
         Files.copy(archivoTemporalPDF.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         if (ok) {
+            conn.commit();
             JOptionPane.showMessageDialog(this, "✅ Anteproyecto guardado correctamente.");
             panelPadre.actualizarTablaAnteproyectos();
-            Window ventana = SwingUtilities.getWindowAncestor(this);
-            if (ventana != null) ventana.dispose();
+            SwingUtilities.getWindowAncestor(this).dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "❌ Falló al guardar algunos registros. Revisa la consola.");
+            conn.rollback();
+            JOptionPane.showMessageDialog(this, "❌ Falló al guardar algunos registros.");
         }
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "❌ Error técnico al guardar: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "❌ Error técnico: " + e.getMessage());
         e.printStackTrace();
-    }
+    }}
     }//GEN-LAST:event_BtnGuardarActionPerformed
    
     private void ComboBoxElegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxElegirActionPerformed
@@ -597,6 +698,15 @@ private File archivoTemporalPDF;
     ventanaAgregar.setVisible(true);
 
     }//GEN-LAST:event_BtnElegirAnteProyectoBancoMouseClicked
+
+    private void tablaDocentex2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocentex2MouseClicked
+        int filaVisual = tablaDocentex.getSelectedRow();
+        if (filaVisual == -1) return;
+
+        int filaModelo = tablaDocentex.convertRowIndexToModel(filaVisual);
+        String seleccionRfc = tablaDocentex.getModel().getValueAt(filaModelo, 0).toString();
+       
+    }//GEN-LAST:event_tablaDocentex2MouseClicked
     public void rellenarCamposDesdeBanco(String nombreProyecto, String estatus,
     String nombreEmpresa, String direccion, String telefono,
     String correo, String rfc) {
@@ -637,22 +747,26 @@ private File archivoTemporalPDF;
     private javax.swing.JButton JPanelBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11qq;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     public javax.swing.JTable tablaAlumnos;
+    private javax.swing.JScrollPane tablaDocentes;
+    private javax.swing.JScrollPane tablaDocentes1;
+    private javax.swing.JScrollPane tablaDocentes2;
+    public javax.swing.JTable tablaDocentex;
+    public javax.swing.JTable tablaDocentex1;
+    public javax.swing.JTable tablaDocentex2;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtDireccion;

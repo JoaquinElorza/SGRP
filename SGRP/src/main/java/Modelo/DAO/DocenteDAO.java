@@ -45,6 +45,22 @@ public class DocenteDAO {
             return false;
         }
     }
+    public int obtenerIdPorRfc(String rfc) {
+        int id = -1;
+        String sql = "SELECT id_docente FROM docente WHERE rfc = ?";
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, rfc);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) id = rs.getInt("id_docente");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+    
     public int consultarIdPorRFC(String rfc) {
     int idDocente = -1; // Valor por defecto si no se encuentra
 
@@ -68,9 +84,14 @@ public class DocenteDAO {
 }
 
     public List<DocenteCarg> obtenerTodos() {
-        String sql = "SELECT d.rfc, p.nombre, p.ap_paterno, p.ap_materno, d.telefono, d.correo " +
-                     "FROM docente d JOIN persona p ON d.fk_persona = p.id_persona WHERE p.status = 'A'";
-        List<DocenteCarg> lista = new ArrayList<>();
+          List<DocenteCarg> lista = new ArrayList<>();
+        String sql = """
+            SELECT d.id_docente, d.rfc,
+                   p.nombre, p.ap_paterno, p.ap_materno
+            FROM docente d
+            JOIN persona p ON d.fk_persona = p.id_persona
+            WHERE p.status IS NULL OR p.status <> 'E'
+            """;
 
         try (Connection conn = Conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -78,19 +99,16 @@ public class DocenteDAO {
 
             while (rs.next()) {
                 DocenteCarg d = new DocenteCarg();
+                d.setIdDocente(rs.getInt("id_docente"));
                 d.setRfc(rs.getString("rfc"));
                 d.setNombre(rs.getString("nombre"));
                 d.setApellidoPaterno(rs.getString("ap_paterno"));
                 d.setApellidoMaterno(rs.getString("ap_materno"));
-                d.setTelefono(rs.getString("telefono"));
-                d.setCorreo(rs.getString("correo"));
                 lista.add(d);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return lista;
     }
 
