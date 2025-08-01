@@ -105,8 +105,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         btnAgregarDocente = new javax.swing.JButton();
         btnEliminarDocente = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(242, 242, 242));
-
         jPanel4.setBackground(new java.awt.Color(0, 153, 255));
 
         JPanelLOGO.setBackground(new java.awt.Color(255, 255, 255));
@@ -127,7 +125,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtIngresarRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
@@ -188,7 +186,6 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
         tablaDocentes.setAutoscrolls(true);
         tablaDocentes.setName(""); // NOI18N
 
-        tablaDocentex.setForeground(new java.awt.Color(0, 0, 0));
         tablaDocentex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -380,7 +377,7 @@ private final AcomodarImagen acomodarImagen = new AcomodarImagen();
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 452, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 453, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditarDocentes)
                     .addComponent(btnAgregarDocente)
